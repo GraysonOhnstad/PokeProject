@@ -120,7 +120,7 @@ Also produce a species-level table: types, egg groups, shape, color, habitat, st
 
 - **Scope:** front view only. Sources: game sprites, game 3D renders (incl. `.webp` for SwSh/BDSP/PLA/SV), HOME, official artwork, Dream World. Dropped: menu icons (too small), Showdown and top-level default sprites (unofficial or duplicates of Black/White).
 - **Unofficial sprites dropped:** any sprite whose form postdates the game folder it is filed under (e.g. fan-made BW-style sprites of Gen 6+ species in `black-white/`).
-- **Forms:** one form per distinct typing within a species: the default form, then the earliest form with each new typing (regional forms, Rotom, Wormadam, type-changing megas). Same-typed variants (G-Max, totems, costumes, same-type megas) are dropped.
+- **Forms:** every Mega and Primal form is kept as its own entry with its own typing. Among other forms, one per distinct typing within a species: the default form, then the earliest form with each new typing (regional forms, Rotom, Wormadam, ...). Same-typed variants (G-Max, totems, costumes) are dropped.
 - **BW-style ablation:** `bw_style` marks Black/White sprites of non-test species; train once with and once without them.
 - **96×96:** crop to subject, flatten onto white, fit the longer side to 96 and center. Pixel sprites resize nearest-neighbor; everything else Lanczos (`poketype.images.prepare`, also used at inference).
 - **Split:** val families chosen by seeded search for type coverage, with val's dual-typed share within 2 points of the overall share.
