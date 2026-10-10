@@ -1,0 +1,11 @@
+# Downloaded and derived data (rebuild with scripts/fetch_pokeapi.py)
+/data/*
+!/data/raw/
+/data/raw/*
+!/data/raw/sources.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.ipynb_checkpoints/
