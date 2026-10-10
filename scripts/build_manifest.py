@@ -174,12 +174,15 @@ def pokemon_table(t):
     forms = t["pokemon_forms"].sort_values(["pokemon_id", "is_default"], ascending=[True, False])
     intro = forms.drop_duplicates("pokemon_id").set_index("pokemon_id")["introduced_in_version_group_id"]
     pk["form_debut_order"] = pk["pokemon_id"].map(intro).map(vg_order)
-    # Keep one form per distinct typing within a species: the default form, then the
-    # earliest form with each new typing (regional forms, Rotom, type-changing megas).
-    # Same-typed variants (G-Max, totems, costumes, same-type megas) are dropped.
+    # Keep every Mega/Primal form, each as its own entry with its own typing. Among the
+    # other forms, keep one per distinct typing within a species: the default form, then
+    # the earliest form with each new typing (regional forms, Rotom, Wormadam, ...).
+    # Same-typed variants (G-Max, totems, costumes) are dropped.
+    is_mega = forms.drop_duplicates("pokemon_id").set_index("pokemon_id")["is_mega"].astype(bool)
+    pk["is_mega"] = pk["pokemon_id"].map(is_mega).fillna(False) | pk["pokemon_name"].str.endswith("-primal")
     pk["_types"] = pk[["type1", "type2"]].apply(lambda r: frozenset(r.dropna()), axis=1)
-    order = pk.sort_values(["species_id", "is_default", "pokemon_id"], ascending=[True, False, True])
-    pk["keep_form"] = ~order.duplicated(["species_id", "_types"])  # aligns back on index
+    rest = pk[~pk["is_mega"]].sort_values(["species_id", "is_default", "pokemon_id"], ascending=[True, False, True])
+    pk["keep_form"] = pk["is_mega"] | ~rest.duplicated(["species_id", "_types"]).reindex(pk.index, fill_value=True)
     return pk.drop(columns="_types")
 
 
@@ -293,7 +296,7 @@ def main():
         ("back view", lambda d: d["view"] == "back"),
         ("low-fidelity or unofficial source (icons, Showdown, top-level defaults)",
          lambda d: d["medium"].isin(EXCLUDED_MEDIA)),
-        ("form with the same typing as another kept form of its species", lambda d: ~d["keep_form"]),
+        ("non-Mega form with the same typing as another kept form of its species", lambda d: ~d["keep_form"]),
         ("unofficial: form introduced after the game",
          lambda d: game_order[d.index].notna() & (d["form_debut_order"] > game_order[d.index])),
     ]:
@@ -379,7 +382,7 @@ def write_report(m, species, unknown_ids, dropped, val_score, args):
         top = d["game"].value_counts().head(6)
         lines.append(f"| {reason} | {len(d)} | " + ", ".join(f"{g} {n}" for g, n in top.items()) + " |")
     alt = m.loc[~m["is_default_form"]].drop_duplicates("pokemon_id").sort_values("pokemon_id")
-    lines.append(f"\nAlternate forms kept (one per distinct typing within a species): {len(alt)}. "
+    lines.append(f"\nAlternate forms kept (all Megas/Primals, plus one per distinct typing within a species): {len(alt)}. "
                  + ", ".join(f"{r.pokemon_name} ({r.type1}{'/' + r.type2 if pd.notna(r.type2) else ''})"
                              for r in alt.itertuples()))
 

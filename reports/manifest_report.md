@@ -22,18 +22,18 @@ Rows dropped, applied in order:
 |---|---|---|
 | back view | 25827 | default 2891, black-white 2891, ultra-sun-ultra-moon 2116, scarlet-violet 1892, omega-ruby-alpha-sapphire 1818, x-y 1764 |
 | low-fidelity or unofficial source (icons, Showdown, top-level defaults) | 13260 | default 2892, showdown 2770, generation-viii-icons 1113, generation-vii-icons 974, scarlet-violet-icons 946, sword-shield-icons 849 |
-| form with the same typing as another kept form of its species | 2265 | black-white 427, official-artwork 426, home 401, ultra-sun-ultra-moon 218, champions 162, sword-shield 148 |
-| unofficial: form introduced after the game | 947 | black-white 947 |
+| non-Mega form with the same typing as another kept form of its species | 1438 | official-artwork 271, black-white 270, home 243, sword-shield 148, scarlet-violet 144, ultra-sun-ultra-moon 140 |
+| unofficial: form introduced after the game | 1104 | black-white 1104 |
 
-Alternate forms kept (one per distinct typing within a species): 106. wormadam-sandy (bug/ground), wormadam-trash (bug/steel), shaymin-sky (grass/flying), rotom-heat (electric/fire), rotom-wash (electric/water), rotom-frost (electric/ice), rotom-fan (electric/flying), rotom-mow (electric/grass), castform-sunny (fire), castform-rainy (water), castform-snowy (ice), darmanitan-zen (fire/psychic), meloetta-pirouette (normal/fighting), charizard-mega-x (fire/dragon), pinsir-mega (bug/flying), gyarados-mega (water/dark), mewtwo-mega-x (psychic/fighting), ampharos-mega (electric/dragon), aggron-mega (steel), sceptile-mega (grass/dragon), altaria-mega (dragon/fairy), audino-mega (normal/fairy), groudon-primal (ground/fire), hoopa-unbound (psychic/dark), lopunny-mega (normal/fighting), rattata-alola (dark/normal), raticate-alola (dark/normal), raichu-alola (electric/psychic), sandshrew-alola (ice/steel), sandslash-alola (ice/steel), vulpix-alola (ice), ninetales-alola (ice/fairy), diglett-alola (ground/steel), dugtrio-alola (ground/steel), meowth-alola (dark), persian-alola (dark), geodude-alola (rock/electric), graveler-alola (rock/electric), golem-alola (rock/electric), grimer-alola (poison/dark), muk-alola (poison/dark), exeggutor-alola (grass/dragon), marowak-alola (fire/ghost), oricorio-pom-pom (electric/flying), oricorio-pau (psychic/flying), oricorio-sensu (ghost/flying), necrozma-dusk (psychic/steel), necrozma-dawn (psychic/ghost), necrozma-ultra (psychic/dragon), meowth-galar (steel), ponyta-galar (psychic), rapidash-galar (psychic/fairy), slowpoke-galar (psychic), slowbro-galar (poison/psychic), farfetchd-galar (fighting), weezing-galar (poison/fairy), mr-mime-galar (ice/psychic), articuno-galar (psychic/flying), zapdos-galar (fighting/flying), moltres-galar (dark/flying), slowking-galar (poison/psychic), corsola-galar (ghost), zigzagoon-galar (dark/normal), linoone-galar (dark/normal), darumaka-galar (ice), darmanitan-galar-standard (ice), darmanitan-galar-zen (ice/fire), yamask-galar (ground/ghost), stunfisk-galar (ground/steel), zacian-crowned (fairy/steel), zamazenta-crowned (fighting/steel), urshifu-rapid-strike (fighting/water), calyrex-ice (psychic/ice), calyrex-shadow (psychic/ghost), growlithe-hisui (fire/rock), arcanine-hisui (fire/rock), voltorb-hisui (electric/grass), electrode-hisui (electric/grass), typhlosion-hisui (fire/ghost), qwilfish-hisui (dark/poison), sneasel-hisui (fighting/poison), samurott-hisui (water/dark), lilligant-hisui (grass/fighting), zorua-hisui (normal/ghost), zoroark-hisui (normal/ghost), braviary-hisui (psychic/flying), sliggoo-hisui (steel/dragon), goodra-hisui (steel/dragon), avalugg-hisui (ice/rock), decidueye-hisui (grass/fighting), tauros-paldea-combat-breed (fighting), tauros-paldea-blaze-breed (fighting/fire), tauros-paldea-aqua-breed (fighting/water), wooper-paldea (poison/ground), ogerpon-wellspring-mask (grass/water), ogerpon-hearthflame-mask (grass/fire), ogerpon-cornerstone-mask (grass/rock), clefable-mega (fairy/flying), meganium-mega (grass/fairy), feraligatr-mega (water/dragon), barbaracle-mega (rock/fighting), chimecho-mega (psychic/steel), absol-mega-z (dark/ghost), staraptor-mega (fighting/flying), garchomp-mega-z (dragon), golisopod-mega (bug/steel)
+Alternate forms kept (all Megas/Primals, plus one per distinct typing within a species): 185. wormadam-sandy (bug/ground), wormadam-trash (bug/steel), shaymin-sky (grass/flying), rotom-heat (electric/fire), rotom-wash (electric/water), rotom-frost (electric/ice), rotom-fan (electric/flying), rotom-mow (electric/grass), castform-sunny (fire), castform-rainy (water), castform-snowy (ice), darmanitan-zen (fire/psychic), meloetta-pirouette (normal/fighting), venusaur-mega (grass/poison), charizard-mega-x (fire/dragon), charizard-mega-y (fire/flying), blastoise-mega (water), alakazam-mega (psychic), gengar-mega (ghost/poison), kangaskhan-mega (normal), pinsir-mega (bug/flying), gyarados-mega (water/dark), aerodactyl-mega (rock/flying), mewtwo-mega-x (psychic/fighting), mewtwo-mega-y (psychic), ampharos-mega (electric/dragon), scizor-mega (bug/steel), heracross-mega (bug/fighting), houndoom-mega (dark/fire), tyranitar-mega (rock/dark), blaziken-mega (fire/fighting), gardevoir-mega (psychic/fairy), mawile-mega (steel/fairy), aggron-mega (steel), medicham-mega (fighting/psychic), manectric-mega (electric), banette-mega (ghost), absol-mega (dark), garchomp-mega (dragon/ground), lucario-mega (fighting/steel), abomasnow-mega (grass/ice), latias-mega (dragon/psychic), latios-mega (dragon/psychic), swampert-mega (water/ground), sceptile-mega (grass/dragon), sableye-mega (dark/ghost), altaria-mega (dragon/fairy), gallade-mega (psychic/fighting), audino-mega (normal/fairy), sharpedo-mega (water/dark), slowbro-mega (water/psychic), steelix-mega (steel/ground), pidgeot-mega (normal/flying), glalie-mega (ice), diancie-mega (rock/fairy), metagross-mega (steel/psychic), kyogre-primal (water), groudon-primal (ground/fire), rayquaza-mega (dragon/flying), hoopa-unbound (psychic/dark), camerupt-mega (fire/ground), lopunny-mega (normal/fighting), salamence-mega (dragon/flying), beedrill-mega (bug/poison), rattata-alola (dark/normal), raticate-alola (dark/normal), raichu-alola (electric/psychic), sandshrew-alola (ice/steel), sandslash-alola (ice/steel), vulpix-alola (ice), ninetales-alola (ice/fairy), diglett-alola (ground/steel), dugtrio-alola (ground/steel), meowth-alola (dark), persian-alola (dark), geodude-alola (rock/electric), graveler-alola (rock/electric), golem-alola (rock/electric), grimer-alola (poison/dark), muk-alola (poison/dark), exeggutor-alola (grass/dragon), marowak-alola (fire/ghost), oricorio-pom-pom (electric/flying), oricorio-pau (psychic/flying), oricorio-sensu (ghost/flying), necrozma-dusk (psychic/steel), necrozma-dawn (psychic/ghost), necrozma-ultra (psychic/dragon), meowth-galar (steel), ponyta-galar (psychic), rapidash-galar (psychic/fairy), slowpoke-galar (psychic), slowbro-galar (poison/psychic), farfetchd-galar (fighting), weezing-galar (poison/fairy), mr-mime-galar (ice/psychic), articuno-galar (psychic/flying), zapdos-galar (fighting/flying), moltres-galar (dark/flying), slowking-galar (poison/psychic), corsola-galar (ghost), zigzagoon-galar (dark/normal), linoone-galar (dark/normal), darumaka-galar (ice), darmanitan-galar-standard (ice), darmanitan-galar-zen (ice/fire), yamask-galar (ground/ghost), stunfisk-galar (ground/steel), zacian-crowned (fairy/steel), zamazenta-crowned (fighting/steel), urshifu-rapid-strike (fighting/water), calyrex-ice (psychic/ice), calyrex-shadow (psychic/ghost), growlithe-hisui (fire/rock), arcanine-hisui (fire/rock), voltorb-hisui (electric/grass), electrode-hisui (electric/grass), typhlosion-hisui (fire/ghost), qwilfish-hisui (dark/poison), sneasel-hisui (fighting/poison), samurott-hisui (water/dark), lilligant-hisui (grass/fighting), zorua-hisui (normal/ghost), zoroark-hisui (normal/ghost), braviary-hisui (psychic/flying), sliggoo-hisui (steel/dragon), goodra-hisui (steel/dragon), avalugg-hisui (ice/rock), decidueye-hisui (grass/fighting), tauros-paldea-combat-breed (fighting), tauros-paldea-blaze-breed (fighting/fire), tauros-paldea-aqua-breed (fighting/water), wooper-paldea (poison/ground), ogerpon-wellspring-mask (grass/water), ogerpon-hearthflame-mask (grass/fire), ogerpon-cornerstone-mask (grass/rock), clefable-mega (fairy/flying), victreebel-mega (grass/poison), starmie-mega (water/psychic), dragonite-mega (dragon/flying), meganium-mega (grass/fairy), feraligatr-mega (water/dragon), skarmory-mega (steel/flying), froslass-mega (ice/ghost), emboar-mega (fire/fighting), excadrill-mega (ground/steel), scolipede-mega (bug/poison), scrafty-mega (dark/fighting), eelektross-mega (electric), chandelure-mega (ghost/fire), chesnaught-mega (grass/fighting), delphox-mega (fire/psychic), greninja-mega (water/dark), pyroar-mega (fire/normal), floette-mega (fairy), malamar-mega (dark/psychic), barbaracle-mega (rock/fighting), dragalge-mega (poison/dragon), hawlucha-mega (fighting/flying), zygarde-mega (dragon/ground), drampa-mega (normal/dragon), falinks-mega (fighting), raichu-mega-x (electric), raichu-mega-y (electric), chimecho-mega (psychic/steel), absol-mega-z (dark/ghost), staraptor-mega (fighting/flying), garchomp-mega-z (dragon), lucario-mega-z (fighting/steel), heatran-mega (fire/steel), darkrai-mega (dark), golurk-mega (ground/ghost), meowstic-male-mega (psychic), crabominable-mega (fighting/ice), golisopod-mega (bug/steel), magearna-mega (steel/fairy), magearna-original-mega (steel/fairy), zeraora-mega (electric), scovillain-mega (grass/fire), glimmora-mega (rock/poison), tatsugiri-curly-mega (dragon/water), tatsugiri-droopy-mega (dragon/water), tatsugiri-stretchy-mega (dragon/water), baxcalibur-mega (dragon/ice), meowstic-female-mega (psychic)
 
 ## Split sizes
 
 | split | families | species | forms | images | primary filter* |
 |---|---|---|---|---|---|
-| train | 389 | 726 | 807 | 20744 | 10280 |
-| val | 69 | 140 | 152 | 3944 | 1938 |
-| test | 82 | 156 | 169 | 2678 | 1409 |
+| train | 389 | 726 | 870 | 21292 | 10555 |
+| val | 69 | 140 | 161 | 4024 | 1978 |
+| test | 82 | 156 | 176 | 2720 | 1430 |
 | exclude | 3 | 3 | 3 | 33 | 17 |
 
 *front view, normal colors, not a duplicate.
@@ -46,8 +46,8 @@ BW-style sources (`bw_style`): black-white.
 
 | variant | train | val |
 |---|---|---|
-| with BW style | 10280 | 1938 |
-| without BW style | 9783 | 1840 |
+| with BW style | 10555 | 1978 |
+| without BW style | 10058 | 1880 |
 
 ## Type distribution per split (species, by default-form types)
 
@@ -78,21 +78,21 @@ Dual-typed share: train 52%, val 53%, test 47%
 
 | medium | train | val | test | exclude |
 |---|---|---|---|---|
-| 3d_render | 4968 | 935 | 917 | 13 |
-| illustration | 1149 | 212 | 169 | 3 |
+| 3d_render | 5177 | 966 | 931 | 13 |
+| illustration | 1212 | 221 | 176 | 3 |
 | pixel | 3481 | 659 | 161 | 0 |
-| vector | 682 | 132 | 162 | 1 |
+| vector | 685 | 132 | 162 | 1 |
 
 ## Images per species (train, primary filter)
 
 | debut gen | species | median imgs | min | max |
 |---|---|---|---|---|
-| 1 | 131 | 25 | 21 | 47 |
-| 2 | 80 | 18 | 16 | 33 |
+| 1 | 131 | 25 | 21 | 53 |
+| 2 | 80 | 18 | 16 | 39 |
 | 3 | 111 | 14 | 12 | 52 |
 | 4 | 91 | 14 | 12 | 85 |
-| 6 | 64 | 8 | 5 | 14 |
-| 7 | 81 | 5 | 3 | 20 |
+| 6 | 64 | 8 | 5 | 20 |
+| 7 | 81 | 6 | 3 | 20 |
 | 8 | 76 | 5 | 3 | 14 |
 | 9 | 92 | 4 | 4 | 15 |
 
@@ -100,4 +100,4 @@ Dual-typed share: train 52%, val 53%, test 47%
 
 | flag | rows |
 |---|---|
-| champions | 544 |
+| champions | 672 |
