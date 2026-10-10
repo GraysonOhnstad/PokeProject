@@ -116,14 +116,20 @@ Also produce a species-level table: types, egg groups, shape, color, habitat, st
 - **Validation must mirror test:** use held-out families for early stopping and threshold tuning, not random training images.
 - **Pixel-art preprocessing:** alpha-composite onto a fixed background, nearest-neighbor resizing, horizontal flip OK. No color jitter, since color carries much of the type signal.
 
+## Decisions made during the data build
+
+- **Scope:** front view only. Sources: game sprites, game 3D renders (incl. `.webp` for SwSh/BDSP/PLA/SV), HOME, official artwork, Dream World. Dropped: menu icons (too small), Showdown and top-level default sprites (unofficial or duplicates of Black/White).
+- **Unofficial sprites dropped:** any sprite whose form postdates the game folder it is filed under (e.g. fan-made BW-style sprites of Gen 6+ species in `black-white/`).
+- **Forms:** one form per distinct typing within a species: the default form, then the earliest form with each new typing (regional forms, Rotom, Wormadam, type-changing megas). Same-typed variants (G-Max, totems, costumes, same-type megas) are dropped.
+- **BW-style ablation:** `bw_style` marks Black/White sprites of non-test species; train once with and once without them.
+- **96×96:** crop to subject, flatten onto white, fit the longer side to 96 and center. Pixel sprites resize nearest-neighbor; everything else Lanczos (`poketype.images.prepare`, also used at inference).
+- **Split:** val families chosen by seeded search for type coverage, with val's dual-typed share within 2 points of the overall share.
+
 ## Open decisions
 
-- **Harmonizing media at 96×96:**
-  - plain downscale of renders/artwork, or
-  - pixel-art-style downscale with palette reduction, or
-  - both, as an ablation.
+- **Harmonizing media at 96×96:** plain resize is implemented; a pixel-art-style downscale with palette reduction remains a possible ablation.
 - **Backbone:** small CNN from scratch vs. fine-tuned pretrained model.
-- **Which flagged sources to include:** champions, showdown, top-level default sprites.
+- **Champions renders:** kept and flagged (`provenance_flag`); provenance still unverified.
 - **Out-of-distribution tests for the report:**
   - Gen 5 species in other media
   - shinies

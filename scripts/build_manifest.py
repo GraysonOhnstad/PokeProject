@@ -33,7 +33,10 @@ NUM_TYPES = 18  # type ids 1-18; 19+ are stellar/unknown/shadow
 NEAR_DUP_BITS = 4  # phash Hamming distance reported as a near-duplicate
 DUAL_TOLERANCE = 0.02  # max gap between val's and the overall dual-typed species share
 # Sources drawn in the test set's Black/White style; train with/without them as an ablation.
-BW_STYLE_GAMES = {"black-white", "default", "showdown"}
+BW_STYLE_GAMES = {"black-white"}
+# Menu icons are too small to help; Showdown and the top-level default sprites are
+# unofficial or duplicate black-white.
+EXCLUDED_MEDIA = {"icon", "gif", "default_sprite"}
 
 ROMAN = {f"generation-{r}": i for i, r in
          enumerate(["i", "ii", "iii", "iv", "v", "vi", "vii", "viii", "ix"], 1)}
@@ -171,13 +174,20 @@ def pokemon_table(t):
     forms = t["pokemon_forms"].sort_values(["pokemon_id", "is_default"], ascending=[True, False])
     intro = forms.drop_duplicates("pokemon_id").set_index("pokemon_id")["introduced_in_version_group_id"]
     pk["form_debut_order"] = pk["pokemon_id"].map(intro).map(vg_order)
-    return pk
+    # Keep one form per distinct typing within a species: the default form, then the
+    # earliest form with each new typing (regional forms, Rotom, type-changing megas).
+    # Same-typed variants (G-Max, totems, costumes, same-type megas) are dropped.
+    pk["_types"] = pk[["type1", "type2"]].apply(lambda r: frozenset(r.dropna()), axis=1)
+    order = pk.sort_values(["species_id", "is_default", "pokemon_id"], ascending=[True, False, True])
+    pk["keep_form"] = ~order.duplicated(["species_id", "_types"])  # aligns back on index
+    return pk.drop(columns="_types")
 
 
 def species_table(t, pk):
     sp = t["pokemon_species"].rename(columns={
         "id": "species_id", "identifier": "species_name", "generation_id": "debut_generation"})
-    names = t["pokemon_species_names"].query("local_language_id == 9")  # English.set_index("pokemon_species_id")
+    names = t["pokemon_species_names"]
+    names = names[names["local_language_id"] == 9].set_index("pokemon_species_id")  # English
     sp["name"] = sp["species_id"].map(names["name"])
     sp["genus"] = sp["species_id"].map(names["genus"])
     for col, table in [("color", "pokemon_colors"), ("shape", "pokemon_shapes"),
@@ -196,7 +206,7 @@ def species_table(t, pk):
     stats = stats.pivot(index="pokemon_id", columns="stat", values="base_stat")
     for s in ["hp", "attack", "defense", "special-attack", "special-defense", "speed"]:
         sp[s] = sp["species_id"].map(default["pokemon_id"]).map(stats[s])
-    sp["n_forms"] = sp["species_id"].map(pk.groupby("species_id").size())
+    sp["n_forms"] = sp["species_id"].map(pk[pk["keep_form"]].groupby("species_id").size())  # type-distinct
     cols = ["species_id", "species_name", "name", "genus", "debut_generation",
             "evolution_chain_id", "evolves_from_species_id", "type1", "type2",
             "egg_group1", "egg_group2", "color", "shape", "habitat",
@@ -272,13 +282,24 @@ def main():
     m = pd.DataFrame([parse_path(f) for f in files])
     unknown_ids = m[~m["pokemon_id"].isin(pk["pokemon_id"])]
     m = m[m["pokemon_id"].isin(pk["pokemon_id"])]
-    m = m.merge(pk[["pokemon_id", "species_id", "species_name", "is_default_form",
+    m = m.merge(pk[["pokemon_id", "pokemon_name", "species_id", "species_name", "is_default_form",
                     "debut_generation", "evolution_chain_id", "type1", "type2",
-                    "form_debut_order"]], on="pokemon_id", how="left")
+                    "form_debut_order", "keep_form"]], on="pokemon_id", how="left")
 
+    # --- scope: official, high-fidelity, front-view images of type-distinct forms
     game_order = m["game"].map(GAME_VERSION_GROUP).map(vg_order)
-    unofficial = m[game_order.notna() & (m["form_debut_order"] > game_order)]
-    m = m.drop(unofficial.index)
+    dropped = {}
+    for reason, mask in [
+        ("back view", lambda d: d["view"] == "back"),
+        ("low-fidelity or unofficial source (icons, Showdown, top-level defaults)",
+         lambda d: d["medium"].isin(EXCLUDED_MEDIA)),
+        ("form with the same typing as another kept form of its species", lambda d: ~d["keep_form"]),
+        ("unofficial: form introduced after the game",
+         lambda d: game_order[d.index].notna() & (d["form_debut_order"] > game_order[d.index])),
+    ]:
+        hit = mask(m)
+        dropped[reason] = m[hit]
+        m = m[~hit]
     m["bw_style"] = m["game"].isin(BW_STYLE_GAMES)
 
     # --- open every image
@@ -305,7 +326,7 @@ def main():
     species.loc[(species["split"] == "test") & (species["debut_generation"] != TEST_GENERATION),
                 "split"] = "exclude"
 
-    cols = ["path", "pokemon_id", "species_id", "species_name", "is_default_form",
+    cols = ["path", "pokemon_id", "pokemon_name", "species_id", "species_name", "is_default_form",
             "debut_generation", "evolution_chain_id", "type1", "type2", "medium", "game",
             "sprite_generation", "view", "color_variant", "is_female_variant", "source_group",
             "phash", "pixel_md5", "is_duplicate", "width", "height", "opens", "error",
@@ -317,11 +338,11 @@ def main():
     m.to_csv(OUT / "manifest.csv", index=False)
     species.to_csv(OUT / "species.csv", index=False)
 
-    write_report(m, species, unknown_ids, unofficial, val_score, args)
+    write_report(m, species, unknown_ids, dropped, val_score, args)
     print(f"wrote data/manifest.csv ({len(m)} rows), data/species.csv, {REPORT.relative_to(ROOT)}")
 
 
-def write_report(m, species, unknown_ids, unofficial, val_score, args):
+def write_report(m, species, unknown_ids, dropped, val_score, args):
     lines = ["# Manifest report\n", f"Seed {args.seed}, val fraction {args.val_frac}.\n"]
     ok = True
 
@@ -349,10 +370,18 @@ def write_report(m, species, unknown_ids, unofficial, val_score, args):
     lines.append(f"- Unknown pokemon_id files dropped: {len(unknown_ids)}"
                  + (f" ({', '.join(unknown_ids['path'].head(10))}{'...' if len(unknown_ids) > 10 else ''})"
                     if len(unknown_ids) else ""))
-    lines.append(f"- Unofficial sprites dropped (form introduced after the game): {len(unofficial)}; by game: "
-                 + ", ".join(f"{g} {n}" for g, n in unofficial["game"].value_counts().items()))
     lines.append(f"- Val type coverage (worst type's share of its species in val): {val_score:.3f}")
     lines.insert(2, f"**Overall: {'all checks pass' if ok else 'SOME CHECKS FAIL'}**\n")
+
+    lines.append("\n## Scope\n")
+    lines.append("Rows dropped, applied in order:\n\n| reason | rows | detail |\n|---|---|---|")
+    for reason, d in dropped.items():
+        top = d["game"].value_counts().head(6)
+        lines.append(f"| {reason} | {len(d)} | " + ", ".join(f"{g} {n}" for g, n in top.items()) + " |")
+    alt = m.loc[~m["is_default_form"]].drop_duplicates("pokemon_id").sort_values("pokemon_id")
+    lines.append(f"\nAlternate forms kept (one per distinct typing within a species): {len(alt)}. "
+                 + ", ".join(f"{r.pokemon_name} ({r.type1}{'/' + r.type2 if pd.notna(r.type2) else ''})"
+                             for r in alt.itertuples()))
 
     lines.append("\n## Split sizes\n")
     lines.append("| split | families | species | forms | images | primary filter* |")
