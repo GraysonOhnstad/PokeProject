@@ -6,6 +6,7 @@ numpy
 pandas
 pillow
 imagehash
+resvg-py
 matplotlib
 scikit-learn
 tqdm

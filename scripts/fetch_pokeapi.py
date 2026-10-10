@@ -36,7 +36,8 @@ SPRITES_REPO = "PokeAPI/sprites"
 CSV_TABLES = [
     # core: identity, forms, types
     "pokemon", "pokemon_species", "pokemon_forms", "pokemon_types",
-    "pokemon_types_past", "types", "generations", "evolution_chains",
+    "pokemon_types_past", "types", "generations", "version_groups", "evolution_chains",
+    "pokedexes", "pokedex_version_groups", "pokemon_dex_numbers",
     "pokemon_evolution",
     # species-level table
     "pokemon_species_names", "pokemon_egg_groups", "egg_groups",
@@ -47,7 +48,7 @@ CSV_TABLES = [
     "pokemon_moves", "moves",
 ]
 
-NUMERIC_FILE = re.compile(r"^\d+\.(png|svg|gif)$")
+NUMERIC_FILE = re.compile(r"^\d+\.(png|svg|gif|webp)$")
 # Gen I/II games whose sprites also exist under transparent/; keep only those copies.
 HAS_TRANSPARENT = {"red-blue", "yellow", "crystal", "gold", "silver"}
 
@@ -140,7 +141,8 @@ def keep(path):
         return False
     if (len(parts) > 2 and parts[0] == "versions"
             and parts[1] in ("generation-i", "generation-ii")
-            and parts[2] in HAS_TRANSPARENT and "transparent" not in parts):
+            and parts[2] in HAS_TRANSPARENT and "transparent" not in parts
+            and "gbc" not in parts):  # gbc palettes have no transparent copy
         return False
     return True
 
