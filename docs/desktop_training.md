@@ -41,11 +41,14 @@ The last line should print `True` three times.
 py -3.11 -m venv .venv
 .venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
-pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cu128
+pip install torch==2.14.1 torchvision==0.29.1 --index-url https://download.pytorch.org/whl/cu126
+pip install -r requirements.txt
 python -c "import torch; print(torch.__version__, torch.cuda.is_available(), torch.cuda.get_device_name(0))"
 ```
 
-The last line should end with `True NVIDIA GeForce RTX 4090`.
+The last line should print `2.14.1+cu126 True NVIDIA GeForce RTX 4090`. PyTorch is installed first, from the CUDA index, so the second `pip install` keeps it instead of pulling the CPU-only build. (`cu130` also exists; use it instead of `cu126` only if `nvidia-smi` shows CUDA Version 13.0 or higher.)
+
+Check that your prompt starts with `(.venv)` before the `pip` lines; if activation failed, the installs would go to the system Python instead.
 
 If `Activate.ps1` is blocked ("running scripts is disabled"), run this once, then activate again:
 

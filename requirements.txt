@@ -1,7 +1,12 @@
 # Local development environment (the Hugging Face Space gets its own, smaller requirements.txt).
 # Install with the PyTorch build for the machine:
-#   CPU (laptop):         pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
-#   CUDA (RTX 4090 box):  pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cu128
+#   CPU (laptop):  pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
+#   CUDA (RTX 4090 box): install PyTorch from the CUDA index first, then the rest:
+#     pip install torch==2.14.1 torchvision==0.29.1 --index-url https://download.pytorch.org/whl/cu126
+#     pip install -r requirements.txt
+#   (2.14.1 has Windows CUDA builds for cu126 and cu130 only; --index-url makes a missing
+#   build an error instead of a silent fallback to the CPU build. cu130 needs a driver
+#   whose nvidia-smi "CUDA Version" is 13.0 or higher.)
 numpy
 pandas
 pillow
