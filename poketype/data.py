@@ -14,8 +14,7 @@ from poketype.labels import TYPE_INDEX, TYPES  # noqa: F401  (re-exported)
 
 ROOT = Path(__file__).resolve().parent.parent
 MANIFEST = ROOT / "data" / "manifest.csv"
-PROCESSED = ROOT / "data" / "processed" / str(SIZE)
-MASKS = ROOT / "data" / "processed" / f"{SIZE}_mask"
+PROCESSED_ROOT = ROOT / "data" / "processed"  # <size>/ and <size>_mask/ per preprocessing size
 
 
 def load_manifest():
@@ -59,21 +58,21 @@ def form_weights(rows, alpha=1.0):
     return (w / w.mean()).astype(np.float32)
 
 
-def processed_path(path):
-    return PROCESSED / Path(path).with_suffix(".png")
+def processed_path(path, size=SIZE):
+    return PROCESSED_ROOT / str(size) / Path(path).with_suffix(".png")
 
 
-def mask_path(path):
-    return MASKS / Path(path).with_suffix(".png")
+def mask_path(path, size=SIZE):
+    return PROCESSED_ROOT / f"{size}_mask" / Path(path).with_suffix(".png")
 
 
-def load_image(path):
-    return Image.open(processed_path(path)).convert("RGB")
+def load_image(path, size=SIZE):
+    return Image.open(processed_path(path, size)).convert("RGB")
 
 
-def load_mask(path):
-    """Boolean (96, 96) array: True where the pixel is part of the Pokemon."""
-    return np.asarray(Image.open(mask_path(path))) > 0
+def load_mask(path, size=SIZE):
+    """Boolean (size, size) array: True where the pixel is part of the Pokemon."""
+    return np.asarray(Image.open(mask_path(path, size))) > 0
 
 
 def train_transform(mean, std):
