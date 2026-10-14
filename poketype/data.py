@@ -14,6 +14,7 @@ from poketype.images import BACKGROUND, SIZE
 ROOT = Path(__file__).resolve().parent.parent
 MANIFEST = ROOT / "data" / "manifest.csv"
 PROCESSED = ROOT / "data" / "processed" / str(SIZE)
+MASKS = ROOT / "data" / "processed" / f"{SIZE}_mask"
 
 # types.csv ids 1-18, in id order; index i is output unit i.
 TYPES = ["normal", "fighting", "flying", "poison", "ground", "rock", "bug", "ghost", "steel",
@@ -66,8 +67,17 @@ def processed_path(path):
     return PROCESSED / Path(path).with_suffix(".png")
 
 
+def mask_path(path):
+    return MASKS / Path(path).with_suffix(".png")
+
+
 def load_image(path):
     return Image.open(processed_path(path)).convert("RGB")
+
+
+def load_mask(path):
+    """Boolean (96, 96) array: True where the pixel is part of the Pokemon."""
+    return np.asarray(Image.open(mask_path(path))) > 0
 
 
 def train_transform(mean, std):

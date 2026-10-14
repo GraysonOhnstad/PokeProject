@@ -19,7 +19,8 @@ from sklearn.preprocessing import StandardScaler
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
-from poketype.data import TYPES, form_weights, load_image, load_manifest, select, targets  # noqa: E402
+from poketype.data import (TYPES, form_weights, load_image, load_manifest, load_mask,  # noqa: E402
+                           select, targets)
 from poketype.metrics import evaluate, tune_threshold  # noqa: E402
 
 BINS = 8  # per RGB channel -> 512-dim joint histogram
@@ -28,9 +29,8 @@ RESULTS = ROOT / "results" / "baselines.json"
 
 
 def color_histogram(path):
-    """Normalized joint RGB histogram over non-background (non-white) pixels."""
-    px = np.asarray(load_image(path)).reshape(-1, 3)
-    px = px[(px < 250).any(axis=1)]
+    """Normalized joint RGB histogram over the Pokemon's pixels (subject mask)."""
+    px = np.asarray(load_image(path))[load_mask(path)]
     idx = (px // (256 // BINS)).astype(np.int64)
     h = np.bincount(idx[:, 0] * BINS * BINS + idx[:, 1] * BINS + idx[:, 2], minlength=BINS ** 3)
     return np.sqrt(h / max(h.sum(), 1))  # Hellinger: sqrt of proportions

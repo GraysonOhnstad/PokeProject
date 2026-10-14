@@ -9,6 +9,7 @@ imagehash
 resvg-py
 matplotlib
 scikit-learn
+scipy
 tqdm
 torch
 torchvision
