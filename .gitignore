@@ -13,3 +13,6 @@ __pycache__/
 # Training runs: keep logs and summaries, not weights or prediction dumps
 runs/**/*.pt
 runs/**/*.npy
+
+# Assembled Hugging Face Space (rebuild with scripts/build_space.py)
+/space/

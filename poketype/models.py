@@ -4,7 +4,7 @@ import torch
 from torch import nn
 from torchvision import models
 
-from poketype.data import TYPES
+from poketype.labels import TYPES
 
 IMAGENET_MEAN, IMAGENET_STD = (0.485, 0.456, 0.406), (0.229, 0.224, 0.225)
 
@@ -46,9 +46,11 @@ ARCHITECTURES = {
 }
 
 
-def build(arch):
+def build(arch, pretrained=True):
+    """Model plus its input mean/std. pretrained=False skips downloading ImageNet
+    weights (for loading a trained checkpoint)."""
     ctor, (mean, std) = ARCHITECTURES[arch]
-    return ctor(), mean, std
+    return (ctor(pretrained=pretrained) if arch == "resnet18" else ctor()), mean, std
 
 
 def count_parameters(model):

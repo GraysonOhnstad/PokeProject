@@ -10,16 +10,12 @@ from torch.utils.data import Dataset
 from torchvision import transforms as T
 
 from poketype.images import BACKGROUND, SIZE
+from poketype.labels import TYPE_INDEX, TYPES  # noqa: F401  (re-exported)
 
 ROOT = Path(__file__).resolve().parent.parent
 MANIFEST = ROOT / "data" / "manifest.csv"
 PROCESSED = ROOT / "data" / "processed" / str(SIZE)
 MASKS = ROOT / "data" / "processed" / f"{SIZE}_mask"
-
-# types.csv ids 1-18, in id order; index i is output unit i.
-TYPES = ["normal", "fighting", "flying", "poison", "ground", "rock", "bug", "ghost", "steel",
-         "fire", "water", "grass", "electric", "psychic", "ice", "dragon", "dark", "fairy"]
-TYPE_INDEX = {t: i for i, t in enumerate(TYPES)}
 
 
 def load_manifest():

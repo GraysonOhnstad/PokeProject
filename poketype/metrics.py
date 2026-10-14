@@ -3,19 +3,7 @@
 import numpy as np
 from sklearn.metrics import average_precision_score, precision_recall_fscore_support
 
-from poketype.data import TYPES
-
-
-def decode(probs, threshold):
-    """Always predict the top type; add the runner-up only if it clears `threshold`.
-    Never zero or three types."""
-    order = np.argsort(-probs, axis=1)
-    pred = np.zeros_like(probs, dtype=np.int8)
-    rows = np.arange(len(probs))
-    pred[rows, order[:, 0]] = 1
-    second = probs[rows, order[:, 1]] >= threshold
-    pred[rows[second], order[second, 1]] = 1
-    return pred
+from poketype.labels import TYPES, decode  # noqa: F401  (decode re-exported)
 
 
 def exact_match(y, pred):

@@ -13,3 +13,5 @@ scipy
 tqdm
 torch
 torchvision
+gradio
+huggingface_hub
