@@ -1,0 +1,142 @@
+{
+  "run": "small_cnn_bw",
+  "arch": "small_cnn",
+  "bw_style": true,
+  "best_epoch": 2,
+  "epochs_run": 12,
+  "val": {
+    "n": 1978,
+    "threshold": 0.5599999999999999,
+    "exact_match": 0.06319514661274014,
+    "top1_in_types": 0.21890798211097717,
+    "mAP": 0.23255092224943097,
+    "macro_f1": 0.11482036382256326,
+    "dual_predicted": 0.0020222446916076846,
+    "dual_actual": 0.5353892821031345,
+    "per_type": {
+      "normal": {
+        "precision": 0.4146341463414634,
+        "recall": 0.10897435897435898,
+        "f1": 0.17258883248730963,
+        "support": 312
+      },
+      "fighting": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 101
+      },
+      "flying": {
+        "precision": 0.2764976958525346,
+        "recall": 0.21428571428571427,
+        "f1": 0.2414486921529175,
+        "support": 280
+      },
+      "poison": {
+        "precision": 0.28212290502793297,
+        "recall": 0.5976331360946746,
+        "f1": 0.38330170777988615,
+        "support": 169
+      },
+      "ground": {
+        "precision": 0.05555555555555555,
+        "recall": 0.005494505494505495,
+        "f1": 0.01,
+        "support": 182
+      },
+      "rock": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 168
+      },
+      "bug": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 151
+      },
+      "ghost": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 154
+      },
+      "steel": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 54
+      },
+      "fire": {
+        "precision": 0.14939434724091522,
+        "recall": 0.8409090909090909,
+        "f1": 0.2537142857142857,
+        "support": 132
+      },
+      "water": {
+        "precision": 0.6818181818181818,
+        "recall": 0.05,
+        "f1": 0.09316770186335403,
+        "support": 300
+      },
+      "grass": {
+        "precision": 0.24817518248175183,
+        "recall": 0.2463768115942029,
+        "f1": 0.24727272727272728,
+        "support": 138
+      },
+      "electric": {
+        "precision": 0.15384615384615385,
+        "recall": 0.03508771929824561,
+        "f1": 0.05714285714285714,
+        "support": 114
+      },
+      "psychic": {
+        "precision": 0.1696969696969697,
+        "recall": 0.1278538812785388,
+        "f1": 0.14583333333333334,
+        "support": 219
+      },
+      "ice": {
+        "precision": 1.0,
+        "recall": 0.011834319526627219,
+        "f1": 0.023391812865497075,
+        "support": 169
+      },
+      "dragon": {
+        "precision": 0.3333333333333333,
+        "recall": 0.02512562814070352,
+        "f1": 0.04672897196261682,
+        "support": 199
+      },
+      "dark": {
+        "precision": 0.2708333333333333,
+        "recall": 0.10655737704918032,
+        "f1": 0.15294117647058825,
+        "support": 122
+      },
+      "fairy": {
+        "precision": 0.18382352941176472,
+        "recall": 0.3424657534246575,
+        "f1": 0.23923444976076555,
+        "support": 73
+      }
+    }
+  },
+  "args": {
+    "arch": "small_cnn",
+    "name": null,
+    "no_bw_style": false,
+    "epochs": 60,
+    "patience": 10,
+    "warmup": 2,
+    "batch_size": 64,
+    "lr": 0.001,
+    "weight_decay": 0.0005,
+    "weight_alpha": 1.0,
+    "workers": 4,
+    "seed": 0,
+    "limit": null
+  }
+}
