@@ -78,7 +78,7 @@ Each prints one line per epoch (`*` marks a new best val mAP) and stops early on
 To run all four unattended instead:
 
 ```powershell
-foreach ($a in "resnet18", "small_cnn") { foreach ($f in "", "--no-bw-style") { python scripts/train.py --arch $a $f.Split(" ", [StringSplitOptions]::RemoveEmptyEntries) } }
+python scripts/train.py --arch resnet18; python scripts/train.py --arch resnet18 --no-bw-style; python scripts/train.py --arch small_cnn; python scripts/train.py --arch small_cnn --no-bw-style
 ```
 
 ## 7. Calibrate each run (validation only)
