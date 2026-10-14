@@ -1,0 +1,1 @@
+{"flags": "--input-size 192 --dropout 0.5 --weight-decay 0.05 --no-bw-style"}

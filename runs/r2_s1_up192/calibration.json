@@ -1,0 +1,11 @@
+{
+  "temperature": 1.8243691754320952,
+  "threshold": 0.5099999999999999,
+  "threshold_uncalibrated": 0.5199999999999999,
+  "val_bce_before": 0.3381691873073578,
+  "val_bce_after": 0.2723432779312134,
+  "ece_before": 0.05938977675204085,
+  "ece_after": 0.03188353386322457,
+  "val_exact_match_before": 0.12032355915065723,
+  "val_exact_match_after": 0.1198179979777553
+}
