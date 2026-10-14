@@ -26,6 +26,7 @@ import argparse
 import csv
 import json
 import math
+import os
 import sys
 import time
 from pathlib import Path
@@ -71,6 +72,24 @@ def parse_args():
     p.add_argument("--mixup", type=float, default=0.0, help="mixup Beta(a, a) parameter; 0 = off")
     p.add_argument("--dropout", type=float, help="dropout before the output layer (default: architecture's)")
     return p.parse_args()
+
+
+def save_robust(write, path, attempts=5):
+    """Write to a temporary file, then swap it into place, retrying on failure. On
+    Windows, antivirus or sync tools can briefly lock a freshly written file and break
+    the write; a retry usually succeeds, and the swap never leaves a half-written file."""
+    tmp = path.with_name(path.name + ".tmp")
+    for attempt in range(1, attempts + 1):
+        try:
+            with open(tmp, "wb") as f:
+                write(f)
+            os.replace(tmp, path)
+            return
+        except (OSError, RuntimeError) as e:
+            if attempt == attempts:
+                raise
+            print(f"  save of {path.name} failed ({e}); retrying in {2 * attempt}s", flush=True)
+            time.sleep(2 * attempt)
 
 
 def make_scheduler(opt, warmup_steps, total_steps):
@@ -168,10 +187,11 @@ def main():
               + ("  *" if improved else ""), flush=True)
         if improved:
             best, since_best = ev["mAP"], 0
-            torch.save({"model": model.state_dict(), "arch": args.arch, "mean": mean, "std": std,
-                        "size": args.size, "input_size": args.input_size, "dropout": args.dropout,
-                        "types": TYPES, "threshold": th, "epoch": epoch, "args": vars(args)}, run / "best.pt")
-            np.save(run / "val_probs.npy", probs)
+            ckpt = {"model": model.state_dict(), "arch": args.arch, "mean": mean, "std": std,
+                    "size": args.size, "input_size": args.input_size, "dropout": args.dropout,
+                    "types": TYPES, "threshold": th, "epoch": epoch, "args": vars(args)}
+            save_robust(lambda f: torch.save(ckpt, f), run / "best.pt")
+            save_robust(lambda f: np.save(f, probs), run / "val_probs.npy")
             best_eval = ev
         else:
             since_best += 1
