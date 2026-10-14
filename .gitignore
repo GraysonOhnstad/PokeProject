@@ -9,3 +9,7 @@ __pycache__/
 *.pyc
 .venv/
 .ipynb_checkpoints/
+
+# Training runs: keep logs and summaries, not weights or prediction dumps
+runs/**/*.pt
+runs/**/*.npy

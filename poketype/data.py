@@ -99,14 +99,17 @@ def eval_transform(mean, std):
 class PokeTypeDataset(Dataset):
     """Yields (image tensor, 18-dim multi-hot target, loss weight)."""
 
-    def __init__(self, rows, transform, weights=None):
+    def __init__(self, rows, transform, weights=None, cache=False):
         self.paths = rows["path"].tolist()
         self.y = torch.from_numpy(targets(rows))
         self.w = torch.from_numpy(weights if weights is not None else np.ones(len(rows), np.float32))
         self.transform = transform
+        # cache=True decodes every image up front (~28 KB each); epochs then skip disk reads.
+        self.images = [load_image(p) for p in self.paths] if cache else None
 
     def __len__(self):
         return len(self.paths)
 
     def __getitem__(self, i):
-        return self.transform(load_image(self.paths[i])), self.y[i], self.w[i]
+        im = self.images[i] if self.images is not None else load_image(self.paths[i])
+        return self.transform(im), self.y[i], self.w[i]
