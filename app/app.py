@@ -52,7 +52,7 @@ with gr.Blocks(title="Pokémon Type Classifier") as demo:
         with gr.Column():
             summary = gr.Markdown()
             confidences = gr.Label(num_top_classes=5, label="Confidence per type")
-            processed = gr.Image(label="What the model sees (96×96)", interactive=False, height=160)
+            processed = gr.Image(label="What the model sees", interactive=False, height=160)
     outputs = [confidences, summary, processed]
 
     for group, title in [("gen5_sprites", "Gen 5 sprites (never seen in training)"),

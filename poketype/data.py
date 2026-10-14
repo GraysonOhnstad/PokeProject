@@ -75,10 +75,16 @@ def load_mask(path, size=SIZE):
     return np.asarray(Image.open(mask_path(path, size))) > 0
 
 
-def train_transform(mean, std):
+def _upscale(input_size):
+    """Nearest-neighbor enlargement to the model's input size (e.g. 96 -> 192); keeps
+    pixel art crisp and adds no detail."""
+    return [T.Resize(input_size, interpolation=T.InterpolationMode.NEAREST)] if input_size else []
+
+
+def train_transform(mean, std, input_size=None):
     # No color jitter: color carries much of the type signal. Flips and small shifts
     # only, with nearest-neighbor resampling and a background fill to match preprocessing.
-    return T.Compose([
+    return T.Compose(_upscale(input_size) + [
         T.RandomHorizontalFlip(),
         T.RandomAffine(degrees=0, translate=(0.05, 0.05), scale=(0.9, 1.05),
                        interpolation=T.InterpolationMode.NEAREST, fill=BACKGROUND),
@@ -87,24 +93,25 @@ def train_transform(mean, std):
     ])
 
 
-def eval_transform(mean, std):
-    return T.Compose([T.ToTensor(), T.Normalize(mean, std)])
+def eval_transform(mean, std, input_size=None):
+    return T.Compose(_upscale(input_size) + [T.ToTensor(), T.Normalize(mean, std)])
 
 
 class PokeTypeDataset(Dataset):
     """Yields (image tensor, 18-dim multi-hot target, loss weight)."""
 
-    def __init__(self, rows, transform, weights=None, cache=False):
+    def __init__(self, rows, transform, weights=None, cache=False, size=SIZE):
         self.paths = rows["path"].tolist()
         self.y = torch.from_numpy(targets(rows))
         self.w = torch.from_numpy(weights if weights is not None else np.ones(len(rows), np.float32))
         self.transform = transform
-        # cache=True decodes every image up front (~28 KB each); epochs then skip disk reads.
-        self.images = [load_image(p) for p in self.paths] if cache else None
+        self.size = size  # which preprocessed set to read (data/processed/<size>/)
+        # cache=True decodes every image up front; epochs then skip disk reads.
+        self.images = [load_image(p, size) for p in self.paths] if cache else None
 
     def __len__(self):
         return len(self.paths)
 
     def __getitem__(self, i):
-        im = self.images[i] if self.images is not None else load_image(self.paths[i])
+        im = self.images[i] if self.images is not None else load_image(self.paths[i], self.size)
         return self.transform(im), self.y[i], self.w[i]

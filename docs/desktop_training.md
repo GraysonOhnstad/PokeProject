@@ -99,3 +99,37 @@ tar -a -cf $HOME\Desktop\pokeproject_runs.zip runs
 ```
 
 Copy `pokeproject_runs.zip` back to the laptop the same way as step 1. On the laptop, the final evaluation and the app run from there, since they need the full-resolution source images that only the laptop has. Do **not** run `scripts/evaluate.py` on the desktop.
+
+## Round 2: unattended tuning sweep (ResNet-18)
+
+One command runs every round-2 experiment back to back (15 training runs, roughly 2.5–4 hours on the 4090) and makes the keep/discard decisions itself using rules fixed in advance. The test set is never touched.
+
+**1. Prevent sleep.** Settings → System → Power (& battery) → Screen, sleep & hibernate timeouts → set "When plugged in, put my device to sleep after" to **Never** for the duration. Sleep pauses training; if a run gets interrupted instead, rerunning the command resumes (the interrupted run restarts, finished runs are kept).
+
+**2. Update the code and check the 192 px data** (from the `PokeProject` folder):
+
+Round 1's logs are now in the repo, so `git pull` would refuse to overwrite your local copies. Set the local runs folder aside, pull, then merge the weight files (not in git) back in:
+
+```powershell
+Rename-Item runs runs_round1
+git pull
+robocopy runs_round1 runs /E /XC /XN /XO
+Remove-Item -Recurse runs_round1
+Test-Path data\processed\192, data\processed\192_mask, runs\resnet18_nobw\summary.json, runs\resnet18_nobw\best.pt
+```
+
+`robocopy` only adds files the pull didn't bring (the `best.pt` weights); it prints a summary table, which is normal. The last line should print `True` four times (`runs\resnet18_nobw` is round 1's run, which the sweep compares against).
+
+**3. Start the sweep:**
+
+```powershell
+.venv\Scripts\python scripts/sweep.py
+```
+
+It prints each run's epochs as before, plus a decision after each stage. If it stops for any reason (sleep, reboot, Ctrl+C), run the same command again: finished runs are skipped.
+
+**4. When it says `Sweep finished`**, `runs\sweep_decisions.md` has every decision and `reports\round2_comparison.md` the full val comparison. Zip the runs and bring them back as before:
+
+```powershell
+tar -a -cf $HOME\Desktop\pokeproject_runs_round2.zip runs reports\round2_comparison.md
+```

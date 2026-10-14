@@ -120,6 +120,7 @@ def main():
     if not cal:
         print("WARNING: run is not calibrated; using T = 1 and the uncalibrated threshold")
     torch.save({"model": ckpt["model"], "arch": ckpt["arch"], "mean": ckpt["mean"], "std": ckpt["std"],
+                "size": ckpt.get("size", 96), "input_size": ckpt.get("input_size"),
                 "types": TYPES, "temperature": cal.get("temperature", 1.0),
                 "threshold": cal.get("threshold", ckpt["threshold"]), "source_run": args.run},
                out / "model.pt")

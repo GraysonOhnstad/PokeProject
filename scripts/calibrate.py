@@ -38,7 +38,8 @@ def val_logits(run, device):
     model.load_state_dict(ckpt["model"])
     model.to(device).eval()
     rows = select(load_manifest(), "val")
-    dl = DataLoader(PokeTypeDataset(rows, eval_transform(mean, std)), batch_size=128, num_workers=4)
+    ds = PokeTypeDataset(rows, eval_transform(mean, std, ckpt.get("input_size")), size=ckpt.get("size", 96))
+    dl = DataLoader(ds, batch_size=128, num_workers=4)
     z = torch.cat([model(x.to(device)).float().cpu() for x, *_ in dl]).numpy()
     return z, targets(rows), ckpt["threshold"]
 

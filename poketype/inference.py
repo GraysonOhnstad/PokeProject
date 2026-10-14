@@ -8,7 +8,7 @@ import numpy as np
 import torch
 from torchvision import transforms as T
 
-from poketype.images import prepare
+from poketype.images import SIZE, prepare
 from poketype.labels import TYPES, decode
 from poketype.models import build
 
@@ -25,7 +25,11 @@ class Predictor:
         self.model.to(self.device).eval()
         self.temperature = float(ckpt.get("temperature", 1.0))
         self.threshold = float(ckpt["threshold"])
-        self.to_tensor = T.Compose([T.ToTensor(), T.Normalize(ckpt["mean"], ckpt["std"])])
+        self.size = int(ckpt.get("size", SIZE))  # preprocessing resolution the model was trained on
+        upscale = ckpt.get("input_size")
+        self.to_tensor = T.Compose(
+            ([T.Resize(upscale, interpolation=T.InterpolationMode.NEAREST)] if upscale else [])
+            + [T.ToTensor(), T.Normalize(ckpt["mean"], ckpt["std"])])
 
     @classmethod
     def from_run(cls, run_dir, device="cpu"):
@@ -40,8 +44,8 @@ class Predictor:
 
     @torch.no_grad()
     def probs(self, image, pixel_art=None):
-        """Per-type confidences (18,) for a PIL image, plus the preprocessed 96x96 image."""
-        x = prepare(image, pixel_art=pixel_art)
+        """Per-type confidences (18,) for a PIL image, plus the preprocessed image."""
+        x = prepare(image, pixel_art=pixel_art, size=self.size)
         logits = self.model(self.to_tensor(x).unsqueeze(0).to(self.device)).float()
         return torch.sigmoid(logits / self.temperature)[0].cpu().numpy(), x
 

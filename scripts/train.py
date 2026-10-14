@@ -10,6 +10,10 @@ Choices (see PROJECT_BRIEF.md):
     decay regularizes without interfering with the adaptive step sizes.
   - Linear warmup then cosine decay of the learning rate; early stopping when val mAP
     has not improved for --patience epochs; the best-val-mAP checkpoint is kept.
+  - Round-2 options against memorization / scale mismatch: --size (preprocessed
+    resolution), --input-size (nearest-neighbor upscale before the model),
+    --backbone-lr-mult (pretrained layers learn slower than the new head), --mixup
+    (blend image pairs and their labels), --dropout.
   - Val is held-out evolution families, so early stopping and the second-type
     threshold are tuned on unseen Pokemon, mirroring the test. The test set is never
     touched here (see scripts/evaluate.py).
@@ -36,7 +40,8 @@ sys.path.insert(0, str(ROOT))
 from poketype.data import (TYPES, PokeTypeDataset, eval_transform, form_weights,  # noqa: E402
                            load_manifest, select, targets, train_transform)
 from poketype.metrics import evaluate, tune_threshold  # noqa: E402
-from poketype.models import build, count_parameters, predict_proba  # noqa: E402
+from poketype.images import SIZE  # noqa: E402
+from poketype.models import build, count_parameters, head_parameter_names, predict_proba  # noqa: E402
 
 DEFAULTS = {  # per-architecture learning rate and weight decay
     "small_cnn": {"lr": 1e-3, "weight_decay": 5e-4},
@@ -59,6 +64,12 @@ def parse_args():
     p.add_argument("--workers", type=int, default=4)
     p.add_argument("--seed", type=int, default=0)
     p.add_argument("--limit", type=int, help="use only N training images (smoke tests)")
+    p.add_argument("--size", type=int, default=SIZE, help="preprocessed resolution to read (96 or 192)")
+    p.add_argument("--input-size", type=int, help="nearest-neighbor resize to this before the model")
+    p.add_argument("--backbone-lr-mult", type=float, default=1.0,
+                   help="learning rate of pretrained layers as a fraction of the head's")
+    p.add_argument("--mixup", type=float, default=0.0, help="mixup Beta(a, a) parameter; 0 = off")
+    p.add_argument("--dropout", type=float, help="dropout before the output layer (default: architecture's)")
     return p.parse_args()
 
 
@@ -84,7 +95,7 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     amp = device.type == "cuda"
 
-    model, mean, std = build(args.arch)
+    model, mean, std = build(args.arch, dropout=args.dropout)
     model.to(device)
     m = load_manifest()
     train_rows = select(m, "train", bw_style=not args.no_bw_style)
@@ -93,15 +104,21 @@ def main():
     val_rows = select(m, "val")
     y_val = targets(val_rows)
 
-    train_ds = PokeTypeDataset(train_rows, train_transform(mean, std),
-                               form_weights(train_rows, args.weight_alpha), cache=True)
-    val_ds = PokeTypeDataset(val_rows, eval_transform(mean, std), cache=True)
+    # Cache decoded images only at 96 px: Windows data-loader workers each get a copy.
+    cache = args.size <= SIZE
+    train_ds = PokeTypeDataset(train_rows, train_transform(mean, std, args.input_size),
+                               form_weights(train_rows, args.weight_alpha), cache=cache, size=args.size)
+    val_ds = PokeTypeDataset(val_rows, eval_transform(mean, std, args.input_size), cache=cache, size=args.size)
     loader_kw = dict(batch_size=args.batch_size, num_workers=args.workers,
                      pin_memory=amp, persistent_workers=args.workers > 0)
     train_dl = DataLoader(train_ds, shuffle=True, drop_last=True, **loader_kw)
     val_dl = DataLoader(val_ds, shuffle=False, **loader_kw)
 
-    opt = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
+    head = head_parameter_names(model)
+    groups = [{"params": [p for n, p in model.named_parameters() if n in head], "lr": args.lr},
+              {"params": [p for n, p in model.named_parameters() if n not in head],
+               "lr": args.lr * args.backbone_lr_mult}]
+    opt = torch.optim.AdamW(groups, weight_decay=args.weight_decay)  # group 0 (head) is logged
     sched = make_scheduler(opt, args.warmup * len(train_dl), args.epochs * len(train_dl))
     scaler = torch.amp.GradScaler(enabled=amp)
     bce = nn.BCEWithLogitsLoss(reduction="none")
@@ -120,6 +137,12 @@ def main():
         total, n = 0.0, 0
         for x, y, w in train_dl:
             x, y, w = x.to(device, non_blocking=True), y.to(device), w.to(device)
+            if args.mixup > 0:
+                lam = float(np.random.beta(args.mixup, args.mixup))
+                perm = torch.randperm(len(x), device=device)
+                x = lam * x + (1 - lam) * x[perm]
+                y = lam * y + (1 - lam) * y[perm]  # soft multi-label targets
+                w = lam * w + (1 - lam) * w[perm]
             with torch.autocast(device.type, enabled=amp):
                 logits = model(x)
             loss = (bce(logits.float(), y).mean(1) * w).mean()
@@ -146,6 +169,7 @@ def main():
         if improved:
             best, since_best = ev["mAP"], 0
             torch.save({"model": model.state_dict(), "arch": args.arch, "mean": mean, "std": std,
+                        "size": args.size, "input_size": args.input_size, "dropout": args.dropout,
                         "types": TYPES, "threshold": th, "epoch": epoch, "args": vars(args)}, run / "best.pt")
             np.save(run / "val_probs.npy", probs)
             best_eval = ev

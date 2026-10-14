@@ -123,10 +123,10 @@ def main():
     m = load_manifest()
     results, primary_probs = {}, None
     for name, (rows, grayscale) in eval_sets(m).items():
-        tf = eval_transform(mean, std)
+        tf = eval_transform(mean, std, ckpt.get("input_size"))
         if grayscale:
             tf = T.Compose([T.Grayscale(num_output_channels=3), tf])
-        dl = DataLoader(PokeTypeDataset(rows, tf), batch_size=128, num_workers=0)
+        dl = DataLoader(PokeTypeDataset(rows, tf, size=ckpt.get("size", 96)), batch_size=128, num_workers=0)
         probs = predict_proba(predictor.model, dl, device, predictor.temperature)
         y = targets(rows)
         results[name] = evaluate(y, probs, predictor.threshold)

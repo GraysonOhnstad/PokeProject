@@ -46,11 +46,19 @@ ARCHITECTURES = {
 }
 
 
-def build(arch, pretrained=True):
+def build(arch, pretrained=True, dropout=None):
     """Model plus its input mean/std. pretrained=False skips downloading ImageNet
-    weights (for loading a trained checkpoint)."""
+    weights (for loading a trained checkpoint); dropout=None keeps the default."""
     ctor, (mean, std) = ARCHITECTURES[arch]
-    return (ctor(pretrained=pretrained) if arch == "resnet18" else ctor()), mean, std
+    kw = {} if dropout is None else {"dropout": dropout}
+    if arch == "resnet18":
+        kw["pretrained"] = pretrained
+    return ctor(**kw), mean, std
+
+
+def head_parameter_names(model):
+    """Names of the parameters in the newly added output head (vs. the backbone)."""
+    return {n for n, _ in model.named_parameters() if n.startswith(("fc.", "head."))}
 
 
 def count_parameters(model):
