@@ -9,7 +9,8 @@ temperature and threshold), classes.json (output index -> type name),
 requirements.txt, README.md (Space metadata) and examples/ for the picker:
   - every primary test sprite (Gen 5, Black/White, front, normal colors)
   - Gen 5 Pokemon in other art styles (official artwork, HOME renders), one per species
---push uploads the folder to a Space (needs `hf auth login` first).
+--push uploads the folder to a Space (needs `hf auth login` first); add --private to
+create it as a private Space (e.g. for a test deploy before the final model).
 """
 
 import argparse
@@ -102,6 +103,7 @@ def main():
     p.add_argument("--run", required=True)
     p.add_argument("--out", default=str(ROOT / "space"))
     p.add_argument("--push", metavar="USER/SPACE", help="upload to this Hugging Face Space")
+    p.add_argument("--private", action="store_true", help="create the Space as private (if it does not exist yet)")
     args = p.parse_args()
     run, out = ROOT / "runs" / args.run, Path(args.out)
 
@@ -134,7 +136,7 @@ def main():
     if args.push:
         from huggingface_hub import HfApi
         api = HfApi()
-        api.create_repo(args.push, repo_type="space", space_sdk="gradio", exist_ok=True)
+        api.create_repo(args.push, repo_type="space", space_sdk="gradio", private=args.private, exist_ok=True)
         api.upload_folder(folder_path=str(out), repo_id=args.push, repo_type="space",
                           commit_message=f"Deploy model from run {args.run}")
         print(f"pushed to https://huggingface.co/spaces/{args.push}")

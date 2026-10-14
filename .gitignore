@@ -16,3 +16,6 @@ runs/**/*.npy
 
 # Assembled Hugging Face Space (rebuild with scripts/build_space.py)
 /space/
+
+# Data bundle for moving to the training machine
+/transfer/
