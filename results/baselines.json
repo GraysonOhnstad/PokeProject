@@ -1,0 +1,972 @@
+{
+  "prior/with_bw_style": {
+    "val": {
+      "n": 1978,
+      "threshold": 0.13,
+      "exact_match": 0.09150657229524772,
+      "top1_in_types": 0.15166835486888885,
+      "mAP": 0.08529940456128524,
+      "macro_f1": 0.014632718759145449,
+      "dual_predicted": 0.0,
+      "dual_actual": 0.5353892821031345,
+      "per_type": {
+        "normal": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 312
+        },
+        "fighting": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 101
+        },
+        "flying": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 280
+        },
+        "poison": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 169
+        },
+        "ground": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 182
+        },
+        "rock": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 168
+        },
+        "bug": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 151
+        },
+        "ghost": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 154
+        },
+        "steel": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 54
+        },
+        "fire": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 132
+        },
+        "water": {
+          "precision": 0.15166835187057634,
+          "recall": 1.0,
+          "f1": 0.2633889376646181,
+          "support": 300
+        },
+        "grass": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 138
+        },
+        "electric": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 114
+        },
+        "psychic": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 219
+        },
+        "ice": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 169
+        },
+        "dragon": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 199
+        },
+        "dark": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 122
+        },
+        "fairy": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 73
+        }
+      }
+    },
+    "test": {
+      "n": 161,
+      "threshold": 0.13,
+      "exact_match": 0.049689440993788817,
+      "top1_in_types": 0.11801242083311081,
+      "mAP": 0.08281573498964803,
+      "macro_f1": 0.011728395061728396,
+      "dual_predicted": 0.0,
+      "dual_actual": 0.4906832298136646,
+      "per_type": {
+        "normal": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 19
+        },
+        "fighting": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 16
+        },
+        "flying": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 19
+        },
+        "poison": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 7
+        },
+        "ground": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 11
+        },
+        "rock": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 10
+        },
+        "bug": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 18
+        },
+        "ghost": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 11
+        },
+        "steel": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 12
+        },
+        "fire": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 16
+        },
+        "water": {
+          "precision": 0.11801242236024845,
+          "recall": 1.0,
+          "f1": 0.2111111111111111,
+          "support": 19
+        },
+        "grass": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 20
+        },
+        "electric": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 11
+        },
+        "psychic": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 16
+        },
+        "ice": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 7
+        },
+        "dragon": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 10
+        },
+        "dark": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 16
+        },
+        "fairy": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 2
+        }
+      }
+    }
+  },
+  "color_histogram/with_bw_style": {
+    "C": 0.0001,
+    "val": {
+      "n": 1978,
+      "threshold": 0.30999999999999994,
+      "exact_match": 0.13043478260869565,
+      "top1_in_types": 0.25278058648109436,
+      "mAP": 0.19442174146563174,
+      "macro_f1": 0.12397817778945293,
+      "dual_predicted": 0.003033367037411527,
+      "dual_actual": 0.5353892821031345,
+      "per_type": {
+        "normal": {
+          "precision": 0.20326678765880218,
+          "recall": 0.358974358974359,
+          "f1": 0.25955967555040554,
+          "support": 312
+        },
+        "fighting": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 101
+        },
+        "flying": {
+          "precision": 0.11538461538461539,
+          "recall": 0.010714285714285714,
+          "f1": 0.0196078431372549,
+          "support": 280
+        },
+        "poison": {
+          "precision": 0.38317757009345793,
+          "recall": 0.24260355029585798,
+          "f1": 0.2971014492753623,
+          "support": 169
+        },
+        "ground": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 182
+        },
+        "rock": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 168
+        },
+        "bug": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 151
+        },
+        "ghost": {
+          "precision": 0.1,
+          "recall": 0.006493506493506494,
+          "f1": 0.012195121951219513,
+          "support": 154
+        },
+        "steel": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 54
+        },
+        "fire": {
+          "precision": 0.5172413793103449,
+          "recall": 0.3409090909090909,
+          "f1": 0.410958904109589,
+          "support": 132
+        },
+        "water": {
+          "precision": 0.27633587786259545,
+          "recall": 0.6033333333333334,
+          "f1": 0.37905759162303665,
+          "support": 300
+        },
+        "grass": {
+          "precision": 0.30980392156862746,
+          "recall": 0.572463768115942,
+          "f1": 0.4020356234096692,
+          "support": 138
+        },
+        "electric": {
+          "precision": 0.3111111111111111,
+          "recall": 0.12280701754385964,
+          "f1": 0.1761006289308176,
+          "support": 114
+        },
+        "psychic": {
+          "precision": 0.08163265306122448,
+          "recall": 0.0547945205479452,
+          "f1": 0.06557377049180328,
+          "support": 219
+        },
+        "ice": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 169
+        },
+        "dragon": {
+          "precision": 0.05,
+          "recall": 0.005025125628140704,
+          "f1": 0.0091324200913242,
+          "support": 199
+        },
+        "dark": {
+          "precision": 0.3225806451612903,
+          "recall": 0.08196721311475409,
+          "f1": 0.13071895424836602,
+          "support": 122
+        },
+        "fairy": {
+          "precision": 0.09523809523809523,
+          "recall": 0.0547945205479452,
+          "f1": 0.06956521739130435,
+          "support": 73
+        }
+      }
+    },
+    "test": {
+      "n": 161,
+      "threshold": 0.30999999999999994,
+      "exact_match": 0.19875776397515527,
+      "top1_in_types": 0.3602484464645386,
+      "mAP": 0.2698874308435073,
+      "macro_f1": 0.1466756878865018,
+      "dual_predicted": 0.0,
+      "dual_actual": 0.4906832298136646,
+      "per_type": {
+        "normal": {
+          "precision": 0.3333333333333333,
+          "recall": 0.7368421052631579,
+          "f1": 0.45901639344262296,
+          "support": 19
+        },
+        "fighting": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 16
+        },
+        "flying": {
+          "precision": 0.1111111111111111,
+          "recall": 0.05263157894736842,
+          "f1": 0.07142857142857142,
+          "support": 19
+        },
+        "poison": {
+          "precision": 0.2,
+          "recall": 0.14285714285714285,
+          "f1": 0.16666666666666666,
+          "support": 7
+        },
+        "ground": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 11
+        },
+        "rock": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 10
+        },
+        "bug": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 18
+        },
+        "ghost": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 11
+        },
+        "steel": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 12
+        },
+        "fire": {
+          "precision": 0.8,
+          "recall": 0.5,
+          "f1": 0.6153846153846154,
+          "support": 16
+        },
+        "water": {
+          "precision": 0.2631578947368421,
+          "recall": 0.7894736842105263,
+          "f1": 0.39473684210526316,
+          "support": 19
+        },
+        "grass": {
+          "precision": 0.5333333333333333,
+          "recall": 0.8,
+          "f1": 0.64,
+          "support": 20
+        },
+        "electric": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 11
+        },
+        "psychic": {
+          "precision": 0.3333333333333333,
+          "recall": 0.125,
+          "f1": 0.18181818181818182,
+          "support": 16
+        },
+        "ice": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 7
+        },
+        "dragon": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 10
+        },
+        "dark": {
+          "precision": 0.5,
+          "recall": 0.0625,
+          "f1": 0.1111111111111111,
+          "support": 16
+        },
+        "fairy": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 2
+        }
+      }
+    }
+  },
+  "prior/without_bw_style": {
+    "val": {
+      "n": 1978,
+      "threshold": 0.13,
+      "exact_match": 0.09150657229524772,
+      "top1_in_types": 0.15166835486888885,
+      "mAP": 0.08529940456128524,
+      "macro_f1": 0.014632718759145449,
+      "dual_predicted": 0.0,
+      "dual_actual": 0.5353892821031345,
+      "per_type": {
+        "normal": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 312
+        },
+        "fighting": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 101
+        },
+        "flying": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 280
+        },
+        "poison": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 169
+        },
+        "ground": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 182
+        },
+        "rock": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 168
+        },
+        "bug": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 151
+        },
+        "ghost": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 154
+        },
+        "steel": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 54
+        },
+        "fire": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 132
+        },
+        "water": {
+          "precision": 0.15166835187057634,
+          "recall": 1.0,
+          "f1": 0.2633889376646181,
+          "support": 300
+        },
+        "grass": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 138
+        },
+        "electric": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 114
+        },
+        "psychic": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 219
+        },
+        "ice": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 169
+        },
+        "dragon": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 199
+        },
+        "dark": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 122
+        },
+        "fairy": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 73
+        }
+      }
+    },
+    "test": {
+      "n": 161,
+      "threshold": 0.13,
+      "exact_match": 0.049689440993788817,
+      "top1_in_types": 0.11801242083311081,
+      "mAP": 0.08281573498964803,
+      "macro_f1": 0.011728395061728396,
+      "dual_predicted": 0.0,
+      "dual_actual": 0.4906832298136646,
+      "per_type": {
+        "normal": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 19
+        },
+        "fighting": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 16
+        },
+        "flying": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 19
+        },
+        "poison": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 7
+        },
+        "ground": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 11
+        },
+        "rock": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 10
+        },
+        "bug": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 18
+        },
+        "ghost": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 11
+        },
+        "steel": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 12
+        },
+        "fire": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 16
+        },
+        "water": {
+          "precision": 0.11801242236024845,
+          "recall": 1.0,
+          "f1": 0.2111111111111111,
+          "support": 19
+        },
+        "grass": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 20
+        },
+        "electric": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 11
+        },
+        "psychic": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 16
+        },
+        "ice": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 7
+        },
+        "dragon": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 10
+        },
+        "dark": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 16
+        },
+        "fairy": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 2
+        }
+      }
+    }
+  },
+  "color_histogram/without_bw_style": {
+    "C": 0.0001,
+    "val": {
+      "n": 1978,
+      "threshold": 0.3,
+      "exact_match": 0.12992922143579372,
+      "top1_in_types": 0.2522750198841095,
+      "mAP": 0.19409325376842337,
+      "macro_f1": 0.12207264846329455,
+      "dual_predicted": 0.004044489383215369,
+      "dual_actual": 0.5353892821031345,
+      "per_type": {
+        "normal": {
+          "precision": 0.20433996383363473,
+          "recall": 0.36217948717948717,
+          "f1": 0.261271676300578,
+          "support": 312
+        },
+        "fighting": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 101
+        },
+        "flying": {
+          "precision": 0.14814814814814814,
+          "recall": 0.014285714285714285,
+          "f1": 0.026058631921824105,
+          "support": 280
+        },
+        "poison": {
+          "precision": 0.3888888888888889,
+          "recall": 0.2485207100591716,
+          "f1": 0.30324909747292417,
+          "support": 169
+        },
+        "ground": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 182
+        },
+        "rock": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 168
+        },
+        "bug": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 151
+        },
+        "ghost": {
+          "precision": 0.1,
+          "recall": 0.006493506493506494,
+          "f1": 0.012195121951219513,
+          "support": 154
+        },
+        "steel": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 54
+        },
+        "fire": {
+          "precision": 0.5113636363636364,
+          "recall": 0.3409090909090909,
+          "f1": 0.4090909090909091,
+          "support": 132
+        },
+        "water": {
+          "precision": 0.27382753403933435,
+          "recall": 0.6033333333333334,
+          "f1": 0.37669094693028093,
+          "support": 300
+        },
+        "grass": {
+          "precision": 0.3134920634920635,
+          "recall": 0.572463768115942,
+          "f1": 0.40512820512820513,
+          "support": 138
+        },
+        "electric": {
+          "precision": 0.2727272727272727,
+          "recall": 0.10526315789473684,
+          "f1": 0.1518987341772152,
+          "support": 114
+        },
+        "psychic": {
+          "precision": 0.07692307692307693,
+          "recall": 0.0502283105022831,
+          "f1": 0.06077348066298342,
+          "support": 219
+        },
+        "ice": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 169
+        },
+        "dragon": {
+          "precision": 0.05263157894736842,
+          "recall": 0.005025125628140704,
+          "f1": 0.009174311926605505,
+          "support": 199
+        },
+        "dark": {
+          "precision": 0.29411764705882354,
+          "recall": 0.08196721311475409,
+          "f1": 0.1282051282051282,
+          "support": 122
+        },
+        "fairy": {
+          "precision": 0.07692307692307693,
+          "recall": 0.0410958904109589,
+          "f1": 0.05357142857142857,
+          "support": 73
+        }
+      }
+    },
+    "test": {
+      "n": 161,
+      "threshold": 0.3,
+      "exact_match": 0.19875776397515527,
+      "top1_in_types": 0.3602484464645386,
+      "mAP": 0.27190368475761023,
+      "macro_f1": 0.14641863499786997,
+      "dual_predicted": 0.0,
+      "dual_actual": 0.4906832298136646,
+      "per_type": {
+        "normal": {
+          "precision": 0.3333333333333333,
+          "recall": 0.7368421052631579,
+          "f1": 0.45901639344262296,
+          "support": 19
+        },
+        "fighting": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 16
+        },
+        "flying": {
+          "precision": 0.14285714285714285,
+          "recall": 0.05263157894736842,
+          "f1": 0.07692307692307693,
+          "support": 19
+        },
+        "poison": {
+          "precision": 0.2,
+          "recall": 0.14285714285714285,
+          "f1": 0.16666666666666666,
+          "support": 7
+        },
+        "ground": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 11
+        },
+        "rock": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 10
+        },
+        "bug": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 18
+        },
+        "ghost": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 11
+        },
+        "steel": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 12
+        },
+        "fire": {
+          "precision": 0.8,
+          "recall": 0.5,
+          "f1": 0.6153846153846154,
+          "support": 16
+        },
+        "water": {
+          "precision": 0.2542372881355932,
+          "recall": 0.7894736842105263,
+          "f1": 0.38461538461538464,
+          "support": 19
+        },
+        "grass": {
+          "precision": 0.5333333333333333,
+          "recall": 0.8,
+          "f1": 0.64,
+          "support": 20
+        },
+        "electric": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 11
+        },
+        "psychic": {
+          "precision": 0.3333333333333333,
+          "recall": 0.125,
+          "f1": 0.18181818181818182,
+          "support": 16
+        },
+        "ice": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 7
+        },
+        "dragon": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 10
+        },
+        "dark": {
+          "precision": 0.5,
+          "recall": 0.0625,
+          "f1": 0.1111111111111111,
+          "support": 16
+        },
+        "fairy": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 2
+        }
+      }
+    }
+  }
+}
