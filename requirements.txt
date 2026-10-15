@@ -21,3 +21,4 @@ torchvision
 gradio
 huggingface_hub
 optuna
+transformers

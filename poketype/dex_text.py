@@ -6,7 +6,8 @@ Masking replaces every Pokemon name with a token for its role in the text:
     <pre-evolution>     an earlier member of its line
     <evolution>         a later member of its line
     <sibling evolution> another branch of its line (e.g. Jolteon in a Vaporeon entry)
-    <water pokémon>     any other species, by its types (<bug/flying pokémon>)
+    <water fish pokémon> any other species, by its types and genus
+                        (Magikarp: <water fish pokémon>; Kyogre: <water sea basin pokémon>)
 
 A preceding "a"/"an" is kept and corrected for the token. Names of other species match
 only when capitalized, so ordinary words that happen to be species names stay as they are.
@@ -25,16 +26,17 @@ def clean_text(t):
     return re.sub(r"\s+", " ", t).strip()
 
 
-def type_token(types):
-    return "<" + "/".join(types) + " pokémon>"
+def species_token(types, genus):
+    """<types genus>, e.g. ["water"], "Fish Pokémon" -> <water fish pokémon>."""
+    return "<" + "/".join(types) + " " + genus.lower() + ">"
 
 
 class Masker:
     """names: {species_id: name}; parent: {species_id: evolves_from or None};
-    types: callable (species_id, version_group_id or None) -> list of type names."""
+    describe: callable (species_id, version_group_id or None) -> token for another species."""
 
-    def __init__(self, names, parent, types):
-        self.parent, self.types = parent, types
+    def __init__(self, names, parent, describe):
+        self.parent, self.describe = parent, describe
         self.by_name = {n.replace("’", "'").lower(): sid for sid, n in names.items()}
         alts = sorted(map(re.escape, self.by_name), key=len, reverse=True)
         self.pattern = re.compile(r"(?:\b(a|an|A|An) )?(?<!\w)(" + "|".join(alts) + r")(?!\w)",
@@ -68,7 +70,7 @@ class Masker:
             if token is None:
                 if not name[0].isupper():
                     return m.group(0)  # lowercase: an ordinary word, not a name
-                token = type_token(self.types(other, version_group_id))
+                token = self.describe(other, version_group_id)
             if article:
                 a = "an" if token[1] in "aeiou" else "a"
                 return (a.capitalize() if article[0].isupper() else a) + " " + token

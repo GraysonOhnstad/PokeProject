@@ -22,7 +22,7 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
-from poketype.dex_text import Masker, clean_text  # noqa: E402
+from poketype.dex_text import Masker, clean_text, species_token  # noqa: E402
 
 CSV = ROOT / "data" / "raw" / "csv"
 OUT = ROOT / "data" / "dex"
@@ -150,8 +150,9 @@ def main():
     types_at = {(e["species_id"], e["version_group_id"]): e["types"] for e in entries}
     latest = {e["species_id"]: e["types"] for e in sorted(entries, key=lambda e: e["version_group_id"])}
     parent = {s: (None if pd.isna(p) else int(p)) for s, p in zip(spec.species_id, spec.evolves_from_species_id)}
+    genus_of = dict(zip(spec.species_id, spec.genus))
     mask = Masker(dict(zip(spec.species_id, spec.name)), parent,
-                  lambda s, g: types_at.get((s, g), latest[s]))
+                  lambda s, g: species_token(types_at.get((s, g), latest[s]), genus_of[s]))
     ft = read("pokemon_species_flavor_text").query("language_id == 9")
     ft = ft.assign(version_group_id=ft.version_id.map(versions.version_group_id))
     ft = ft[ft.version_group_id.isin(vg.index)]
