@@ -3,7 +3,7 @@
 Made-up flavor texts; Gen-5-held-out bundle; no sprite yet. 8 candidates per text, one picked; seed 0. Regenerate with `py scripts/dex_samples.py`.
 
 ```
-Mansurk  -  the Light Pokémon
+Dusktour  -  the Light Pokémon
 Type: Normal / Ghost
 Height 0.2 m   Weight 2.0 kg   Shape ball   Color brown
 Egg groups: ground, indeterminate   Era: Gen 5   Evolution: stage 1 of 1   (normal)
@@ -35,11 +35,12 @@ Level-up moves:
    55  Power Gem
    57  Dream Eater
 
-(name built from: mansions, dusk)
+(name built from: dusk, tourists)
+(name ideas: literal: ghostly, mansions, candles, travelers; assoc: paranormal, haunt, spirits, eerie, shadow, houses, residences, manor, dwellings, house, lamps, lights, lanterns, torches, lighting, tourists, journeys, trips, destinations, visitors; context: disappearance, nighttime, darkness, wandering, twilight, timeless, disappearing, disused; canon: haunt, graveyard, dusk, nocturnal, illuminate, shadow)
 ```
 
 ```
-Joltt  -  the Tiny Mouse Pokémon
+Ratele  -  the Tiny Mouse Pokémon
 Type: Electric
 Height 0.7 m   Weight 26.4 kg   Shape quadruped   Color yellow
 Egg groups: ground, water1   Era: Gen 9   Evolution: stage 1 of 2   (normal)
@@ -75,11 +76,12 @@ Level-up moves:
    56  Wild Charge
    64  Discharge
 
-(name built from: jolt, electricity)
+(name built from: rat, electrical)
+(name ideas: literal: jolt, mouse, static, cheeks; assoc: shock, shocks, sparks, pulsing, explosive, rodents, mammalian, rats, weasel, peripheral, electricity, electrical, idle, motionless, mischief, facial, nose, faces, noses, face; context: cardiac, adrenaline, heartbeat, sympathetic, squirrel, physiological, calming, pets; canon: rodent, rat, squirrel, shock, electricity, pulse)
 ```
 
 ```
-Weewoo  -  the Sea Star Pokémon
+Seastarling  -  the Sea Star Pokémon
 Type: Water
 Height 3.1 m   Weight 405.7 kg   Shape quadruped   Color blue
 Egg groups: no-eggs   Era: Gen 9   Evolution: stage 1 of 1   (legendary)
@@ -113,11 +115,12 @@ Level-up moves:
    57  Hydro Pump
    57  Haze
 
-(name built from: weeping, sea star)
+(name built from: sea star, sinking)
+(name ideas: literal: sailors, weeping, oceans, star; assoc: seaman, seas, warships, nautical, ships, whimper, sorrow, sobbing, puddle, tears, waters, tides, shores, coastal, aquatic, stellar, celestial, orion, constellation, solar; context: tsunami, flood, floods, estuary, amphibious, fjord, mangrove, sinking; canon: sea, sea star, marine, sea lion, sea bass, seahorse)
 ```
 
 ```
-Snowfly  -  the Snow Dog Pokémon
+Fitturnal  -  the Snow Dog Pokémon
 Type: Normal / Ice
 Height 0.7 m   Weight 30.8 kg   Shape quadruped   Color brown
 Egg groups: ground, humanshape   Era: Gen 4   Evolution: stage 1 of 2   (normal)
@@ -147,11 +150,12 @@ Level-up moves:
    31  Hail
    56  Blizzard
 
-(name built from: snow, hatchling)
+(name built from: warmth, nocturnal)
+(name ideas: literal: rest, snow, shoots, sleeps; assoc: laying, exhaustion, meantime, emergency, body, winter, winters, cold, frost, colder, gunfire, rifle, gunshot, rifles, bullet, wakes, waking, nocturnal, wake, pillow; context: fluffy, cozy, brooding, shivering, arctic, warmth, reindeer, moth; canon: fur, fluffy, nocturnal, hatchling, arctic, moth)
 ```
 
 ```
-Doomtadulu  -  the Spiral Pokémon
+Seedmor  -  the Spiral Pokémon
 Type: Flying / Grass
 Height 0.4 m   Weight 4.8 kg   Shape humanoid   Color brown
 Egg groups: ground, monster   Era: Gen 7   Evolution: stage 1 of 3   (normal)
@@ -184,11 +188,12 @@ Level-up moves:
    31  Giga Drain
    49  Rage Powder
 
-(name built from: happy, seed)
+(name built from: seed, tremor)
+(name ideas: literal: parent, shakes, happy, spiral; assoc: offspring, child, maternal, mommy, daughter, powder, stirring, trembling, tremor, stir, smiling, cheerful, smiles, grinning, mood, winding, swirl, spinning, spin, vortex; context: pollen, embryo, flowering, breeding, nursery, seeds, seed, infant; canon: hatchling, embryo, seed, infant, tentaculata, leaf)
 ```
 
 ```
-Sagestone  -  the Rock Pokémon
+Desebrian  -  the Rock Pokémon
 Type: Ground / Rock
 Height 0.7 m   Weight 34.3 kg   Shape quadruped   Color brown
 Egg groups: dragon, mineral   Era: Gen 8   Evolution: stage 1 of 2   (normal)
@@ -226,5 +231,6 @@ Level-up moves:
    43  Double-Edge
    52  Stone Edge
 
-(name built from: granite, cinder)
+(name built from: decades, cambrian)
+(name ideas: literal: granite, centuries, moss, walks; assoc: limestone, sandstone, obsidian, geological, marble, decades, years, longevity, ages, lifetime, fern, ferns, fossil, pine, peat, footprints, stroll, crawling, hiking, footsteps; context: shells, cambrian, shell, basalt, cretaceous, gastropod, vegetation, brittle; canon: shell, gastropod, volcanic, magma, deciduous, cinder)
 ```

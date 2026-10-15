@@ -35,6 +35,8 @@ def show(e):
     lines += ["", "Level-up moves:"]
     lines += [f"  {'Evo' if lv == 0 else lv:>3}  {m}" for lv, m in e["learnset"]]
     lines += ["", f"(name built from: {e['name_concepts']})"]
+    if e.get("name_ideas"):
+        lines.append("(name ideas: " + "; ".join(f"{k}: {', '.join(v)}" for k, v in e["name_ideas"].items() if v) + ")")
     return "\n".join(lines)
 
 

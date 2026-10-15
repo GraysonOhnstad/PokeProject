@@ -12,6 +12,7 @@ Every move and ability comes from the existing inventory; names never repeat a r
 import difflib
 import json
 import re
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -26,6 +27,88 @@ from poketype.dex_text import Masker, clean_text, species_token
 from poketype.labels import TYPES
 
 MAX_NAME = 12
+PAIRS = 3  # idea pairs tried per candidate
+STOPWORDS = set("""about above after again against also among around because been before being below
+between both could does doing done down during each either even ever every from further have having here
+into itself just like many more most much must neither only onto other over same should some such than
+that their them then there these they this those through under until very were what when where which
+while whom whose will with within without would your""".split())
+
+
+_WORDNET = None
+
+
+def wordnet():
+    """NLTK WordNet, from data/nltk_data (downloaded once)."""
+    global _WORDNET
+    if _WORDNET is None:
+        import nltk
+        nltk.data.path.insert(0, str(DEX.parent / "nltk_data"))
+        try:
+            from nltk.corpus import wordnet as wn
+            wn.synsets("test")
+        except LookupError:
+            nltk.download("wordnet", download_dir=str(DEX.parent / "nltk_data"), quiet=True)
+            from nltk.corpus import wordnet as wn
+        _WORDNET = wn
+    return _WORDNET
+
+
+def nameworthy(word):
+    """Names are built from nouns and descriptive adjectives: the word's most common sense must
+    be one (WordNet), so adverbs and verbs ("slowly", "hesitated") are left out. Blocked words
+    never qualify."""
+    if word in BLOCKED:
+        return False
+    s = wordnet().synsets(word)
+    return bool(s) and s[0].pos() in "nas"
+
+
+def related_nouns(word, limit=8):
+    """WordNet neighbors of a word's first noun sense: parts and substances (candle -> wick),
+    broader kinds and narrower kinds (rodent -> chinchilla, lemming). Single words only."""
+    s = wordnet().synsets(word, "n")
+    if not s:
+        return []
+    x = s[0]
+    out = []
+    for r in (x.part_meronyms() + x.substance_meronyms() + x.member_holonyms() + x.hypernyms()
+              + x.hyponyms() + x.part_holonyms()):
+        for lemma in r.lemma_names()[:2]:
+            w = lemma.lower()
+            if w.isalpha() and w not in out:
+                out.append(w)
+    return out[:limit]
+
+
+def shared_piece(name, word):
+    """Length of the longest stretch of letters `name` shares with `word`."""
+    a, b = name.lower(), word.lower().replace(" ", "")
+    return difflib.SequenceMatcher(None, a, b).find_longest_match(0, len(a), 0, len(b)).size
+
+
+# Words that must never become name ideas or appear inside a generated name.
+BLOCKED = set("""sex sexy sexual orgasm porn porno nude naked erotic fetish rape rapist slut whore
+penis vagina anus anal boob boobs nipple dick cock cunt fuck shit bitch bastard nazi hitler
+racist nigger negro faggot retard kill suicide genocide""".split())
+
+
+def base_form(w):
+    """Dictionary base form for comparing words ("shot" and "shoots" -> "shoot")."""
+    wn = wordnet()
+    return wn.morphy(w, "v") or wn.morphy(w, "n") or w
+
+
+def same_root(a, b):
+    """Same-word test: shared first four letters, one starting the other, near-identical spelling,
+    or the same base form."""
+    a, b = a.lower(), b.lower()
+    if a[:4] == b[:4] or a.startswith(b) or b.startswith(a):
+        return True
+    if difflib.SequenceMatcher(None, a, b).ratio() >= 0.8:  # shots / shoots
+        return True
+    return " " not in a + b and base_form(a) == base_form(b)
+
 TYPE_WORDS = set(TYPES) | {"pokémon", "pokemon", "self", "evolution"}
 NAME_OK = re.compile(r"^[A-Z][a-zé'\-]*[a-zé]$")  # one capitalized word, like Farfetch'd or Porygon-Z
 
@@ -98,7 +181,6 @@ class DexGenerator:
     def _naming_data(self, species, bundle):
         """Name-concept vocabulary (canon source words of the species this config trained on, with
         embeddings), word rarity for picking notable words from a text, and a real-word list."""
-        from pathlib import Path
         allowed = species.index if self.b["config"] == "all" else species.index[species.fold >= 0]
         origins = json.loads((DEX / "name_origins.json").read_text(encoding="utf-8"))
         vocab = sorted({c for s in allowed for c in origins[str(s)]["components"][:3]
@@ -118,8 +200,28 @@ class DexGenerator:
                 df[w] = df.get(w, 0) + 1
         self.idf = {w: np.log(len(texts) / c) for w, c in df.items()}
         self.real_words = {w for w in self.enc_tok.get_vocab() if w.isalpha() and len(w) > 2}
+        # association vocabulary: the encoder's whole English words, embedded once and cached
+        words = sorted(w for w in self.real_words if len(w) >= 4 and w not in STOPWORDS)
+        cache = Path(bundle).parent / "words.npz"
+        if cache.exists() and len(np.load(cache)["words"]) == len(words):
+            vecs = np.load(cache)["vecs"].astype(np.float32)
+        else:
+            vecs = self.embed_many(words)
+            np.savez(cache, words=np.array(words), vecs=vecs.astype(np.float16))
+        self.words, self.word_vecs = words, vecs
 
     # ---- text -------------------------------------------------------------------------------
+    @torch.no_grad()
+    def embed_many(self, texts, batch=256):
+        out = []
+        for i in range(0, len(texts), batch):
+            enc = self.enc_tok(texts[i:i + batch], padding=True, truncation=True, max_length=128,
+                               return_tensors="pt")
+            h = self.encoder(**enc).last_hidden_state
+            m = enc["attention_mask"].unsqueeze(-1).float()
+            out.append(F.normalize((h * m).sum(1) / m.sum(1), dim=1).numpy())
+        return np.concatenate(out)
+
     @torch.no_grad()
     def embed(self, text):
         enc = self.enc_tok([text], truncation=True, max_length=128, return_tensors="pt")
@@ -287,27 +389,88 @@ class DexGenerator:
         words = [w for w in dict.fromkeys(words) if len(w) > 3 and w not in TYPE_WORDS and w in self.real_words]
         return sorted(words, key=lambda w: -self.idf.get(w, 8.0))[:n]
 
+    def name_ideas(self, text, emb, per_word=5, n_context=8, n_canon=6):
+        """Pools of name ideas for a text, from the literal to the associated:
+        literal  its rarest content words (also the genus), a low-weight fallback
+        assoc    words nearest each literal word by meaning (candle -> lantern, torch)
+        context  words nearest the whole text's meaning
+        canon    canon name-origin words nearest the text's meaning
+        No idea shares a root with a literal word, so names don't just echo the text."""
+        literal = [w for w in self.notable_words(text, n=6) if nameworthy(w)][:4]
+        taken = list(literal)
+
+        def fresh(w):
+            return not any(same_root(w, t) for t in taken)
+        assoc = []
+        if literal:
+            index = {w: i for i, w in enumerate(self.words)}
+            for word, v in zip(literal, self.embed_many(literal)):
+                near = [self.words[i] for i in np.argsort(-(self.word_vecs @ v))[:40]]
+                rel = [w for w in related_nouns(word) if w in index]
+                cand = [w for w in dict.fromkeys(rel + near) if fresh(w) and nameworthy(w)]
+                # near the word AND fitting the whole text: a rodent text keeps "rats", drops "computer"
+                score = [self.word_vecs[index[w]] @ (v + emb) for w in cand]
+                picks = [cand[j] for j in np.argsort(score)[::-1][:per_word]]
+                assoc += picks
+                taken += picks
+        context = [w for w in (self.words[i] for i in np.argsort(-(self.word_vecs @ emb))[:80])
+                   if fresh(w) and nameworthy(w)][:n_context]
+        taken += context
+        canon = [w for w in (self.concepts[i] for i in np.argsort(-(self.concept_vecs @ emb))[:30])
+                 if not any(same_root(w, t) for t in literal)][:n_canon]
+        return {"literal": literal, "assoc": assoc, "context": context, "canon": canon}
+
+    def _pick_pair(self, ideas, rng, weights=(("assoc", 0.35), ("canon", 0.3), ("context", 0.25), ("literal", 0.1))):
+        """Two ideas from different pools, never sharing a root; literal words are rare picks."""
+        items, w = [], []
+        for pool, weight in weights:
+            for x in ideas[pool]:
+                items.append((x, pool))
+                w.append(weight / len(ideas[pool]))
+        if not items:
+            return None
+        w = np.array(w) / sum(w)
+        a = items[rng.choice(len(items), p=w)]
+        rest = [(i, x) for i, x in enumerate(items) if x[1] != a[1] and not same_root(x[0], a[0])]
+        if not rest:
+            return a[0]
+        rw = np.array([w[i] for i, _ in rest])
+        b = rest[rng.choice(len(rest), p=rw / rw.sum())][1]
+        return f"{a[0]}, {b[0]}"
+
     def _genus_and_name(self, cands, masked, emb, rng, seed):
-        """Genus from T5. Name: one notable word from the text or genus plus one concept retrieved
-        from the canon name-origin vocabulary by meaning, blended by T5, then filtered (one
-        capitalized word, 3-12 characters, not a real Pokemon, not an English word)."""
+        """Genus from T5. Name: two ideas from `name_ideas` (mostly associated words, not the
+        text's own), blended by T5, then filtered (one capitalized word, 3-12 characters, not a
+        real Pokemon or close to one, not an English word)."""
         txt = bracketed(masked)
         src = [f"genus | types: {'/'.join(c['types'])} | text: {txt}" for c in cands]
         genus = [" ".join(dict.fromkeys(g[0].strip().split())) for g in self.t5(src, seed=seed)]
-        retrieved = [self.concepts[i] for i in np.argsort(-(self.concept_vecs @ emb))[:6]]
-        pairs = []
-        for g in genus:
-            own = self.notable_words(masked + " " + g) or [g.lower()]
-            a = own[rng.integers(len(own))]
-            b = next((r for r in rng.permutation(retrieved) if r[:4] != a[:4]), retrieved[0])
-            pairs.append(f"{a}, {b}")
+        pairs = []  # PAIRS idea pairs per candidate, 8 names each
+        for c, g in zip(cands, genus):
+            c["name_ideas"] = ideas = self.name_ideas(masked + " " + g, emb)
+            pairs += [self._pick_pair(ideas, rng) or g.lower() for _ in range(PAIRS)]
         names = self.t5([f"name | {w}" for w in pairs], n=8, max_new=12, seed=seed + 2)
-        for c, g, w, ns in zip(cands, genus, pairs, names):
-            parts = {s.strip().lower() for s in w.split(",")}
-            ok = [x.strip() for x in ns if NAME_OK.match(x.strip()) and 3 <= len(x.strip()) <= MAX_NAME
-                  and x.strip().lower() not in self.existing and x.strip().lower() not in parts
-                  and x.strip().lower() not in self.real_words and not self.too_close(x.strip())]
-            c["genus"], c["concepts"], c["name"] = g, w, (ok[0] if ok else None)
+        for i, (c, g) in enumerate(zip(cands, genus)):
+            best = None
+            for w, ns in zip(pairs[i * PAIRS:(i + 1) * PAIRS], names[i * PAIRS:(i + 1) * PAIRS]):
+                parts = [s.strip().lower() for s in w.split(",")]
+                for x in (x.strip() for x in ns):
+                    if not (NAME_OK.match(x) and 3 <= len(x) <= MAX_NAME and x.lower() not in self.existing
+                            and x.lower() not in parts and x.lower() not in self.real_words and not self.too_close(x)
+                            and x.lower() not in {p.replace(" ", "") for p in parts}
+                            and not any(b in x.lower() for b in BLOCKED if len(b) >= 4)):
+                        continue
+                    pieces = [min(shared_piece(x, p), 5) for p in parts]
+                    low = x.lower()
+                    glued = any(len(p) >= 6 and p.replace(" ", "") in low for p in parts)
+                    score = (min(pieces) >= 3,          # visibly built from both ideas
+                             not glued,                  # a blend, not two words glued together
+                             6 <= len(x) <= 10,
+                             sum(pieces), -abs(len(x) - 8))
+                    if best is None or score > best[0]:
+                        best = (score, x, w)
+            c["genus"] = g
+            c["name"], c["concepts"] = (best[1], best[2]) if best else (None, pairs[i * PAIRS])
 
     def _present(self, c, text, era):
         st = c["stats"]
@@ -321,5 +484,6 @@ class DexGenerator:
             "learnset": [(lv, self.move_names.get(m, str(m))) for lv, m in c["learnset"]],
             "evolution": {"stage": c["stage"], "line_length": c["line_length"]},
             "rarity": ["normal", "legendary", "mythical"][c["rarity"]],
-            "era": era, "flavor_text": text, "name_concepts": c["concepts"], "score": round(c["score"], 3),
+            "era": era, "flavor_text": text, "name_concepts": c["concepts"], "name_ideas": c.get("name_ideas"),
+            "score": round(c["score"], 3),
         }

@@ -98,7 +98,7 @@ Retraining T5 on the whole pool costs another ~2 hours of CPU; the gain is modes
 **D28. Fine-tuned MiniLM is adopted for types only; other fields stay on frozen-encoder heads.** *open*
 5-fold result: fine-tuned + kNN reaches types mAP 0.354 (top-1 45.9%) vs 0.339 (42.5%) for the frozen MLP + kNN, which clears the +0.01 keep rule. Egg groups, body, stats and abilities show no gain beyond noise. Best epochs are 2–4, so a final fine-tune is ~2 hours on CPU or minutes on the desktop. Not yet in the generator (v1 uses frozen embeddings; D23); planned for the desktop run with the final refit.
 
-**D29. Name concepts come from the text, not from T5: one notable word from the text or genus plus one concept retrieved by meaning from the canon name-origin vocabulary.** *open*
+**D29. Name concepts come from the text, not from T5: one notable word from the text or genus plus one concept retrieved by meaning from the canon name-origin vocabulary.** *changed → D35* (too literal: names reused the text's own words)
 On held-out families, T5-generated concepts matched a canon source word 5.8% of the time and were often unrelated ("rhyolite" for Caterpie). Notable words from the species' own texts and genus match 31%; retrieval proposes related words ("antenna, insect, moth" for Caterpie) and the two together match 34%. T5 still does the blending, which it does reasonably (Metapod and Sandshrew rebuilt exactly from their canon words; character similarity 0.71). Notable = rarest by document frequency in the Dex texts. The concept vocabulary only holds words of species the config trained on.
 
 **D30. Generated names must not be English words** (filter: the encoder's 30k-word vocabulary). *open*
@@ -123,3 +123,10 @@ No Eggs is never paired with another egg group; No Eggs plus a total ≥ 570 mak
 - **Body fields** are sampled independently of each other (a humanoid with egg groups Ground and Monster). The shared-embedding stage, and doodles, will supply body information text lacks.
 - **Abilities** can include signature abilities of specific Pokémon (Protosynthesis); handling signatures is a planned later step.
 - **Stage and line length** are sampled from text cues, not from the sampled total, so a low-total Pokémon can be single-stage; real ones exist (Luvdisc), but it is more common than in the games.
+
+**D35. Name ideas are associations, not the text's own words.** *open* (replaces D29, after your review)
+Four pools, sampled with these weights: associations of the text's key words (35%), canon name-origin words near the text's meaning (30%), words near the whole text's meaning (25%), and the text's own words (10%, a fallback). No idea may share a root with a word in the text.
+- Associations: each key word's nearest words by meaning plus WordNet relations (parts, broader and narrower kinds: candle → wick, lamp; rodent → chinchilla), ranked by fit to both the word and the whole text, so a rodent text keeps "rats" and drops "computer".
+- Only nouns and descriptive adjectives qualify (WordNet's most common sense), which drops "slowly", "newly", "hesitated". A blocklist keeps inappropriate words out of ideas and names.
+- Each candidate tries 3 idea pairs × 8 T5 blends and keeps the name that visibly contains a piece (≥ 3 letters) of both ideas, is a blend rather than two words glued together, and is 6–10 letters.
+Examples (`reports/dex_samples.md`): Ratele (rat + electrical), Dusmanor (dusk + manor), Wanderlamp (wandering + lamps), Fitturnal (warmth + nocturnal). T5-small's blending is now the limit; a larger T5 on the desktop is the next step.
