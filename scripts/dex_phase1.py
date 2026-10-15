@@ -1,17 +1,22 @@
 """Phase 1 of the Dex generator: predict an entry's fields from its flavor text.
 
 Compares, with 5-fold family cross-validation on the training pool (Gen 5 untouched):
-  prior      the training average (what you get from no text at all)
-  tfidf-1nn  copy the entry of the most similar training text (word TF-IDF)
-  minilm-1nn the same with MiniLM sentence embeddings
-  minilm-knn average the 10 most similar training texts' entries, weighted by similarity
-  minilm-mlp a small network with one head per field on frozen MiniLM embeddings + era
+  prior        the training average (what you get from no text at all)
+  tfidf-1nn    copy the entry of the most similar training text (word TF-IDF)
+  minilm-1nn   the same with frozen MiniLM sentence embeddings
+  minilm-knn   average the 10 most similar training texts' entries, weighted by similarity
+  minilm-mlp   heads on frozen MiniLM embeddings + era               (--train mlp)
+  minilm-ft    MiniLM fine-tuned end to end with the same heads      (--train ft)
+  <model>+knn  average of a trained model's predictions and minilm-knn
 
-    py scripts/dex_phase1.py
+Trained models stop early per field on 15% of the training families, never on the fold
+being scored. Results merge into results/dex_phase1.json, so methods can run separately.
 
-Writes results/dex_phase1.json and reports/dex_phase1.md.
+    py scripts/dex_phase1.py                 # baselines + mlp
+    py scripts/dex_phase1.py --train ft      # add fine-tuning (about an hour on CPU)
 """
 
+import argparse
 import hashlib
 import json
 import sys
@@ -20,16 +25,22 @@ from pathlib import Path
 
 import numpy as np
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 from poketype.dex import DEX, GENERATIONS, load, natural, score, species_weights  # noqa: E402
+from poketype.dex_models import FineTuned, Heads, stopping_split, train  # noqa: E402
 
 ENCODER = "sentence-transformers/all-MiniLM-L6-v2"
 FOLDS = range(5)
 K = 10
+PRED_KEYS = ["types", "shape", "color", "egg", "log_height", "log_weight", "stats", "abilities"]
+RESULTS = ROOT / "results" / "dex_phase1.json"
+
+
+def log(msg):
+    print(msg, flush=True)
 
 
 def embed(texts, model_name=ENCODER, batch=64):
@@ -64,10 +75,9 @@ def as_scores(targets, vocabs):
     return t
 
 
-def prior(T, tr, n):
-    w = species_weights(ROWS.species_id.to_numpy()[tr])
-    return {k: np.repeat(np.average(T[k][tr], axis=0, weights=w)[None], n, 0)
-            for k in PRED_KEYS}
+def prior(T, sid, tr, n):
+    w = species_weights(sid[tr])
+    return {k: np.repeat(np.average(T[k][tr], axis=0, weights=w)[None], n, 0) for k in PRED_KEYS}
 
 
 def neighbors(sim, T, tr, k):
@@ -78,126 +88,116 @@ def neighbors(sim, T, tr, k):
     return {key: np.einsum("nk,nk...->n...", w, T[key][tr][top]) for key in PRED_KEYS}
 
 
-class Heads(nn.Module):
-    def __init__(self, d_in, sizes, hidden=512, dropout=0.3):
-        super().__init__()
-        self.trunk = nn.Sequential(nn.Linear(d_in, hidden), nn.GELU(), nn.Dropout(dropout),
-                                   nn.Linear(hidden, hidden), nn.GELU(), nn.Dropout(dropout))
-        self.heads = nn.ModuleDict({k: nn.Linear(hidden, n) for k, n in sizes.items()})
-
-    def forward(self, x):
-        h = self.trunk(x)
-        return {k: head(h) for k, head in self.heads.items()}
+def blend(a, b):
+    return {k: (a[k] + b[k]) / 2 for k in PRED_KEYS}
 
 
-def mlp(X, targets, vocabs, tr, ev, epochs=300, patience=25, seed=0):
-    """Trains on rows `tr`, early-stops on `ev`; returns predictions for `ev`."""
-    torch.manual_seed(seed)
+def tensors(targets, sid, fit):
+    """Training targets as tensors; regression targets standardized on the `fit` rows."""
     reg = np.concatenate([targets["log_height"][:, None], targets["log_weight"][:, None], targets["stats"]], 1)
-    mu, sd = reg[tr].mean(0), reg[tr].std(0)
-    data = {
-        "x": torch.tensor(X), "types": torch.tensor(targets["types"]),
-        "shape": torch.tensor(targets["shape"]), "color": torch.tensor(targets["color"]),
-        "egg": torch.tensor(targets["egg"]), "reg": torch.tensor((reg - mu) / sd, dtype=torch.float32),
-        "abil": torch.tensor(targets["abilities"]), "has": torch.tensor(targets["has_abilities"]).float(),
-    }
-    sid = ROWS.species_id.to_numpy()
-    w_all = torch.zeros(len(X))
-    w_all[tr] = torch.tensor(species_weights(sid[tr]), dtype=torch.float32)
-    w_all[ev] = torch.tensor(species_weights(sid[ev]), dtype=torch.float32)
-    sizes = {"types": 18, "shape": len(vocabs["shape"]), "color": len(vocabs["color"]),
-             "egg": len(vocabs["egg"]), "reg": reg.shape[1], "abil": len(vocabs["abilities"])}
-    net = Heads(X.shape[1], sizes)
-    opt = torch.optim.AdamW(net.parameters(), lr=1e-3, weight_decay=1e-2)
-
-    def loss_fn(ix):
-        out, d, w = net(data["x"][ix]), {k: v[ix] for k, v in data.items()}, w_all[ix]
-        per = (F.binary_cross_entropy_with_logits(out["types"], d["types"], reduction="none").mean(1)
-               + F.cross_entropy(out["shape"], d["shape"], reduction="none")
-               + F.cross_entropy(out["color"], d["color"], reduction="none")
-               + F.binary_cross_entropy_with_logits(out["egg"], d["egg"], reduction="none").mean(1)
-               + F.mse_loss(out["reg"], d["reg"], reduction="none").mean(1)
-               + d["has"] * F.binary_cross_entropy_with_logits(out["abil"], d["abil"], reduction="none").sum(1)
-               / 3)
-        return (per * w).sum() / w.sum()
-
-    tr_t, ev_t = torch.tensor(tr), torch.tensor(ev)
-    best, best_state, wait = float("inf"), None, 0
-    for _ in range(epochs):
-        net.train()
-        for b in tr_t[torch.randperm(len(tr_t))].split(256):
-            opt.zero_grad()
-            loss_fn(b).backward()
-            opt.step()
-        net.eval()
-        with torch.no_grad():
-            v = loss_fn(ev_t).item()
-        if v < best - 1e-4:
-            best, best_state, wait = v, {k: p.clone() for k, p in net.state_dict().items()}, 0
-        else:
-            wait += 1
-            if wait >= patience:
-                break
-    net.load_state_dict(best_state)
-    net.eval()
-    with torch.no_grad():
-        out = net(data["x"][ev_t])
-    reg_pred = out["reg"].numpy() * sd + mu
-    return {"types": torch.sigmoid(out["types"]).numpy(), "shape": out["shape"].softmax(1).numpy(),
-            "color": out["color"].softmax(1).numpy(), "egg": torch.sigmoid(out["egg"]).numpy(),
-            "log_height": reg_pred[:, 0], "log_weight": reg_pred[:, 1], "stats": reg_pred[:, 2:],
-            "abilities": torch.sigmoid(out["abil"]).numpy()}
+    mu, sd = reg[fit].mean(0), reg[fit].std(0)
+    return {"types": torch.tensor(targets["types"]), "shape": torch.tensor(targets["shape"]),
+            "color": torch.tensor(targets["color"]), "egg": torch.tensor(targets["egg"]),
+            "reg": torch.tensor((reg - mu) / sd, dtype=torch.float32),
+            "abil": torch.tensor(targets["abilities"]), "has": torch.tensor(targets["has_abilities"]).float(),
+            "_mu": mu, "_sd": sd}
 
 
-PRED_KEYS = ["types", "shape", "color", "egg", "log_height", "log_weight", "stats", "abilities"]
-ROWS = None
+def row_weights(sid, groups):
+    w = torch.zeros(len(sid))
+    for g in groups:
+        w[g] = torch.tensor(species_weights(sid[g]), dtype=torch.float32)
+    return w
+
+
+def sizes(vocabs):
+    return {"types": 18, "shape": len(vocabs["shape"]), "color": len(vocabs["color"]),
+            "egg": len(vocabs["egg"]), "reg": 8, "abil": len(vocabs["abilities"])}
+
+
+def train_mlp(X, targets, vocabs, rows, tr, ev):
+    sid = rows.species_id.to_numpy()
+    fit, stop = stopping_split(rows, tr)
+    model = Heads(X.shape[1], sizes(vocabs))
+    Xt = torch.tensor(X)
+    preds, best = train(model, lambda b: Xt[b], tensors(targets, sid, fit), row_weights(sid, [fit, stop]),
+                        fit, stop, ev, [{"params": model.parameters(), "lr": 1e-3, "weight_decay": 1e-2}],
+                        epochs=200, patience=25)
+    log(f"    mlp best epochs: {best}")
+    return preds
+
+
+def train_ft(texts, era, targets, vocabs, rows, tr, ev, epochs=8, patience=3):
+    from transformers import AutoModel, AutoTokenizer
+    sid = rows.species_id.to_numpy()
+    fit, stop = stopping_split(rows, tr)
+    tok = AutoTokenizer.from_pretrained(ENCODER)
+    enc = tok(texts, padding=True, truncation=True, max_length=128, return_tensors="pt")
+    ids, mask, era_t = enc["input_ids"], enc["attention_mask"], torch.tensor(era)
+
+    def inputs(b):
+        n = int(mask[b].sum(1).max())
+        return ids[b, :n], mask[b, :n], era_t[b]
+
+    model = FineTuned(AutoModel.from_pretrained(ENCODER), era.shape[1], sizes(vocabs))
+    groups = [{"params": model.encoder.parameters(), "lr": 5e-5, "weight_decay": 1e-2},
+              {"params": model.heads.parameters(), "lr": 1e-3, "weight_decay": 1e-2}]
+    t0 = time.time()
+    preds, best = train(model, inputs, tensors(targets, sid, fit), row_weights(sid, [fit, stop]),
+                        fit, stop, ev, groups, epochs=epochs, patience=patience, batch=32, log=log)
+    log(f"    ft best epochs: {best} ({(time.time() - t0) / 60:.1f} min)")
+    return preds
 
 
 def main():
-    global ROWS
-    torch.set_num_threads(8)
+    p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    p.add_argument("--train", nargs="*", default=["mlp"], choices=["mlp", "ft"])
+    args = p.parse_args()
+    torch.set_num_threads(12)
     rows, targets, vocabs = load()
     pool = rows.fold.to_numpy() >= 0
-    ROWS = rows
+    sid_all = rows.species_id.to_numpy()
     T = as_scores(targets, vocabs)
     texts = [natural(t) for t in rows.text_masked]
-
-    t0 = time.time()
     emb = embed(texts)
-    print(f"embeddings {emb.shape} ({time.time() - t0:.0f}s)", flush=True)
-    from sklearn.feature_extraction.text import TfidfVectorizer
-    gen_1hot = one_hot(rows.generation.to_numpy() - 1, len(GENERATIONS))
-    X_mlp = np.concatenate([emb, gen_1hot], 1).astype(np.float32)
+    era = one_hot(rows.generation.to_numpy() - 1, len(GENERATIONS))
+    X_mlp = np.concatenate([emb, era], 1).astype(np.float32)
 
-    methods = ["prior", "tfidf-1nn", "minilm-1nn", "minilm-knn", "minilm-mlp"]
-    results = {m: [] for m in methods}
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    results = {}
     fold = rows.fold.to_numpy()
     for f in FOLDS:
         tr, ev = np.where(pool & (fold != f))[0], np.where(fold == f)[0]
-        sid = rows.species_id.to_numpy()[ev]
+        sid = sid_all[ev]
         tfidf = TfidfVectorizer(ngram_range=(1, 2), sublinear_tf=True, min_df=2).fit([texts[i] for i in tr])
-        A, B = tfidf.transform([texts[i] for i in ev]), tfidf.transform([texts[i] for i in tr])
-        sim_tfidf = (A @ B.T).toarray()
+        sim_tfidf = (tfidf.transform([texts[i] for i in ev]) @ tfidf.transform([texts[i] for i in tr]).T).toarray()
         sim_mini = emb[ev] @ emb[tr].T
-        preds = {
-            "prior": prior(T, tr, len(ev)),
-            "tfidf-1nn": neighbors(sim_tfidf, T, tr, 1),
-            "minilm-1nn": neighbors(sim_mini, T, tr, 1),
-            "minilm-knn": neighbors(sim_mini, T, tr, K),
-            "minilm-mlp": mlp(X_mlp, targets, vocabs, tr, ev),
-        }
-        for m in methods:
-            results[m].append(score(preds[m], targets, ev, sid))
-        print(f"fold {f}: " + "  ".join(f"{m} types mAP {results[m][-1]['types_mAP']:.3f}" for m in methods),
-              flush=True)
+        knn = neighbors(sim_mini, T, tr, K)
+        preds = {"prior": prior(T, sid_all, tr, len(ev)), "tfidf-1nn": neighbors(sim_tfidf, T, tr, 1),
+                 "minilm-1nn": neighbors(sim_mini, T, tr, 1), "minilm-knn": knn}
+        log(f"fold {f}")
+        if "mlp" in args.train:
+            preds["minilm-mlp"] = train_mlp(X_mlp, targets, vocabs, rows, tr, ev)
+            preds["minilm-mlp+knn"] = blend(preds["minilm-mlp"], knn)
+        if "ft" in args.train:
+            preds["minilm-ft"] = train_ft(texts, era, targets, vocabs, rows, tr, ev)
+            preds["minilm-ft+knn"] = blend(preds["minilm-ft"], knn)
+        for m, pr in preds.items():
+            results.setdefault(m, []).append(score(pr, targets, ev, sid))
+        log("  types mAP: " + "  ".join(f"{m} {r[-1]['types_mAP']:.3f}" for m, r in results.items()))
 
     summary = {m: {k: (float(np.mean([r[k] for r in rs])), float(np.std([r[k] for r in rs])))
                    for k in rs[0]} for m, rs in results.items()}
-    (ROOT / "results").mkdir(exist_ok=True)
-    (ROOT / "results" / "dex_phase1.json").write_text(json.dumps({"summary": summary, "folds": results}, indent=1))
-    write_report(summary, rows, pool)
+    old = json.loads(RESULTS.read_text()) if RESULTS.exists() else {"summary": {}, "folds": {}}
+    old["summary"].update(summary)
+    old["folds"].update(results)
+    RESULTS.parent.mkdir(exist_ok=True)
+    RESULTS.write_text(json.dumps(old, indent=1))
+    write_report(old["summary"], rows, pool)
 
 
+ORDER = ["prior", "tfidf-1nn", "minilm-1nn", "minilm-knn", "minilm-mlp", "minilm-mlp+knn",
+         "minilm-ft", "minilm-ft+knn"]
 LABELS = [("types_mAP", "Types mAP", "{:.3f}", "↑"), ("types_top1", "Types top-1", "{:.1%}", "↑"),
           ("shape_acc", "Shape acc.", "{:.1%}", "↑"), ("color_acc", "Color acc.", "{:.1%}", "↑"),
           ("egg_mAP", "Egg group mAP", "{:.3f}", "↑"), ("height_x", "Height error ×", "{:.2f}", "↓"),
@@ -206,11 +206,12 @@ LABELS = [("types_mAP", "Types mAP", "{:.3f}", "↑"), ("types_top1", "Types top
 
 
 def write_report(summary, rows, pool):
-    methods = list(summary)
+    methods = [m for m in ORDER if m in summary]
     lines = ["# Dex generator, phase 1: entry fields from flavor text", "",
              f"5-fold family cross-validation over {int(pool.sum())} texts of "
              f"{rows[pool].species_id.nunique()} species (Gen 5 held out, not used). "
-             "Mean over folds, each species weighted equally; ± is the spread across folds.", "",
+             "Mean over folds, each species weighted equally; ± is the spread across folds. "
+             "Trained models stop early per field on held-out training families.", "",
              "| Metric | " + " | ".join(methods) + " |", "|---|" + "---:|" * len(methods)]
     for key, label, fmt, better in LABELS:
         cells = [fmt.format(summary[m][key][0]) + " ± " + fmt.format(summary[m][key][1]) for m in methods]
