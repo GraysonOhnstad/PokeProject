@@ -129,7 +129,7 @@ def generate(model, tok, sources, n=1, sample=False, max_new=64, batch=32, seed=
 
 
 def evaluate(model, tok, rows, species, entries, origins, tr_idx, ev_idx):
-    rng = np.random.default_rng(1)
+
     ev_rows = rows.iloc[ev_idx]
     one = ev_rows.groupby("species_id").head(1)  # one text per held-out species
     sids = one.species_id.to_numpy()

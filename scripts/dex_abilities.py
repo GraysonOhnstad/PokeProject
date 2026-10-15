@@ -20,7 +20,6 @@ from pathlib import Path
 
 import numpy as np
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -28,22 +27,9 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 from dex_phase1 import embed, one_hot, train_mlp  # noqa: E402
 from poketype.dex import DEX, GENERATIONS, load, natural, species_weights  # noqa: E402
-from poketype.dex_models import stopping_split  # noqa: E402
+from poketype.dex_models import AbilityModel, stopping_split  # noqa: E402
 
 VARIANTS = ["text-knn", "text", "oracle-up", "pred-up"]
-
-
-class AbilityModel(nn.Module):
-    def __init__(self, d_in, n, hidden=512, dropout=0.3):
-        super().__init__()
-        self.trunk = nn.Sequential(nn.Linear(d_in, hidden), nn.GELU(), nn.Dropout(dropout),
-                                   nn.Linear(hidden, hidden), nn.GELU(), nn.Dropout(dropout))
-        self.slots = nn.ModuleDict({"primary": nn.Linear(hidden, n), "secondary": nn.Linear(hidden, n + 1),
-                                    "hidden": nn.Linear(hidden, n + 1)})  # last class = none
-
-    def forward(self, x):
-        h = self.trunk(x)
-        return {k: head(h) for k, head in self.slots.items()}
 
 
 def slot_targets(rows, n_abil, index):
@@ -63,7 +49,9 @@ def slot_targets(rows, n_abil, index):
     return {"primary": np.array(prim), "secondary": sec, "hidden": hid}
 
 
-def fit(X, T, rows, tr, epochs=300, patience=30, seed=0):
+def fit(X, T, rows, tr, set_targets, epochs=200, patience=15, seed=0):
+    """Early-stops on recall@5 of held-out training families: the slot losses bottom out
+    epochs before the ranking stops improving (overconfidence), so loss is the wrong signal."""
     torch.manual_seed(seed)
     sid = rows.species_id.to_numpy()
     fit_ix, stop_ix = stopping_split(rows, tr)
@@ -78,11 +66,11 @@ def fit(X, T, rows, tr, epochs=300, patience=30, seed=0):
 
     def loss(ix):
         out = model(Xt[ix])
-        per = sum(F.cross_entropy(out[k], Tt[k][ix], ignore_index=-100, reduction="none") for k in out)
+        per = sum(F.cross_entropy(out[k], Tt[k][ix], ignore_index=-100, reduction="none", label_smoothing=0.1) for k in out)
         return (per * w[ix]).sum() / w[ix].sum()
 
-    best, state, wait = float("inf"), None, 0
-    fit_t, stop_t = torch.tensor(fit_ix), torch.tensor(stop_ix)
+    best, state, wait = -1.0, None, 0
+    fit_t = torch.tensor(fit_ix)
     for _ in range(epochs):
         model.train()
         for b in fit_t[torch.randperm(len(fit_t))].split(256):
@@ -90,9 +78,8 @@ def fit(X, T, rows, tr, epochs=300, patience=30, seed=0):
             loss(b).backward()
             opt.step()
         model.eval()
-        with torch.no_grad():
-            v = loss(stop_t).item()
-        if v < best - 1e-4:
+        v = metrics(slot_probs(model, X[stop_ix]), T, set_targets, stop_ix, sid)["recall5"]
+        if v > best + 1e-4:
             best, state, wait = v, {k: p.clone() for k, p in model.state_dict().items()}, 0
         else:
             wait += 1
@@ -170,9 +157,9 @@ def main():
         knn = {"primary": knn_set, "secondary": np.c_[knn_set, np.zeros(len(ev))],
                "hidden": np.c_[knn_set, np.zeros(len(ev))]}
         results["text-knn"].append(metrics(knn, T, targets["abilities"], ev, sid))
-        m_text = fit(X_text, T, rows, tr)
+        m_text = fit(X_text, T, rows, tr, targets["abilities"])
         results["text"].append(metrics(slot_probs(m_text, X_text[ev]), T, targets["abilities"], ev, sid))
-        m_or = fit(X_or, T, rows, tr)
+        m_or = fit(X_or, T, rows, tr, targets["abilities"])
         results["oracle-up"].append(metrics(slot_probs(m_or, X_or[ev]), T, targets["abilities"], ev, sid))
         results["pred-up"].append(metrics(slot_probs(m_or, X_pred), T, targets["abilities"], ev, sid))
         print(f"fold {f}: " + "  ".join(f"{v} recall5 {results[v][-1]['recall5']:.3f}" for v in VARIANTS), flush=True)

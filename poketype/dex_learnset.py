@@ -11,10 +11,30 @@ import numpy as np
 import torch
 import torch.nn as nn
 
+from poketype.labels import TYPES
+
 PAD, EOS = 0, 1
 LEVEL0 = 2               # token of level 0; level l -> LEVEL0 + l
 N_LEVELS = 101           # 0..100
 MOVE0 = LEVEL0 + N_LEVELS
+
+
+def _one_hot(i, n):
+    v = np.zeros(n, dtype=np.float32)
+    v[i] = 1
+    return v
+
+
+def cond_vector(types, stats, generation, stage, line_length, is_final, rarity, emb):
+    """Conditioning for one learnset. types: names; stats: 6 values in STATS order; rarity:
+    0 normal, 1 legendary, 2 mythical; emb: mean text embedding or None."""
+    st = np.asarray(stats, dtype=np.float32)
+    t = np.zeros(18, dtype=np.float32)
+    t[[TYPES.index(x) for x in types]] = 1
+    return np.concatenate([
+        t, st / 100, [st.sum() / 600], _one_hot(generation - 1, 9),
+        _one_hot(stage - 1, 3), _one_hot(line_length - 1, 3), [float(is_final)], _one_hot(rarity, 3),
+        emb if emb is not None else np.zeros(384, np.float32), [float(emb is not None)]]).astype(np.float32)
 
 
 class Tokens:

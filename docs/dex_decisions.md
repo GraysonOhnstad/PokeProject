@@ -74,3 +74,23 @@ No real-word filter yet (needs a dictionary); the judge and sample-and-pick come
 
 **D21. Sketchify v1 is rule-based image processing, not a model.** *open*
 Lines come from the silhouette plus the sprite's own locally dark pixels (outlines, eyes, mouths); fill is 5 k-means colors lightened toward white; lines and fill wobble with smooth noise and the fill is offset a few pixels. Deterministic per seed, instant, and needs no training data. Examples: `reports/figures/sketchify_examples.png`. A learned sketch style is possible later if real doodles look different.
+
+**D22. Abilities stop early on recall@5 of held-out training families, with label smoothing 0.1.** *open*
+Found while debugging: the slot losses bottom out by epoch ~3 while held-out ranking keeps improving to epoch 11+ (recall@5 0.07 → 0.16). A 284-way softmax grows confident faster than it ranks better, so loss stopped training far too early. Stopping on the metric we care about fixes that.
+
+## Generator v1 (`poketype/dex_pipeline.py`, `scripts/dex_generate.py`)
+
+**D23. v1 uses the frozen MiniLM encoder with the MLP + 10-NN blend for types and egg groups.** *open*
+It was the best validated text model when the pipeline was built and needs no fine-tuned weights. If the fine-tuned encoder wins clearly, swap it in (it also needs per-field weights saved).
+
+**D24. Discrete fields are sampled, not taken as the most likely value.** *open*
+Types and egg groups are sampled over all 1- and 2-element sets (sigmoid probabilities combined as independent, then normalized), shape and color from their softmax, height and weight as the predicted log size plus correlated noise matching the validation error. Taking the most likely values makes every entry look average, the same collapse the stat model avoids.
+
+**D25. Evolution stage, line length and rarity for a generated entry come from the stat model's extra heads.** *open*
+The learnset generator needs them as inputs; the stat model already learned to predict them from text and body. Line length is sampled first, then the stage within it.
+
+**D26. v1 picker: among 8 candidates, the one whose types, shape and color are most probable under the text, with a penalty when no valid name was found.** *open*
+Types are scored by the text 10-NN alone, so the picker is partly independent of the model that sampled them. A placeholder until the shared-embedding judge exists; it favors coherence with the text over novelty.
+
+**D27. v1 text generators come from the fold-0 experiment (trained on 80% of the training pool).** *open*
+Retraining T5 on the whole pool costs another ~2 hours of CPU; the gain is modest. Do it on the desktop with the final refit.

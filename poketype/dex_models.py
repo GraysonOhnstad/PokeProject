@@ -48,6 +48,21 @@ class FineTuned(nn.Module):
         return self.heads(torch.cat([pooled, era], 1))
 
 
+class AbilityModel(nn.Module):
+    """Slot heads over the ability inventory: primary, secondary (+ none), hidden (+ none)."""
+
+    def __init__(self, d_in, n, hidden=512, dropout=0.3):
+        super().__init__()
+        self.trunk = nn.Sequential(nn.Linear(d_in, hidden), nn.GELU(), nn.Dropout(dropout),
+                                   nn.Linear(hidden, hidden), nn.GELU(), nn.Dropout(dropout))
+        self.slots = nn.ModuleDict({"primary": nn.Linear(hidden, n), "secondary": nn.Linear(hidden, n + 1),
+                                    "hidden": nn.Linear(hidden, n + 1)})  # last class = none
+
+    def forward(self, x):
+        h = self.trunk(x)
+        return {k: head(h) for k, head in self.slots.items()}
+
+
 def field_losses(out, d):
     """Per-row loss for each field: {field: tensor (batch,)}."""
     bce = F.binary_cross_entropy_with_logits
@@ -76,12 +91,13 @@ PRED_OF = {"types": ["types"], "shape": ["shape"], "color": ["color"], "egg": ["
 
 
 def train(model, inputs, targets, weights, tr, stop, ev, param_groups, epochs, patience,
-          batch=256, log=None, seed=0):
+          batch=256, log=None, seed=0, keep_states=False):
     """Train on rows `tr`, early-stop each field on rows `stop`, predict rows `ev`.
 
     inputs: callable(index tensor) -> model input. targets: dict of tensors over all rows
     (with "reg" standardized; mu/sd passed in targets["_mu"], ["_sd"]). weights: tensor per row.
-    Returns (predictions for `ev`, best epoch per field).
+    Returns (predictions for `ev`, best epoch per field), plus with keep_states=True the model
+    weights at each field's best epoch ({field: state_dict}).
     """
     torch.manual_seed(seed)
     opt = torch.optim.AdamW(param_groups)
@@ -103,7 +119,7 @@ def train(model, inputs, targets, weights, tr, stop, ev, param_groups, epochs, p
 
     best = {f: float("inf") for f in FIELDS}
     best_epoch = {f: 0 for f in FIELDS}
-    preds = {}
+    preds, states = {}, {}
     tr_t = torch.as_tensor(tr)
     for epoch in range(1, epochs + 1):
         model.train()
@@ -121,16 +137,20 @@ def train(model, inputs, targets, weights, tr, stop, ev, param_groups, epochs, p
             stop_loss = weighted(field_losses(stop_out, {k: v[stop] for k, v in data.items()}), stop)
             improved = [f for f in FIELDS if stop_loss[f] < best[f] - 1e-4]
             if improved:
-                ev_pred = to_predictions(run(ev), mu, sd)
+                ev_pred = to_predictions(run(ev), mu, sd) if len(ev) else {}
+                snapshot = {k: v.clone() for k, v in model.state_dict().items()} if keep_states else None
                 for f in improved:
+                    if keep_states:
+                        states[f] = snapshot
                     best[f], best_epoch[f] = stop_loss[f], epoch
                     for k in PRED_OF[f]:
-                        preds[k] = ev_pred[k]
+                        if k in ev_pred:
+                            preds[k] = ev_pred[k]
         if log:
             log(f"    epoch {epoch:3d}  improved: {', '.join(improved) or '-'}")
         if epoch - max(best_epoch.values()) >= patience:
             break
-    return preds, best_epoch
+    return (preds, best_epoch, states) if keep_states else (preds, best_epoch)
 
 
 def stopping_split(rows, tr, frac=0.15, seed=0):

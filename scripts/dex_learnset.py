@@ -30,11 +30,9 @@ from sklearn.metrics import average_precision_score
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
-from dex_phase1 import embed, one_hot  # noqa: E402
-from poketype.dex import DEX, GENERATIONS, STATS, load, natural  # noqa: E402
-from poketype.dex_learnset import (LearnsetModel, Tokens, generate, move_scores, nll,  # noqa: E402
-                                   pad_batch)
-from poketype.labels import TYPES  # noqa: E402
+from dex_phase1 import embed  # noqa: E402
+from poketype.dex import DEX, STATS, load, natural  # noqa: E402
+from poketype.dex_learnset import LearnsetModel, Tokens, cond_vector, generate, move_scores, nll  # noqa: E402
 
 CSV = ROOT / "data" / "raw" / "csv"
 SAMPLES = 16
@@ -50,16 +48,10 @@ def conditioning(entries, species, text_emb):
     rows = []
     for e in entries:
         s = species.loc[e["species_id"]]
-        st = np.array([e["stats"][k] for k in STATS], dtype=np.float32)
-        t = np.zeros(18, dtype=np.float32)
-        t[[TYPES.index(x) for x in e["types"]]] = 1
-        emb = text_emb.get(e["species_id"])
-        rows.append(np.concatenate([
-            t, st / 100, [st.sum() / 600], one_hot(e["generation"] - 1, len(GENERATIONS)),
-            one_hot(s.stage - 1, 3), one_hot(s.line_length - 1, 3), [float(s.is_final)],
-            one_hot(2 if s.is_mythical else 1 if s.is_legendary else 0, 3),
-            emb if emb is not None else np.zeros(384, np.float32), [float(emb is not None)]]))
-    return np.stack(rows).astype(np.float32)
+        rows.append(cond_vector(e["types"], [e["stats"][k] for k in STATS], e["generation"], s.stage,
+                                s.line_length, s.is_final, 2 if s.is_mythical else 1 if s.is_legendary else 0,
+                                text_emb.get(e["species_id"])))
+    return np.stack(rows)
 
 
 def per_row_ap(y, scores, allowed):
