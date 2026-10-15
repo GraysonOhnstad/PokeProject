@@ -46,7 +46,10 @@ Once every design choice above is fixed, retrain the Dex models, the judge and t
 ## 6. One app
 One Gradio app, one process, models loaded lazily:
 - **Type classifier** tab: one upload, two answers side by side: the course model (unchanged) and the improved model trained with Dex data (both Gen 5 held out), each with types, confidence, time and attention.
-- **Pokédex** tab: one fake Pokédex. Input is a flavor text, a doodle drawn in the browser (Gradio sketchpad), or both, plus era. Output is a Pokédex-style page (sprite, name, genus, types, stat bars, abilities, learnset, height/weight, cry, read-aloud). Uses the models refit with Gen 5.
+- **Pokédex** tab: one fake Pokédex, models refit with Gen 5.
+  - Input: flavor text, a doodle drawn in the browser (Gradio sketchpad), or both; era selector. When there is a doodle, a slider under it sets how closely the sprite follows it.
+  - Output: one entry (name, genus, types, stat bars, abilities, learnset, height/weight, flavor text, cry, read-aloud) whose picture has a sprite/doodle toggle. The doodle side shows the user's own doodle when there is one, otherwise the sketchified generated sprite.
+  - Doodle-only input has no flavor text: generate one (the genus/name language model, fine-tuned to write Dex text from the entry and image embedding; species tokens filled with real names). Until that exists, show "Data not yet recorded".
 
 Honest about memorization: each model's genuine predictions are on Pokémon it never trained on.
 - Classifier tab: an upload whose perceptual hash matches a training sprite is labeled "in the training set"; Gen 5 sprites and new drawings are genuine predictions.
