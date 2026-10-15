@@ -34,6 +34,8 @@ Image encoder (round 3's winning backbone) and text encoder trained together on 
 
 ## 4. Generation (desktop)
 - [ ] Sprite generator: diffusion LoRA on real sprites, conditioned on the entry and the shared embedding, and on the doodle when there is one (sketch-guided, e.g. a scribble ControlNet); snapped to Gen V conventions (96×96, limited palette, outline). Evaluated on Gen 5 texts by the judge and the classifier, never trained on their scores.
+- [ ] Sprite-ify a doodle: the doodle is the diffusion starting point (img2img/SDEdit) with a "how much to redraw" strength slider; a sketch-guided ControlNet compared as the stricter-lines alternative.
+- [ ] Sketchify transform (sprite → doodle-style drawing: wobbly outline, flat colors, no shading). Used for (1) the field-notes doodle shown beside each generated sprite, so a fake reads as fan-made at a glance, alongside a small "fan-made" label; (2) training pairs for sprite-ify (sketchified real sprite → real sprite); (3) the image encoder's doodle augmentation.
 - [ ] Sample and pick: K candidate entries/sprites, ranked by text match, type/body agreement and plausibility; K kept modest so candidates can't be selected for fooling the judges.
 - [ ] Cry: retrieval + pitch/time transform by size and type.
 - [ ] Dex voice: open TTS voice with a device-style effect chain; a plausible recast, not an imitation.
