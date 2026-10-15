@@ -71,3 +71,6 @@ No real-word filter yet (needs a dictionary); the judge and sample-and-pick come
 
 **D20. Stat model for text-only input: the text+aux variant; the upstream-conditioned variant only when upstream fields are concrete.** *open*
 5-fold results (`reports/dex_stats.md`): sampling gives realistic stat lines (lopsidedness KS 0.13 vs 0.79 for averaged lines). True types/body raise BST rank correlation from 0.58 to 0.79, but phase-1 *predicted* (averaged) upstream fields add nothing and shrink 80% intervals to 52% coverage: the model treats fuzzy averages as facts. In the generator, upstream fields will be sampled concrete values (or come from a doodle), which is the situation the upstream variant was trained for; a chain-level check by sampling is still to do. Extra targets (stage, rarity) are kept: small, consistent gains in rank correlation and lopsidedness realism.
+
+**D21. Sketchify v1 is rule-based image processing, not a model.** *open*
+Lines come from the silhouette plus the sprite's own locally dark pixels (outlines, eyes, mouths); fill is 5 k-means colors lightened toward white; lines and fill wobble with smooth noise and the fill is offset a few pixels. Deterministic per seed, instant, and needs no training data. Examples: `reports/figures/sketchify_examples.png`. A learned sketch style is possible later if real doodles look different.
