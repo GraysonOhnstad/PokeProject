@@ -173,3 +173,52 @@ def move_scores(samples, tokens, n_moves):
                 out[r, tokens.index[m]] += 1
         out[r] /= max(len(ss), 1)
     return out
+
+
+class MoveSetModel(nn.Module):
+    """Learnset as a set: one score per move (a residual on the type-and-era prior) and a size.
+    More data-efficient than writing the sequence; levels are assigned afterwards."""
+
+    def __init__(self, d_cond, n_moves, hidden=512, dropout=0.3):
+        super().__init__()
+        self.trunk = nn.Sequential(nn.Linear(d_cond, hidden), nn.GELU(), nn.Dropout(dropout),
+                                   nn.Linear(hidden, hidden), nn.GELU(), nn.Dropout(dropout))
+        self.moves = nn.Linear(hidden, n_moves)
+        self.size = nn.Linear(hidden, 1)
+        nn.init.zeros_(self.moves.weight)  # start from the prior
+        nn.init.zeros_(self.moves.bias)
+
+    def forward(self, cond, move_bias):
+        h = self.trunk(cond)
+        return self.moves(h) + move_bias, self.size(h)[:, 0]
+
+
+def level_table(entries, moves, rows_ix):
+    """{(generation, move id): array of levels it is learned at} from entries `rows_ix`;
+    generation 0 pools every generation."""
+    table = {}
+    for i in rows_ix:
+        e = entries[i]
+        for lv, m in e["learnset"]:
+            table.setdefault((e["generation"], m), []).append(lv)
+            table.setdefault((0, m), []).append(lv)
+    return {k: np.array(v) for k, v in table.items()}
+
+
+def sample_learnsets(logits, size_mean, size_sd, allowed, moves, levels, generation, rng, temperature=1.0):
+    """Sample learnsets: size ~ N(predicted, sd); moves by Gumbel top-k on the scores (allowed
+    moves only); each move's level drawn from the levels it is learned at in that generation
+    (or any generation), then sorted. Returns lists of (level, move id)."""
+    out = []
+    for r in range(len(logits)):
+        k = int(np.clip(round(size_mean[r] + rng.normal() * size_sd), 2, 40))
+        g = logits[r] / temperature + rng.gumbel(size=logits.shape[1])
+        g[~allowed[r]] = -np.inf
+        pick = np.argsort(-g)[:k]
+        pairs = []
+        for j in pick:
+            m = moves[j]
+            pool = levels.get((generation, m), levels.get((0, m), np.array([1])))
+            pairs.append((int(rng.choice(pool)), m))
+        out.append(sorted(pairs))
+    return out

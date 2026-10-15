@@ -18,12 +18,14 @@ Flavor text (+ era) in; each field conditioned on the ones before it:
 text → types → genus, body (height, weight, shape, color, egg groups) → stat line → abilities → level-up learnset.
 - [x] Per-game dataset: period-correct types, stats, abilities, level-up learnsets; texts masked by role.
 - [x] Baselines and first trained heads (`dex_phase1.py`, `reports/dex_phase1.md`).
-- [ ] Fine-tuned text encoder (running).
-- [ ] Evolution stage, line length and position as extra targets for the stat model (stage strongly predicts BST).
-- [ ] Stat line: BST distribution × stat-share Dirichlet conditioned on BST; judged by BST rank correlation, interval coverage and realism, not MAE.
-- [ ] Abilities from the existing inventory; learnset generator (autoregressive over existing moves, with levels).
-- [ ] Genus and name generation (concept extraction → pun; filters: not an existing name or real word, pronounceable, ≤ 12 characters).
+- [x] Fine-tuned text encoder: types mAP 0.354 vs 0.339 frozen; adopt for types (not yet in the generator).
+- [x] Evolution stage, line length and position as extra targets for the stat model.
+- [x] Stat line: BST distribution × stat-share Dirichlet conditioned on BST (`reports/dex_stats.md`).
+- [x] Abilities from the existing inventory (`reports/dex_abilities.md`); learnset as a move-set model with real learn levels (`reports/dex_learnset_set.md`).
+- [x] Genus and name generation v1 (`reports/dex_textgen.md`); names still the weakest field.
   Training data for name origins comes only from official or community-canon sources (Bulbapedia's per-species "Name origin" sections, CC BY-NC-SA, credited), never from automatic guessing.
+
+- [x] Generator v1: text → full entry without sprite (`scripts/dex_generate.py`, samples in `reports/dex_samples.md`).
 
 ## 3. Shared embedding space (desktop, after section 1)
 Image encoder (round 3's winning backbone) and text encoder trained together on real (sprite, text, entry) triples: contrastive alignment plus each side's own heads.

@@ -9,6 +9,7 @@ abilities -> learnset -> name. K complete candidates are sampled and one is pick
 Every move and ability comes from the existing inventory; names never repeat a real one.
 """
 
+import difflib
 import json
 import re
 
@@ -18,7 +19,7 @@ import torch
 import torch.nn.functional as F
 
 from poketype.dex import DEX, STATS, natural
-from poketype.dex_learnset import LearnsetModel, Tokens, bias_for, cond_vector, generate as generate_learnset
+from poketype.dex_learnset import MoveSetModel, bias_for, cond_vector, sample_learnsets
 from poketype.dex_models import AbilityModel, Heads
 from poketype.dex_stats import SCALE, StatModel
 from poketype.dex_text import Masker, clean_text, species_token
@@ -69,10 +70,11 @@ class DexGenerator:
         self.abil = AbilityModel(b["abilities"]["d_in"], b["abilities"]["n"])
         self.abil.load_state_dict(b["abilities"]["state"])
         ls = b["learnset"]
-        self.tokens = Tokens(ls["moves"])
+        self.moves = ls["moves"]
         self.move_gen = np.array(ls["move_gen"])
-        self.learnset = LearnsetModel(ls["n_tokens"], ls["d_cond"])
+        self.learnset = MoveSetModel(ls["d_cond"], len(self.moves))
         self.learnset.load_state_dict(ls["state"])
+        self.levels = {(int(k.split(":")[0]), int(k.split(":")[1])): np.array(v) for k, v in ls["levels"].items()}
         for m in (self.stats, self.abil, self.learnset):
             m.eval()
         self.t5_tok = AutoTokenizer.from_pretrained(textgen_dir)
@@ -183,8 +185,9 @@ class DexGenerator:
                           "log_h": float(log_h), "log_w": float(log_w),
                           "score": float(knn_lp[ti] + np.log(p_shape[shape]) + np.log(p_color[color]))})
         self._stats(cands, x, rng)
+        self._make_consistent(cands)
         self._abilities(cands, x, era, rng)
-        self._learnsets(cands, emb, era)
+        self._learnsets(cands, emb, era, rng)
         self._genus_and_name(cands, masked, emb, rng, seed)
         best = max(cands, key=lambda c: c["score"] + (0 if c["name"] else -5))
         return self._present(best, text, era), [self._present(c, text, era) for c in cands]
@@ -221,6 +224,17 @@ class DexGenerator:
             c["stage"], c["line_length"] = int(rng.choice(line, p=ps)) + 1, line
             c["rarity"] = int(rng.choice(3, p=aux["rarity"][i].softmax(0).numpy()))
 
+    def _make_consistent(self, cands):
+        """Rules from the games that independently sampled fields can break: No Eggs with a
+        legendary-level total means legendary; legendaries and mythicals are single-stage."""
+        ne = self.v["egg"].index("no-eggs") if "no-eggs" in self.v["egg"] else None
+        for c in cands:
+            bst = sum(c["stats"].values())
+            if ne is not None and c["eggs"] == [ne] and bst >= 570 and c["rarity"] == 0:
+                c["rarity"] = 1
+            if c["rarity"] > 0:
+                c["stage"] = c["line_length"] = 1
+
     def _abilities(self, cands, x, era, rng):
         a = self.b["abilities"]
         X = []
@@ -249,16 +263,23 @@ class DexGenerator:
                     used.add(j)
                     c["abilities"][slot] = int(ids[j])
 
-    def _learnsets(self, cands, emb, era):
+    def _learnsets(self, cands, emb, era, rng):
+        ls = self.b["learnset"]
         cond = np.stack([cond_vector(c["types"], [c["stats"][k] for k in STATS], era, c["stage"],
-                                           c["line_length"], c["stage"] == c["line_length"], c["rarity"], emb)
+                                     c["line_length"], c["stage"] == c["line_length"], c["rarity"], emb)
                          for c in cands])
-        allowed = torch.tensor(np.tile(self.move_gen <= era, (len(cands), 1)))
-        prior = self.b["learnset"].get("prior")
-        bias = None if prior is None else torch.tensor(np.stack([bias_for(prior, c["types"], era) for c in cands]))
-        seqs = generate_learnset(self.learnset, torch.tensor(cond), allowed, move_bias=bias)
-        for c, s in zip(cands, seqs):
-            c["learnset"] = self.tokens.decode(s)
+        bias = np.stack([bias_for(ls["prior"], c["types"], era) for c in cands])
+        logits, size = self.learnset(torch.tensor(cond), torch.tensor(bias))
+        allowed = np.tile(self.move_gen <= era, (len(cands), 1))
+        sets = sample_learnsets(logits.numpy(), size.numpy(), ls["size_sd"], allowed, self.moves, self.levels,
+                                era, rng, ls["temperature"])
+        for c, s in zip(cands, sets):  # moves "on evolution" (level 0) only for evolved Pokemon
+            c["learnset"] = s if c["stage"] > 1 else sorted((max(lv, 1), m) for lv, m in s)
+
+    def too_close(self, name, ratio=0.85):
+        """True if `name` starts a real Pokemon's name or is nearly the same string."""
+        n = name.lower()
+        return any(e.startswith(n) or difflib.SequenceMatcher(None, n, e).ratio() >= ratio for e in self.existing)
 
     def notable_words(self, text, n=4):
         """The rarest content words of a text (by document frequency in the Dex texts)."""
@@ -285,7 +306,7 @@ class DexGenerator:
             parts = {s.strip().lower() for s in w.split(",")}
             ok = [x.strip() for x in ns if NAME_OK.match(x.strip()) and 3 <= len(x.strip()) <= MAX_NAME
                   and x.strip().lower() not in self.existing and x.strip().lower() not in parts
-                  and x.strip().lower() not in self.real_words]
+                  and x.strip().lower() not in self.real_words and not self.too_close(x.strip())]
             c["genus"], c["concepts"], c["name"] = g, w, (ok[0] if ok else None)
 
     def _present(self, c, text, era):

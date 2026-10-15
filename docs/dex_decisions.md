@@ -106,3 +106,20 @@ Without it "Cocoon", "Beetle" and "Molasses" passed as names.
 
 **D31. Learnset model v2: the conditioning is added at every position, and a type-and-era move prior is added to the move logits in training and sampling.** *open*
 v1 ranked moves worse than the prior alone (mAP 0.117 vs 0.271) and its learnsets ignored the Pokémon's types (STAB realism KS 0.71): it overfit sequences and stopped using a conditioning that entered at one position only. With the prior as a built-in starting point, the network only has to learn adjustments (ordering, levels, species-specific moves).
+
+**D32. Learnset model v3: a move-set model replaces the sequence model; levels come from each move's real learn levels in that era; sampled at temperature 0.5.** *open*
+5-fold results: move ranking mAP 0.263 (sequence v2: 0.165; type prior alone: 0.271), type-match realism (STAB KS) 0.087 at temperature 0.5 (sequence v2: 0.50), physical/special alignment with Atk vs SpA 0.55 (real learnsets: 0.71). The sequence model had too little data (~6k learnsets, many near-duplicates across games) to learn both which moves and their order. Remaining weakness: occasional odd picks (Seismic Toss for a caterpillar). Reports: `reports/dex_learnset_set.md`, `reports/dex_learnset_seq.md`.
+
+**D33. Consistency rules after sampling.** *open*
+No Eggs is never paired with another egg group; No Eggs plus a total ≥ 570 makes the entry legendary; legendaries and mythicals are single-stage; moves learned "on evolution" (level 0) only appear from stage 2 on. These are facts about the games that independently sampled fields could otherwise break.
+
+**D34. Names: reject anything that starts a real Pokémon's name or is ≥ 85% similar to one.** *open*
+"Jolte" (Jolteon) passed the earlier filters.
+
+## Known weaknesses (v1)
+
+- **Names** are the weakest field (good: Sagestone, Snowfly, Mansurk; weak: Doomtadulu, Joltt). Next: score the 8 sampled names (T5 likelihood, pronounceability) instead of taking the first that passes.
+- **Genus** is sometimes off ("Light Pokémon" for a candle ghost is fine; "Spiral Pokémon" for a seedling is not).
+- **Body fields** are sampled independently of each other (a humanoid with egg groups Ground and Monster). The shared-embedding stage, and doodles, will supply body information text lacks.
+- **Abilities** can include signature abilities of specific Pokémon (Protosynthesis); handling signatures is a planned later step.
+- **Stage and line length** are sampled from text cues, not from the sampled total, so a low-total Pokémon can be single-stage; real ones exist (Luvdisc), but it is more common than in the games.

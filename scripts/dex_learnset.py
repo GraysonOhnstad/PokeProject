@@ -32,8 +32,9 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 from dex_phase1 import embed  # noqa: E402
 from poketype.dex import DEX, STATS, load, natural  # noqa: E402
-from poketype.dex_learnset import (LearnsetModel, Tokens, bias_for, cond_vector, generate,  # noqa: E402
-                                   move_prior, move_scores, nll)
+from poketype.dex_learnset import (LearnsetModel, MoveSetModel, Tokens, bias_for, cond_vector,  # noqa: E402
+                                   generate, level_table, move_prior, move_scores, nll,
+                                   sample_learnsets)
 
 CSV = ROOT / "data" / "raw" / "csv"
 SAMPLES = 16
@@ -53,6 +54,42 @@ def conditioning(entries, species, text_emb):
                                 s.line_length, s.is_final, 2 if s.is_mythical else 1 if s.is_legendary else 0,
                                 text_emb.get(e["species_id"])))
     return np.stack(rows)
+
+
+def train_set_model(cond, truth, fit_ix, stop_ix, sids, bias, allowed, epochs=200, patience=15, seed=0, log=print):
+    """Move-set model: BCE over moves + squared error on size; stops on the stop set's per-row AP."""
+    torch.manual_seed(seed)
+    model = MoveSetModel(cond.shape[1], truth.shape[1])
+    opt = torch.optim.AdamW(model.parameters(), lr=1e-3, weight_decay=1e-2)
+    c, y, b = torch.tensor(cond), torch.tensor(truth), torch.tensor(bias)
+    size = y.sum(1)
+    w_fit = torch.tensor(entry_weights(sids[fit_ix]))
+    best, state, wait = -1.0, None, 0
+    for epoch in range(1, epochs + 1):
+        model.train()
+        perm = torch.randperm(len(fit_ix))
+        for bb in perm.split(256):
+            ix = fit_ix[bb.numpy()]
+            logits, s = model(c[ix], b[ix])
+            per = (torch.nn.functional.binary_cross_entropy_with_logits(logits, y[ix], reduction="none").sum(1)
+                   + ((s - size[ix]) / 5) ** 2)
+            loss = (per * w_fit[bb]).sum() / w_fit[bb].sum()
+            opt.zero_grad()
+            loss.backward()
+            opt.step()
+        model.eval()
+        with torch.no_grad():
+            logits, _ = model(c[stop_ix], b[stop_ix])
+        v = per_row_ap(truth[stop_ix], logits.numpy(), allowed[stop_ix])
+        if v > best + 1e-4:
+            best, state, wait = v, {k: p.clone() for k, p in model.state_dict().items()}, 0
+        else:
+            wait += 1
+            if wait >= patience:
+                break
+    model.load_state_dict(state)
+    log(f"    set model: best stop AP {best:.3f} at epoch {epoch - wait}")
+    return model.eval()
 
 
 def per_row_ap(y, scores, allowed):
@@ -123,6 +160,11 @@ def realism(lines, entries, move_meta):
 
 
 def main():
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--model", choices=["seq", "set"], default="set")
+    ap.add_argument("--temperature", type=float, default=1.0, help="set model: sampling temperature")
+    args = ap.parse_args()
     torch.set_num_threads(8)
     entries, species = load_entries()
     rows, targets, _ = load()
@@ -169,17 +211,33 @@ def main():
         print(f"fold {f}: fit {len(fit_ix)} / stop {len(stop_ix)} / eval {len(ev)} entries", flush=True)
         prior = move_prior(entries, tokens.moves, fit_ix)
         bias = np.stack([bias_for(prior, e["types"], e["generation"]) for e in entries])
-        model = train_model(cond, seqs, fit_ix, stop_ix, sids, tokens.size, bias)
-
         # one entry per held-out species: its latest game
         latest = pd.Series(ev).groupby(sids[ev]).max().to_numpy()
-        c = torch.tensor(cond[latest]).repeat_interleave(SAMPLES, 0)
-        al = torch.tensor(allowed[latest]).repeat_interleave(SAMPLES, 0)
-        gen = torch.Generator().manual_seed(f)
-        b = torch.tensor(bias[latest]).repeat_interleave(SAMPLES, 0)
-        out = generate(model, c, al, generator=gen, move_bias=b)
-        samples = [out[i * SAMPLES:(i + 1) * SAMPLES] for i in range(len(latest))]
-        scores = move_scores(samples, tokens, n_moves)
+        if args.model == "seq":
+            model = train_model(cond, seqs, fit_ix, stop_ix, sids, tokens.size, bias)
+            c = torch.tensor(cond[latest]).repeat_interleave(SAMPLES, 0)
+            al = torch.tensor(allowed[latest]).repeat_interleave(SAMPLES, 0)
+            gen = torch.Generator().manual_seed(f)
+            b = torch.tensor(bias[latest]).repeat_interleave(SAMPLES, 0)
+            out = generate(model, c, al, generator=gen, move_bias=b)
+            samples = [out[i * SAMPLES:(i + 1) * SAMPLES] for i in range(len(latest))]
+            scores = move_scores(samples, tokens, n_moves)
+            one = [tokens.decode(s[0]) for s in samples]
+            nll_tok = mean_nll(model, torch.tensor(cond), seqs, ev, sids, torch.tensor(bias))
+        else:
+            model = train_set_model(cond, truth, fit_ix, stop_ix, sids, bias, allowed)
+            with torch.no_grad():
+                logits, size = model(torch.tensor(cond[latest]), torch.tensor(bias[latest]))
+                _, size_fit = model(torch.tensor(cond[fit_ix]), torch.tensor(bias[fit_ix]))
+            size_sd = float((size_fit.numpy() - truth[fit_ix].sum(1)).std())
+            scores = torch.sigmoid(logits).numpy()
+            levels = level_table(entries, tokens.moves, fit_ix)
+            rng = np.random.default_rng(f)
+            one = []
+            for r, i in enumerate(latest):
+                one += sample_learnsets(logits[r:r + 1].numpy(), size[r:r + 1].numpy(), size_sd, allowed[i:i + 1],
+                                        tokens.moves, levels, gens[i], rng, args.temperature)
+            nll_tok = float("nan")
 
         # baselines: type prior (same era, sharing a type) and text 10-NN (their latest learnsets)
         tr_latest = pd.Series(tr).groupby(sids[tr]).max().to_numpy()
@@ -196,7 +254,6 @@ def main():
 
         y, al_latest = truth[latest], allowed[latest]
 
-        one = [tokens.decode(s[0]) for s in samples]
         real = [[(lv, m) for lv, m in entries[i]["learnset"]] for i in latest]
         R_gen, R_real = realism(one, [entries[i] for i in latest], move_meta), \
             realism(real, [entries[i] for i in latest], move_meta)
@@ -206,7 +263,7 @@ def main():
             "map_generator": per_row_ap(y, scores, al_latest),
             "map_type_prior": per_row_ap(y, prior, al_latest),
             "map_text_knn": per_row_ap(y, knn, al_latest),
-            "nll_per_token": mean_nll(model, torch.tensor(cond), seqs, ev, sids, torch.tensor(bias)),
+            "nll_per_token": nll_tok,
             "ks_length": float(ks_2samp(R_gen.length, R_real.length)[0]),
             "ks_stab": float(ks_2samp(R_gen.stab, R_real.stab)[0]),
             "ks_max_level": float(ks_2samp(R_gen.max_level, R_real.max_level)[0]),
@@ -220,15 +277,16 @@ def main():
         if f == 0:
             ex = {species.loc[sids[i], "name"]: {"real": entries[i]["learnset"], "sampled": one[r]}
                   for r, i in enumerate(latest[:3])}
-            (ROOT / "results" / "dex_learnset_examples.json").write_text(json.dumps(ex, indent=1))
+            (ROOT / "results" / f"dex_learnset_{args.model}_examples.json").write_text(json.dumps(ex, indent=1))
 
     summary = {k: (float(np.mean([r[k] for r in results])), float(np.std([r[k] for r in results])))
                for k in results[0]}
-    (ROOT / "results" / "dex_learnset.json").write_text(json.dumps({"summary": summary, "folds": results}, indent=1))
-    write_report(summary)
+    (ROOT / "results" / f"dex_learnset_{args.model}.json").write_text(
+        json.dumps({"summary": summary, "folds": results}, indent=1))
+    write_report(summary, args.model)
 
 
-def write_report(s):
+def write_report(s, model):
     f = lambda k, fmt="{:.3f}": fmt.format(s[k][0]) + " ± " + fmt.format(s[k][1])  # noqa: E731
     lines = ["# Dex generator: learnset model", "",
              "5-fold family cross-validation (Gen 5 held out); true upstream fields as input. "
@@ -236,7 +294,7 @@ def write_report(s):
              "| Move ranking (mAP ↑) | |", "|---|---:|",
              f"| Type prior (same era, shared type) | {f('map_type_prior')} |",
              f"| Text 10-nearest-neighbor | {f('map_text_knn')} |",
-             f"| **Generator** (16 samples) | {f('map_generator')} |", "",
+             f"| **Generator: {'sequence model, 16 samples' if model == 'seq' else 'move-set model scores'}** | {f('map_generator')} |", "",
              "| Realism (1 sample vs real) | |", "|---|---:|",
              f"| KS: learnset length ↓ | {f('ks_length')} |",
              f"| Mean length: real / sampled | {s['mean_length_real'][0]:.1f} / {s['mean_length_gen'][0]:.1f} |",
@@ -245,8 +303,8 @@ def write_report(s):
              f"| Physical share vs Atk/(Atk+SpA), rank corr.: real / sampled | "
              f"{s['phys_align_real'][0]:.2f} / {s['phys_align_gen'][0]:.2f} |",
              f"| NLL per token, all held-out entries | {f('nll_per_token')} |", "",
-             "Examples: results/dex_learnset_examples.json."]
-    (ROOT / "reports" / "dex_learnset.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+             f"Examples: results/dex_learnset_{model}_examples.json."]
+    (ROOT / "reports" / f"dex_learnset_{model}.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print("\n".join(lines))
 
 

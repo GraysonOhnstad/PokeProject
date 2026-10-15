@@ -5,7 +5,7 @@ Components (each validated by its own experiment script):
              plus the training embeddings/targets for the 10-NN blend   (dex_phase1.py)
   stats      BST x profile model on text + upstream fields, with stage/rarity heads (dex_stats.py)
   abilities  slot heads on text + upstream + stats                       (dex_abilities.py)
-  learnset   transformer generator                                       (dex_learnset.py)
+  learnset   move-set model on the type-and-era prior + level table      (dex_learnset.py --model set)
   textgen    Flan-T5 for genus, name and flavor text: runs/dex_textgen/ (dex_textgen.py)
 
     py scripts/dex_final.py              # Gen 5 held out (the evaluated configuration)
@@ -111,11 +111,14 @@ def main():
                            "mu_c": mu_c, "sd_c": sd_c}
     log(f"abilities: done ({(time.time() - t0) / 60:.1f} min)")
 
-    # 4. learnset generator on every training entry (all games)
+    # 4. learnset: move-set model (residual on the type-and-era prior) + level table, all games
     t0 = time.time()
     entries, species = dex_learnset.load_entries()
     text_emb = {s: emb[ix].mean(0) for s, ix in rows.groupby("species_id").indices.items()}
-    tokens = dex_learnset.Tokens(sorted({m for e in entries for _, m in e["learnset"]}))
+    moves = sorted({m for e in entries for _, m in e["learnset"]})
+    index = {m: i for i, m in enumerate(moves)}
+    mv = pd.read_csv(ROOT / "data" / "raw" / "csv" / "moves.csv").set_index("id")
+    move_gen = mv.generation_id.reindex(moves).to_numpy()
     e_sid = np.array([e["species_id"] for e in entries])
     e_fold = species.fold.reindex(e_sid).to_numpy()
     e_pool = np.where((e_fold >= 0) | args.with_gen5)[0]
@@ -123,18 +126,26 @@ def main():
     fams = np.unique(chain[e_pool])
     stop_fams = set(np.random.default_rng(0).choice(fams, int(round(0.15 * len(fams))), replace=False))
     is_stop = np.isin(chain[e_pool], list(stop_fams))
-    cond = dex_learnset.conditioning(entries, species, text_emb)
-    seqs = [tokens.encode(e["learnset"]) for e in entries]
     fit_e, stop_e = e_pool[~is_stop], e_pool[is_stop]
     if args.smoke:
         fit_e, stop_e = fit_e[:300], stop_e[:100]
-    prior = dex_learnset.move_prior(entries, tokens.moves, fit_e)
+    cond = dex_learnset.conditioning(entries, species, text_emb)
+    truth = np.zeros((len(entries), len(moves)), np.float32)
+    allowed = move_gen[None, :] <= np.array([e["generation"] for e in entries])[:, None]
+    for i, e in enumerate(entries):
+        for _, m in e["learnset"]:
+            truth[i, index[m]] = 1
+            allowed[i, index[m]] = True
+    prior = dex_learnset.move_prior(entries, moves, fit_e)
     bias = np.stack([dex_learnset.bias_for(prior, e["types"], e["generation"]) for e in entries])
-    ls_model = dex_learnset.train_model(cond, seqs, fit_e, stop_e, e_sid, tokens.size, bias, epochs=ep(60), log=log)
-    mv = pd.read_csv(ROOT / "data" / "raw" / "csv" / "moves.csv").set_index("id")
-    bundle["learnset"] = {"d_cond": cond.shape[1], "n_tokens": tokens.size, "moves": tokens.moves,
-                          "move_gen": mv.generation_id.reindex(tokens.moves).tolist(),
-                          "state": ls_model.state_dict(), "prior": prior}
+    ls_model = dex_learnset.train_set_model(cond, truth, fit_e, stop_e, e_sid, bias, allowed, epochs=ep(200), log=log)
+    with torch.no_grad():
+        _, size_fit = ls_model(torch.tensor(cond[fit_e]), torch.tensor(bias[fit_e]))
+    levels = dex_learnset.level_table(entries, moves, fit_e)
+    bundle["learnset"] = {"kind": "set", "d_cond": cond.shape[1], "moves": moves, "move_gen": move_gen.tolist(),
+                          "state": ls_model.state_dict(), "prior": prior, "temperature": 0.5,
+                          "size_sd": float((size_fit.numpy() - truth[fit_e].sum(1)).std()),
+                          "levels": {f"{g}:{m}": v.tolist() for (g, m), v in levels.items()}}
     log(f"learnset: done ({(time.time() - t0) / 60:.1f} min)")
 
     torch.save(bundle, out_dir / "dex.pt")
