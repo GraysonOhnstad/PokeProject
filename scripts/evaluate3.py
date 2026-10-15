@@ -122,10 +122,17 @@ def inference_time(bundle, paths, n=50):
             "max_s": max(times), "members": len(cpu.models), "threads": torch.get_num_threads()}
 
 
+FEATURED = [607, 608, 609, 614]  # Litwick, Lampent, Chandelure (Ghost/Fire), Beartic (Ice): the deck's examples
+
+
 def example_grid(pred, rows, probs, path, n=12, seed=0):
-    """Random primary-test sprites: prediction vs truth, and (attention models) where the
-    model looked for its top predicted type."""
-    pick = np.random.default_rng(seed).choice(len(rows), min(n, len(rows)), replace=False)
+    """Primary-test sprites (the featured Pokemon, then a seeded random fill): prediction
+    vs truth, and (attention models) where the model looked for its top predicted type."""
+    featured = [i for i in np.flatnonzero(rows["pokemon_id"].isin(FEATURED).to_numpy())
+                if not rows["is_female_variant"].iloc[i]]
+    rest = np.setdiff1d(np.arange(len(rows)), featured)
+    fill = np.random.default_rng(seed).choice(rest, max(0, min(n, len(rows)) - len(featured)), replace=False)
+    pick = np.concatenate([featured, fill]).astype(int)
     dl = loader(rows.iloc[pick].reset_index(drop=True),
                 {"size": pred.size, "input_size": pred.input_size, "mean": pred.mean, "std": pred.std})
     attention = torch.cat([a for a in (pred.batch(x)[1] for x, *_ in dl) if a is not None] or [torch.empty(0)])
