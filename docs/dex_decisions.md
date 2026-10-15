@@ -94,3 +94,6 @@ Types are scored by the text 10-NN alone, so the picker is partly independent of
 
 **D27. v1 text generators come from the fold-0 experiment (trained on 80% of the training pool).** *open*
 Retraining T5 on the whole pool costs another ~2 hours of CPU; the gain is modest. Do it on the desktop with the final refit.
+
+**D28. Fine-tuned MiniLM is adopted for types only; other fields stay on frozen-encoder heads.** *open*
+5-fold result: fine-tuned + kNN reaches types mAP 0.354 (top-1 45.9%) vs 0.339 (42.5%) for the frozen MLP + kNN, which clears the +0.01 keep rule. Egg groups, body, stats and abilities show no gain beyond noise. Best epochs are 2–4, so a final fine-tune is ~2 hours on CPU or minutes on the desktop. Not yet in the generator (v1 uses frozen embeddings; D23); planned for the desktop run with the final refit.
