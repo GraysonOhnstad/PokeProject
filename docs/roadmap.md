@@ -44,6 +44,11 @@ One Gradio app, one process, models loaded lazily:
 - **Pokédex** tab: flavor text + era → a Pokédex-style page (sprite, name, genus, types, stat bars, abilities, learnset, height/weight, cry, read-aloud).
 - **Draw your own** tab (optional): upload a drawing → types and body from the image → the rest of the entry.
 
+Honest about memorization: each model's genuine predictions are on Pokémon it never trained on.
+- Classifier tab: an upload whose perceptual hash matches a training sprite is labeled "in the training set"; Gen 5 sprites and new drawings are genuine predictions.
+- Pokédex tab: input text that closely matches a real entry gets a note naming that Pokémon.
+- Originality checks on every generated entry, before sample-and-pick: name not an existing one; sprite not a near-copy of any real sprite (perceptual hash and shared-embedding similarity); stat line/learnset flagged when several fields match a real Pokémon exactly.
+
 Runs on the desktop GPU behind a Gradio share link; on CPU, everything but sprite generation works (slowly), so the page says so instead of failing. Weights on GitHub Releases.
 
 ## 7. Later
