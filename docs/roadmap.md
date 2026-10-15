@@ -19,6 +19,7 @@ text → types → genus, body (height, weight, shape, color, egg groups) → st
 - [x] Per-game dataset: period-correct types, stats, abilities, level-up learnsets; texts masked by role.
 - [x] Baselines and first trained heads (`dex_phase1.py`, `reports/dex_phase1.md`).
 - [ ] Fine-tuned text encoder (running).
+- [ ] Evolution stage, line length and position as extra targets for the stat model (stage strongly predicts BST).
 - [ ] Stat line: BST distribution × stat-share Dirichlet conditioned on BST; judged by BST rank correlation, interval coverage and realism, not MAE.
 - [ ] Abilities from the existing inventory; learnset generator (autoregressive over existing moves, with levels).
 - [ ] Genus and name generation (concept extraction → pun; filters: not an existing name or real word, pronounceable, ≤ 12 characters).
@@ -48,8 +49,10 @@ One Gradio app, one process, models loaded lazily:
 - **Type classifier** tab: one upload, two answers side by side: the course model (unchanged) and the improved model trained with Dex data (both Gen 5 held out), each with types, confidence, time and attention.
 - **Pokédex** tab: one fake Pokédex, models refit with Gen 5.
   - Input: flavor text, a doodle drawn in the browser (Gradio sketchpad), or both; era selector. When there is a doodle, a slider under it sets how closely the sprite follows it.
-  - Output: one entry (name, genus, types, stat bars, abilities, learnset, height/weight, flavor text, cry, read-aloud) whose picture has a sprite/doodle toggle. The doodle side shows the user's own doodle when there is one, otherwise the sketchified generated sprite.
-  - Doodle-only input has no flavor text: generate one (the genus/name language model, fine-tuned to write Dex text from the entry and image embedding; species tokens filled with real names). Until that exists, show "Data not yet recorded".
+  - Output: one entry (name, genus, types, stat bars, abilities, learnset, height/weight, flavor text, cry, read-aloud) whose picture has a sprite/doodle toggle.
+    - Doodle view: the user's own doodle, or (text-only input) the sketchified generated sprite.
+    - Sprite view: a purely generated sprite, or one sprite-ified from the doodle at the strength set on submission. "Regenerate" makes another version at a new strength or seed; every version is kept in a per-entry gallery (strength and seed recorded, favorite pinned as the entry's sprite, downloadable), so rerolling never loses a good one.
+  - Flavor text: the user's own, or generated for doodle-only input (the genus/name language model fine-tuned to write Dex text from the entry and image embedding; species tokens filled with real names).
 
 Honest about memorization: each model's genuine predictions are on Pokémon it never trained on.
 - Classifier tab: an upload whose perceptual hash matches a training sprite is labeled "in the training set"; Gen 5 sprites and new drawings are genuine predictions.
@@ -59,4 +62,5 @@ Honest about memorization: each model's genuine predictions are on Pokémon it n
 Runs on the desktop GPU behind a Gradio share link; on CPU, everything but sprite generation works (slowly), so the page says so instead of failing. Weights on GitHub Releases.
 
 ## 7. Later
-Evolution lines (family generation, evolution method and level), then signature moves and abilities.
+- Evolution lines generated in the background for every entry: decide line length and the entry's position, then the other members conditioned on it (types gained or kept, profile carried through, learnsets extended, size and genus), with evolution methods and levels. Trained on real families only; kept for the single-entry fields only if it improves them on held-out families. The Pokédex can show the line, with members' sprites generated on demand.
+- Signature moves and abilities.
