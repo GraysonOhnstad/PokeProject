@@ -142,3 +142,17 @@ Trained to rank real names above other splices, it put the real name first only 
 
 **D39. Generated names must not be in WordNet either; name ideas exclude inflected verbs and pairs that share 5+ letters.** *open*
 The encoder's 30k-word list missed "haunches", "fluffing" and "ration". Ideas like "wandering" and "sinking" made half the names end in "-ing"; "twilight" + "lighting" produced "Lighlight".
+
+## Name inspiration (after your mantis-shrimp / dragonfly feedback)
+
+**D40. Names start from what the text describes, found by a local instruction model and verified on Wikipedia.** *open*
+Llama 3.1 8B Instruct (4-bit GGUF, ~4.9 GB, llama.cpp) proposes the real-world basis as Wikipedia titles; each must resolve to a real article (not a disambiguation or Pokémon page) whose introduction matches the text. A failed proposal is retried by its head noun ("Electric mouse" → "Mouse"). Tested on five made-up texts against Qwen2.5 0.5B/1.5B/3B/7B and Phi-3.5-mini; only Llama 3.1 8B got all five (mantis shrimp from "punches so fast the water boils", Meganeura for the dragonfly, will-o'-the-wisp for the candle ghost). Speed: ~3–8 s per answer on the laptop CPU, well under a second on a gaming GPU. License: Llama 3.1 Community License ("Built with Llama" credit). Offline WordNet-definition matching was tried first and failed the hard cases (mantis shrimp → reef fish).
+
+**D41. Facts are quoted only from Wikipedia, never written by the model.** *open*
+Facts are the article's sentences with extremes, numbers, deep time, folklore or odd abilities, ranked by fit with the text; the one shown is the fact closest to the chosen name ideas. Shown with "Wikipedia: <article>, CC BY-SA 4.0". All responses are cached (`data/dex/wiki_cache/`, `data/dex/llm_cache/`).
+
+**D42. A name pairs a basis word (the creature's own name, head noun first) with an inspired concept.** *open*
+Concepts: the model's name ingredients from the description, basis and facts (55%), proper names in the facts like Meganeura (15%), and the offline association/canon pools (15% each). The basis word may come from the text itself: the creature's name is welcome even when typed literally. Without the model or offline, the generator falls back to the offline pools (D35).
+
+**D43. The category ("the X Pokémon") comes from the model when a basis is found, with 4 canon examples in the prompt; Flan-T5 is the fallback.** *open*
+"Balloon Pokémon" for a mantis shrimp broke the coherence; the inspired options are "Puncher", "Lantern", "Boulder", "Shock".

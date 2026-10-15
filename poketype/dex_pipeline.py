@@ -22,12 +22,15 @@ import torch.nn.functional as F
 from poketype.dex import DEX, STATS, natural
 from poketype.dex_learnset import MoveSetModel, bias_for, cond_vector, sample_learnsets
 from poketype.dex_models import AbilityModel, Heads
+from poketype.dex_inspire import Inspiration
 from poketype.dex_names import NameScorer, blocked, rank
+from poketype.dex_wiki import fact_terms
 from poketype.dex_stats import SCALE, StatModel
 from poketype.dex_text import Masker, clean_text, species_token
 from poketype.labels import TYPES
 
 MAX_NAME = 12
+DEFAULT_LLM = DEX.parent / "models" / "Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf"  # name inspiration
 PAIRS = 3  # idea pairs tried per candidate
 STOPWORDS = set("""about above after again against also among around because been before being below
 between both could does doing done down during each either even ever every from further have having here
@@ -133,7 +136,8 @@ def one_hot(i, n):
 
 
 class DexGenerator:
-    def __init__(self, bundle, textgen_dir, threads=8):
+    def __init__(self, bundle, textgen_dir, threads=8, llm=DEFAULT_LLM):
+        """llm: GGUF instruction model for name inspiration (None or missing file: offline idea pools)."""
         torch.set_num_threads(threads)
         from transformers import AutoModel, AutoModelForSeq2SeqLM, AutoTokenizer
         b = torch.load(bundle, weights_only=False)
@@ -175,6 +179,10 @@ class DexGenerator:
                              {s: (None if pd.isna(p) else int(p)) for s, p in species.evolves_from_species_id.items()},
                              lambda s, g: species_token(latest[s], genus[s]))
         self._naming_data(species, bundle)
+        self.inspiration = None
+        if llm and Path(llm).exists():
+            self.inspiration = Inspiration(llm, self.embed_many, english=lambda w: w in self.real_words,
+                                           n_threads=threads)
 
     def _naming_data(self, species, bundle):
         """Name-concept vocabulary (canon source words of the species this config trained on, with
@@ -289,7 +297,8 @@ class DexGenerator:
         self._make_consistent(cands)
         self._abilities(cands, x, era, rng)
         self._learnsets(cands, emb, era, rng)
-        self._genus_and_name(cands, masked, emb, rng, seed)
+        insp = self.inspiration(natural(masked)) if self.inspiration else None
+        self._genus_and_name(cands, masked, emb, rng, seed, insp)
         best = max(cands, key=lambda c: c["score"] + (0 if c["name"] else -5))
         return self._present(best, text, era), [self._present(c, text, era) for c in cands]
 
@@ -388,13 +397,27 @@ class DexGenerator:
         words = [w for w in dict.fromkeys(words) if len(w) > 3 and w not in TYPE_WORDS and w in self.real_words]
         return sorted(words, key=lambda w: -self.idf.get(w, 8.0))[:n]
 
-    def name_ideas(self, text, emb, per_word=5, n_context=8, n_canon=6):
+    def name_ideas(self, text, emb, insp=None, per_word=5, n_context=8, n_canon=6):
         """Pools of name ideas for a text, from the literal to the associated:
-        literal  its rarest content words (also the genus), a low-weight fallback
+        basis    words of what the text describes (mantis, shrimp), from `insp` (dex_inspire)
+        concepts name ingredients capturing the basis and its Wikipedia facts, from `insp`
+        facts    scientific and proper names in those facts (meganeuropsis, carboniferous)
+        literal  the text's rarest content words (also the genus), a low-weight fallback
         assoc    words nearest each literal word by meaning (candle -> lantern, torch)
         context  words nearest the whole text's meaning
         canon    canon name-origin words nearest the text's meaning
-        No idea shares a root with a literal word, so names don't just echo the text."""
+        Apart from the basis, no idea shares a root with a literal word, so names don't echo the text."""
+        ideas = self._offline_ideas(text, emb, per_word, n_context, n_canon)
+        ideas.update(basis=[], concepts=[], facts=[])
+        if insp and insp["basis"]:
+            ideas["basis"] = [w for w in insp["basis_words"] if nameworthy(w) or w not in self.real_words][:4]
+            ideas["concepts"] = [w for w in insp["concepts"] if not blocked(w)
+                                 and not any(same_root(w, b) for b in ideas["basis"])][:8]
+            terms = fact_terms([s for s, _ in insp["facts"]], nameworthy, self.real_words)
+            ideas["facts"] = [t for t, kind in terms if kind == "proper" and not blocked(t)][:6]
+        return ideas
+
+    def _offline_ideas(self, text, emb, per_word, n_context, n_canon):
         literal = [w for w in self.notable_words(text, n=6) if nameworthy(w)][:4]
         taken = list(literal)
 
@@ -420,7 +443,22 @@ class DexGenerator:
         return {"literal": literal, "assoc": assoc, "context": context, "canon": canon}
 
     def _pick_pair(self, ideas, rng, weights=(("assoc", 0.35), ("canon", 0.3), ("context", 0.25), ("literal", 0.1))):
-        """Two ideas from different pools, never sharing a root; literal words are rare picks."""
+        """Two ideas from different pools, never sharing a root; literal words are rare picks.
+        With a basis, the first idea is a basis word (earlier ones likelier) and the second mostly
+        an inspired concept: the creature plus something striking about it."""
+        if ideas.get("basis"):
+            basis = ideas["basis"]
+            wb = np.array([1 / (i + 1) ** 2 for i in range(len(basis))])  # the head noun dominates
+            a = basis[rng.choice(len(basis), p=wb / wb.sum())]
+            items, w = [], []
+            for pool, weight in (("concepts", 0.55), ("facts", 0.15), ("assoc", 0.15), ("canon", 0.15)):
+                ok = [x for x in ideas[pool] if not same_root(x, a) and shared_piece(x, a) < 5]
+                for x in ok:
+                    items.append(x)
+                    w.append(weight / len(ok))
+            if items:
+                w = np.array(w) / sum(w)
+                return f"{a}, {items[rng.choice(len(items), p=w)]}"
         items, w = [], []
         for pool, weight in weights:
             for x in ideas[pool]:
@@ -438,16 +476,20 @@ class DexGenerator:
         b = rest[rng.choice(len(rest), p=rw / rw.sum())][1]
         return f"{a[0]}, {b[0]}"
 
-    def _genus_and_name(self, cands, masked, emb, rng, seed):
+    def _genus_and_name(self, cands, masked, emb, rng, seed, insp=None):
         """Genus from T5. Name: two ideas from `name_ideas` (mostly associated words, not the
         text's own), blended by T5, then filtered (one capitalized word, 3-12 characters, not a
         real Pokemon or close to one, not an English word)."""
         txt = bracketed(masked)
         src = [f"genus | types: {'/'.join(c['types'])} | text: {txt}" for c in cands]
         genus = [" ".join(dict.fromkeys(g[0].strip().split())) for g in self.t5(src, seed=seed)]
+        if insp and insp.get("genus"):  # the inspired category, first option likeliest; T5's is the fallback
+            options = insp["genus"]
+            p = np.array([1 / (i + 1) for i in range(len(options))])
+            genus = [options[rng.choice(len(options), p=p / p.sum())] for _ in cands]
         pairs = []  # PAIRS idea pairs per candidate, 8 names each
         for c, g in zip(cands, genus):
-            c["name_ideas"] = ideas = self.name_ideas(masked + " " + g, emb)
+            c["name_ideas"] = ideas = self.name_ideas(masked + " " + g, emb, insp)
             pairs += [self._pick_pair(ideas, rng) or g.lower() for _ in range(PAIRS)]
         names = self.t5([f"name | {w}" for w in pairs], n=8, max_new=12, seed=seed + 2)
         for i, (c, g) in enumerate(zip(cands, genus)):
@@ -467,6 +509,20 @@ class DexGenerator:
                         break
             c["genus"] = g
             c["name"], c["concepts"] = (best[1], best[2]) if best else (None, pairs[i * PAIRS])
+            c["inspiration"] = self._provenance(insp, c["concepts"], emb) if insp and insp["basis"] else None
+
+    def _provenance(self, insp, pair, text_vec):
+        """What the name draws on: the basis articles and the fact closest in meaning to the
+        chosen ideas and the description (the main basis's facts slightly preferred)."""
+        fact = None
+        if insp["facts"]:
+            sents = [s for s, _ in insp["facts"]]
+            target = self.embed_many([pair])[0] + text_vec
+            main = insp["basis"][0][0]
+            score = self.embed_many(sents) @ target + np.array([0.05 * (t == main) for _, t in insp["facts"]])
+            fact = insp["facts"][int(np.argmax(score))]
+        return {"based_on": [b[0] for b in insp["basis"]],
+                "fact": fact[0] if fact else None, "fact_source": fact[1] if fact else None}
 
     def _present(self, c, text, era):
         st = c["stats"]
@@ -481,5 +537,6 @@ class DexGenerator:
             "evolution": {"stage": c["stage"], "line_length": c["line_length"]},
             "rarity": ["normal", "legendary", "mythical"][c["rarity"]],
             "era": era, "flavor_text": text, "name_concepts": c["concepts"], "name_ideas": c.get("name_ideas"),
+            "inspiration": c.get("inspiration"),
             "score": round(c["score"], 3),
         }

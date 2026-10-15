@@ -15,7 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
-from poketype.dex_pipeline import DexGenerator  # noqa: E402
+from poketype.dex_pipeline import DEFAULT_LLM, DexGenerator  # noqa: E402
 
 
 def show(e):
@@ -34,6 +34,11 @@ def show(e):
                   + (f"   Hidden: {ab['hidden']}" if "hidden" in ab else "")]
     lines += ["", "Level-up moves:"]
     lines += [f"  {'Evo' if lv == 0 else lv:>3}  {m}" for lv, m in e["learnset"]]
+    insp = e.get("inspiration")
+    if insp:
+        lines += ["", f"Inspired by: {', '.join(insp['based_on'])}"]
+        if insp["fact"]:
+            lines.append(f'  "{insp["fact"]}" (Wikipedia: {insp["fact_source"]}, CC BY-SA 4.0)')
     lines += ["", f"(name built from: {e['name_concepts']})"]
     if e.get("name_ideas"):
         lines.append("(name ideas: " + "; ".join(f"{k}: {', '.join(v)}" for k, v in e["name_ideas"].items() if v) + ")")
@@ -49,9 +54,10 @@ def main():
     p.add_argument("--bundle", default=str(ROOT / "runs" / "dex" / "gen5_heldout" / "dex.pt"))
     p.add_argument("--textgen", default=str(ROOT / "runs" / "dex_textgen"))
     p.add_argument("--json", action="store_true")
+    p.add_argument("--no-llm", action="store_true", help="skip name inspiration (offline idea pools only)")
     args = p.parse_args()
     t0 = time.time()
-    gen = DexGenerator(args.bundle, args.textgen)
+    gen = DexGenerator(args.bundle, args.textgen, llm=None if args.no_llm else DEFAULT_LLM)
     t1 = time.time()
     entry, _ = gen.generate(args.text, era=args.era, k=args.candidates, seed=args.seed)
     if args.json:
