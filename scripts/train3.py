@@ -38,13 +38,14 @@ from poketype.typenet import IMAGENET_MEAN, IMAGENET_STD, TypeNet, type_targets_
 
 RUNS = ROOT / "runs" / "r3"
 LR_DEFAULTS = {"resnet18": 3e-4, "resnet50": 3e-4, "convnext_tiny": 1e-4}
+TRAIN_EVAL_N = 2000  # training images scored after training, for the generalization gap
 
 # Round 2's final settings: the starting point for every backbone.
 BASE = dict(backbone="resnet18", pool="avg", attn_lambda=0.2, learn_lambda=False, head="sigmoid",
             pair_boost=False, pair_l2=0.01, aux_weight=0.0, lr=None, backbone_lr_mult=1.0,
             weight_decay=0.05, dropout=0.5, mixup=0.4, epochs=60, warmup=2, patience=10, batch_size=64,
             aug_strong=False, bg_prob=0.0, weight_alpha=1.0, size=96, input_size=192, bw_style=False,
-            seed=0, limit=None)
+            tap="final", seed=0, limit=None)
 
 
 def config_id(cfg):
@@ -115,7 +116,7 @@ def train_fold(cfg, fold, run_dir, workers=4, quiet=False, save_weights=True):
     aux_sizes = {k: len(v) for k, v in vocab.items()} if cfg["aux_weight"] > 0 else {}
     model = TypeNet(cfg["backbone"], pool=cfg["pool"], head=cfg["head"], pair_boost=cfg["pair_boost"],
                     aux_sizes=aux_sizes, dropout=cfg["dropout"], attn_lambda=cfg["attn_lambda"],
-                    learn_lambda=cfg["learn_lambda"]).to(device)
+                    learn_lambda=cfg["learn_lambda"], tap=cfg["tap"]).to(device)
 
     tf = TrainTransform(IMAGENET_MEAN, IMAGENET_STD, upscale, strong=cfg["aug_strong"], bg_prob=cfg["bg_prob"])
     train_ds = PokeTypeDataset(train_rows, tf, form_weights(train_rows, cfg["weight_alpha"]), size=folder,
@@ -206,6 +207,19 @@ def train_fold(cfg, fold, run_dir, workers=4, quiet=False, save_weights=True):
             if since >= cfg["patience"]:
                 break
 
+    # Generalization gap: the best checkpoint scored on a fixed sample of training images
+    # (no augmentation) vs on validation. A large gap means capacity went into memorizing.
+    model.load_state_dict(best_state)
+    model.eval()
+    sample = train_rows.sample(min(TRAIN_EVAL_N, len(train_rows)), random_state=0).reset_index(drop=True)
+    sample_dl = DataLoader(PokeTypeDataset(sample, eval_transform(IMAGENET_MEAN, IMAGENET_STD, upscale), size=folder),
+                           batch_size=cfg["batch_size"], num_workers=workers, pin_memory=amp)
+    with torch.no_grad():
+        train_probs = torch.cat([model.type_probs(model(xb.to(device))["logits"].float()).cpu()
+                                 for xb, *_ in sample_dl]).numpy()
+    train_map = evaluate(targets(sample), train_probs, 0.5)["mAP"]
+    n_params = sum(p.numel() for p in model.parameters())
+
     ckpt = {"version": 3, "model": best_state, "model_cfg": model.cfg, "train_cfg": copy.deepcopy(cfg),
             "fold": fold, "epoch": best_epoch, "mean": IMAGENET_MEAN, "std": IMAGENET_STD,
             "size": cfg["size"], "input_size": cfg["input_size"]}
@@ -213,6 +227,7 @@ def train_fold(cfg, fold, run_dir, workers=4, quiet=False, save_weights=True):
         save_robust(lambda f: torch.save(ckpt, f), run_dir / "best.pt")
     save_robust(lambda f: np.save(f, best_probs), run_dir / "val_probs.npy")
     result = {"fold": fold, "val_mAP": best, "best_epoch": best_epoch, "epochs_run": epoch,
+              "train_mAP": train_map, "gap": train_map - best, "params": n_params,
               "n_val": len(val_rows),
               "val_paths_hash": hashlib.sha1("".join(val_rows["path"]).encode()).hexdigest()[:10]}
     (run_dir / "result.json").write_text(json.dumps(result, indent=1))

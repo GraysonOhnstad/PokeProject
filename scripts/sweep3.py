@@ -8,14 +8,17 @@ on all 5 folds (each fold's model trains on the other 4 folds' families):
   predictions with one second-type threshold tuned (for per-image F1) on all of them.
 
   Stage 0  baseline: round 2's final settings on this backbone
-  Stage 1  attention pooling (fixed vs learned mix weight)   keep if mAP > current + 0.01
-  Stage 2  auxiliary heads (egg group/shape/color, 0.1 / 0.5) keep if mAP > current + 0.01
-  Stage 3  set-valued output (no pair term / boost-only pair term)
+  Stage 1  feature tap: stage-3 features (fewer layers, 12x12 map) keep if mAP > current + 0.01
+  Stage 2  attention pooling (fixed vs learned mix weight)   keep if mAP > current + 0.01
+  Stage 3  auxiliary heads (egg group/shape/color, 0.1 / 0.5) keep if mAP > current + 0.01
+  Stage 4  set-valued output (no pair term / boost-only pair term)
                                          keep if F1 > current + 0.01 and mAP >= current - 0.01
-  Stage 4  Optuna (TPE, no pruning): N_TRIALS configurations of all continuous settings,
-           structure fixed by stages 1-3; the stage-3 winner is trial 0
-  Stage 5  top 3 Optuna configurations re-run with a second seed; winner = best mean of
+  Stage 5  Optuna (TPE, no pruning): N_TRIALS configurations of all continuous settings,
+           structure fixed by stages 1-4; the stage-4 winner is trial 0
+  Stage 6  top 3 Optuna configurations re-run with a second seed; winner = best mean of
            both seeds (10 models)
+Every configuration also records its generalization gap: training-sample mAP minus
+validation mAP, from the best checkpoint (a large gap = capacity spent memorizing).
 Then the backbones' winners are compared on that 10-model mean, and the overall winner
 is also trained with Black/White-style sprites (both seeds) for the ablation.
 
@@ -92,7 +95,7 @@ def evaluate_config(cfg, label, m, workers):
     if (cdir / "summary.json").exists():
         return json.loads((cdir / "summary.json").read_text())
     print(f"\n>>> {label} [{cid}]", flush=True)
-    fold_maps, probs, ys = [], [], []
+    fold_maps, train_maps, probs, ys = [], [], [], []
     for fold in range(K):
         t0 = time.time()
         cached = (cdir / f"fold{fold}" / "result.json").exists()
@@ -100,6 +103,7 @@ def evaluate_config(cfg, label, m, workers):
         if not cached:
             PROGRESS.add(time.time() - t0)
         fold_maps.append(res["val_mAP"])
+        train_maps.append(res["train_mAP"])
         probs.append(np.load(cdir / f"fold{fold}" / "val_probs.npy"))
         ys.append(val_targets(m, fold))
         print(f"  fold {fold}: val mAP {res['val_mAP']:.3f} (epoch {res['best_epoch']})", flush=True)
@@ -109,7 +113,9 @@ def evaluate_config(cfg, label, m, workers):
     summary = {"id": cid, "label": label, "cfg": cfg, "mAP": statistics.mean(fold_maps),
                "mAP_sd": statistics.stdev(fold_maps), "fold_mAPs": fold_maps, "oof_mAP": ev["mAP"],
                "f1": ev["sample_f1"], "exact": ev["exact_match"], "top1": ev["top1_in_types"],
-               "dual_predicted": ev["dual_predicted"], "threshold": th}
+               "dual_predicted": ev["dual_predicted"], "threshold": th,
+               "train_mAP": statistics.mean(train_maps),
+               "gap": statistics.mean(train_maps) - statistics.mean(fold_maps), "params": res["params"]}
     (cdir / "summary.json").write_text(json.dumps(summary, indent=1))
     with open(RESULTS, "a", encoding="utf-8") as f:
         f.write(json.dumps(summary) + "\n")
@@ -118,7 +124,8 @@ def evaluate_config(cfg, label, m, workers):
 
 def fmt(s):
     return (f"mAP {s['mAP']:.3f} (folds +/- {s['mAP_sd']:.3f}), F1 {s['f1']:.3f}, exact {s['exact']:.3f}, "
-            f"top type {s['top1']:.3f}, predicts dual {s['dual_predicted']:.0%}")
+            f"top type {s['top1']:.3f}, predicts dual {s['dual_predicted']:.0%}, "
+            f"train-val gap {s['gap']:.3f} ({s['params'] / 1e6:.1f}M params)")
 
 
 def structural_stages(backbone, m, workers):
@@ -126,6 +133,7 @@ def structural_stages(backbone, m, workers):
     cur = evaluate_config(cfg, f"{backbone} baseline", m, workers)
     log(f"\n### {backbone}\n\n- Stage 0 baseline (round-2 settings): {fmt(cur)}")
     stages = [
+        ("feature tap", "map", {"tap_stage3": {"tap": "stage3"}}),
         ("attention pooling", "map", {"attn_fixed": {"pool": "attn"},
                                       "attn_learned": {"pool": "attn", "learn_lambda": True}}),
         ("auxiliary heads", "map", {"aux0.1": {"aux_weight": 0.1}, "aux0.5": {"aux_weight": 0.5}}),
@@ -160,7 +168,7 @@ def optuna_stage(backbone, cfg, m, workers, n_trials):
     study = optuna.create_study(storage=storage, study_name=f"r3_{backbone}", direction="maximize",
                                 load_if_exists=True,
                                 sampler=optuna.samplers.TPESampler(seed=0, n_startup_trials=8, multivariate=True))
-    structure = {k: cfg[k] for k in ("pool", "learn_lambda", "head", "pair_boost")}
+    structure = {k: cfg[k] for k in ("tap", "pool", "learn_lambda", "head", "pair_boost")}
     aux_on = cfg["aux_weight"] > 0
 
     def trial_params(t):
@@ -212,7 +220,7 @@ def optuna_stage(backbone, cfg, m, workers, n_trials):
         if structure["pair_boost"]:
             first["pair_l2"] = cfg["pair_l2"]
         study.enqueue_trial(first)
-        log(f"\n  Stage 4 Optuna: {n_trials} trials, structure {structure}")
+        log(f"\n  Stage 5 Optuna: {n_trials} trials, structure {structure}")
     # A trial cut off by an interruption stays "running" in the study forever; queue its
     # settings once more (its finished folds are cached), unless they already completed
     # or are already queued.
@@ -234,7 +242,7 @@ def optuna_stage(backbone, cfg, m, workers, n_trials):
 
 
 def confirm_stage(backbone, ranked, m, workers):
-    log("\n  Stage 5: top 3 re-run with a second seed")
+    log("\n  Stage 6: top 3 re-run with a second seed")
     seen, finalists = set(), []
     for c, number, value in ranked:
         if config_id(c) in seen:
@@ -270,13 +278,13 @@ def main():
               f"Free some space first (Ctrl+C to stop).", flush=True)
     log(f"\n## Round 3 sweep started {datetime.now():%Y-%m-%d %H:%M} (backbones: {', '.join(args.backbones)}; "
         f"{args.trials} Optuna trials each; 5-fold CV; no pruning)")
-    planned = len(args.backbones) * (7 + args.trials + 3) * K + 2 * K
+    planned = len(args.backbones) * (8 + args.trials + 3) * K + 2 * K
     winners = {}
     for i, bb in enumerate(args.backbones):
         cfg, _ = structural_stages(bb, m, args.workers)
         ranked = optuna_stage(bb, cfg, m, args.workers, args.trials)
         winners[bb] = confirm_stage(bb, ranked, m, args.workers)
-        left = planned - (i + 1) * (7 + args.trials + 3) * K
+        left = planned - (i + 1) * (8 + args.trials + 3) * K
         log(f"  ({PROGRESS.done} runs trained this session; remaining estimate {PROGRESS.eta(left)})")
 
     overall = max(winners, key=lambda b: winners[b][0])

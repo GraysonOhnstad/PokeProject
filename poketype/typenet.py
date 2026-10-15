@@ -49,22 +49,37 @@ def set_index(type_idx):
 
 
 class Backbone(nn.Module):
-    """Pretrained feature extractor returning a (B, C, H, W) feature map."""
+    """Pretrained feature extractor returning a (B, C, H, W) feature map.
 
-    def __init__(self, name, pretrained=True):
+    tap="final" uses the whole network (a 6 x 6 map at 192 px input); tap="stage3" stops
+    one stage early: fewer layers and parameters, a 12 x 12 map, and less abstract
+    features. Comparing the two tests whether the last stage mostly adds memorization."""
+
+    def __init__(self, name, pretrained=True, tap="final"):
         super().__init__()
+        if tap not in ("final", "stage3"):
+            raise ValueError(f"unknown tap {tap}")
         if name in ("resnet18", "resnet50"):
             weights = {"resnet18": models.ResNet18_Weights.IMAGENET1K_V1,
                        "resnet50": models.ResNet50_Weights.IMAGENET1K_V2}[name] if pretrained else None
             net = getattr(models, name)(weights=weights)
-            self.body = nn.Sequential(net.conv1, net.bn1, net.relu, net.maxpool,
-                                      net.layer1, net.layer2, net.layer3, net.layer4)
-            self.channels = net.fc.in_features
+            stages = [net.conv1, net.bn1, net.relu, net.maxpool, net.layer1, net.layer2, net.layer3]
+            if tap == "final":
+                stages.append(net.layer4)
+                self.channels = net.fc.in_features
+            else:
+                self.channels = net.fc.in_features // 2  # layer3 width: 256 (ResNet-18), 1024 (ResNet-50)
+            self.body = nn.Sequential(*stages)
         elif name == "convnext_tiny":
+            from torchvision.models.convnext import LayerNorm2d
             net = models.convnext_tiny(weights=models.ConvNeXt_Tiny_Weights.IMAGENET1K_V1 if pretrained else None)
-            # The classifier's channel-wise LayerNorm applies per location, so keep it on the map.
-            self.body = nn.Sequential(net.features, net.classifier[0])
-            self.channels = net.classifier[2].in_features
+            if tap == "final":
+                # The classifier's channel-wise LayerNorm applies per location, so keep it on the map.
+                self.body = nn.Sequential(net.features, net.classifier[0])
+                self.channels = net.classifier[2].in_features
+            else:  # stem + stages 1-3 (features[0:6]), then a fresh per-location LayerNorm
+                self.channels = 384
+                self.body = nn.Sequential(net.features[:6], LayerNorm2d(self.channels, eps=1e-6))
         else:
             raise ValueError(f"unknown backbone {name}")
 
@@ -74,12 +89,13 @@ class Backbone(nn.Module):
 
 class TypeNet(nn.Module):
     def __init__(self, backbone="resnet18", pool="avg", head="sigmoid", pair_boost=False,
-                 aux_sizes=None, dropout=0.5, attn_lambda=0.2, learn_lambda=False, pretrained=True):
+                 aux_sizes=None, dropout=0.5, attn_lambda=0.2, learn_lambda=False, tap="final",
+                 pretrained=True):
         super().__init__()
         self.cfg = dict(backbone=backbone, pool=pool, head=head, pair_boost=pair_boost,
                         aux_sizes=aux_sizes or {}, dropout=dropout, attn_lambda=attn_lambda,
-                        learn_lambda=learn_lambda)
-        self.backbone = Backbone(backbone, pretrained)
+                        learn_lambda=learn_lambda, tap=tap)
+        self.backbone = Backbone(backbone, pretrained, tap)
         c = self.backbone.channels
         self.dropout = nn.Dropout(dropout)
         self.type_scores = nn.Conv2d(c, N, 1)  # a per-location score for each type
