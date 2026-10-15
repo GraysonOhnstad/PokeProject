@@ -1,7 +1,8 @@
-"""Assemble the Hugging Face Space folder for a trained run.
+"""Assemble the Hugging Face Space folder for a trained model.
 
-    py scripts/build_space.py --run resnet18_bw                # builds space/
-    py scripts/build_space.py --run resnet18_bw --push USER/pokemon-types
+    py scripts/build_space.py --bundle runs/r3/final_model.pt  # round-3 ensemble -> space/
+    py scripts/build_space.py --run resnet18_bw                # a round 1-2 single model
+    py scripts/build_space.py --bundle runs/r3/final_model.pt --push USER/pokemon-types
 
 space/ contains everything the Space needs: app.py, the inference-only part of the
 poketype package, model.pt (weights + architecture + normalization + calibrated
@@ -29,7 +30,7 @@ from poketype.images import load_rgba  # noqa: E402
 from poketype.labels import TYPES  # noqa: E402
 
 SPRITES = ROOT / "data" / "raw" / "sprites"
-PACKAGE_FILES = ["__init__.py", "images.py", "labels.py", "models.py", "inference.py"]
+PACKAGE_FILES = ["__init__.py", "images.py", "labels.py", "models.py", "typenet.py", "inference.py"]
 OTHER_ART_GAMES = ["official-artwork", "home"]
 EXAMPLE_MAX_SIDE = 256  # downscale large art in examples/ to keep the Space small
 
@@ -100,12 +101,15 @@ def write_examples(out, species_names):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--run", required=True)
+    src = p.add_mutually_exclusive_group(required=True)
+    src.add_argument("--bundle", help="round-3 ensemble from calibrate3.py, e.g. runs/r3/final_model.pt")
+    src.add_argument("--run", help="round 1-2 run directory name under runs/")
     p.add_argument("--out", default=str(ROOT / "space"))
     p.add_argument("--push", metavar="USER/SPACE", help="upload to this Hugging Face Space")
     p.add_argument("--private", action="store_true", help="create the Space as private (if it does not exist yet)")
     args = p.parse_args()
-    run, out = ROOT / "runs" / args.run, Path(args.out)
+    out = Path(args.out)
+    source = Path(args.bundle).stem if args.bundle else args.run
 
     if out.exists():
         shutil.rmtree(out)
@@ -114,16 +118,22 @@ def main():
     for f in PACKAGE_FILES:
         shutil.copy(ROOT / "poketype" / f, out / "poketype" / f)
 
-    ckpt = torch.load(run / "best.pt", map_location="cpu")
-    cal_path = run / "calibration.json"
-    cal = json.loads(cal_path.read_text()) if cal_path.exists() else {}
-    if not cal:
-        print("WARNING: run is not calibrated; using T = 1 and the uncalibrated threshold")
-    torch.save({"model": ckpt["model"], "arch": ckpt["arch"], "mean": ckpt["mean"], "std": ckpt["std"],
-                "size": ckpt.get("size", 96), "input_size": ckpt.get("input_size"),
-                "types": TYPES, "temperature": cal.get("temperature", 1.0),
-                "threshold": cal.get("threshold", ckpt["threshold"]), "source_run": args.run},
-               out / "model.pt")
+    if args.bundle:  # already calibrated and self-contained
+        bundle = torch.load(args.bundle, map_location="cpu")
+        torch.save({k: v for k, v in bundle.items() if k != "train_cfg"} | {"types": TYPES, "source": source},
+                   out / "model.pt")
+    else:
+        run = ROOT / "runs" / args.run
+        ckpt = torch.load(run / "best.pt", map_location="cpu")
+        cal_path = run / "calibration.json"
+        cal = json.loads(cal_path.read_text()) if cal_path.exists() else {}
+        if not cal:
+            print("WARNING: run is not calibrated; using T = 1 and the uncalibrated threshold")
+        torch.save({"model": ckpt["model"], "arch": ckpt["arch"], "mean": ckpt["mean"], "std": ckpt["std"],
+                    "size": ckpt.get("size", 96), "input_size": ckpt.get("input_size"),
+                    "types": TYPES, "temperature": cal.get("temperature", 1.0),
+                    "threshold": cal.get("threshold", ckpt["threshold"]), "source": source},
+                   out / "model.pt")
     (out / "classes.json").write_text(json.dumps(TYPES, indent=1))
     (out / "requirements.txt").write_text(REQUIREMENTS)
     import gradio
@@ -132,14 +142,14 @@ def main():
     species = pd.read_csv(ROOT / "data" / "species.csv")
     n_sprites, n_other = write_examples(out, dict(zip(species["species_id"], species["name"])))
     size_mb = sum(f.stat().st_size for f in out.rglob("*") if f.is_file()) / 1e6
-    print(f"built {out} ({size_mb:.1f} MB): model from {args.run}, {n_sprites} sprite and {n_other} other-art examples")
+    print(f"built {out} ({size_mb:.1f} MB): model from {source}, {n_sprites} sprite and {n_other} other-art examples")
 
     if args.push:
         from huggingface_hub import HfApi
         api = HfApi()
         api.create_repo(args.push, repo_type="space", space_sdk="gradio", private=args.private, exist_ok=True)
         api.upload_folder(folder_path=str(out), repo_id=args.push, repo_type="space",
-                          commit_message=f"Deploy model from run {args.run}")
+                          commit_message=f"Deploy model from {source}")
         print(f"pushed to https://huggingface.co/spaces/{args.push}")
 
 
