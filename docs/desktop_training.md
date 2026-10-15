@@ -136,7 +136,7 @@ tar -a -cf $HOME\Desktop\pokeproject_runs_round2.zip runs reports\round2_compari
 
 ## Round 3: cross-validated sweep over three backbones
 
-One command trains and scores every round-3 configuration (ResNet-18, ConvNeXt-Tiny, ResNet-50; structural tests, 20 Optuna trials each, top-3 re-runs; 5-fold cross-validation, no pruning): roughly **450 training runs, an estimated 25–35 hours**, so plan for several nights. It is fully resumable: stop it any time (Ctrl+C, reboot) and run the same command again; finished runs are never retrained. The test set is never read.
+One command trains and scores every round-3 configuration (ResNet-18, ConvNeXt-Tiny, ResNet-50; structural tests, 20 Optuna trials each, top-3 re-runs; 5-fold cross-validation, no pruning): roughly **480 training runs, an estimated 27–38 hours**, so plan for several nights. Besides the score, each run logs its train-vs-validation gap, which the earlier-feature-tap stage uses to test how much the last network stage memorizes. It is fully resumable: stop it any time (Ctrl+C, reboot) and run the same command again; finished runs are never retrained. The test set is never read.
 
 **1. Space and sleep.** Keep at least **10 GB free** on the drive (the sweep warns if it's lower) and leave sleep set to **Never**.
 
