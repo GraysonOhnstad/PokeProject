@@ -22,15 +22,18 @@ text → types → genus, body (height, weight, shape, color, egg groups) → st
 - [ ] Stat line: BST distribution × stat-share Dirichlet conditioned on BST; judged by BST rank correlation, interval coverage and realism, not MAE.
 - [ ] Abilities from the existing inventory; learnset generator (autoregressive over existing moves, with levels).
 - [ ] Genus and name generation (concept extraction → pun; filters: not an existing name or real word, pronounceable, ≤ 12 characters).
+  Training data for name origins comes only from official or community-canon sources (Bulbapedia's per-species "Name origin" sections, CC BY-NC-SA, credited), never from automatic guessing.
 
 ## 3. Shared embedding space (desktop, after section 1)
 Image encoder (round 3's winning backbone) and text encoder trained together on real (sprite, text, entry) triples: contrastive alignment plus each side's own heads.
 - [ ] Classifier: image-only at test time; kept only if it beats round 3 by > 0.01 CV mAP. Reported separately from the course result.
 - [ ] Judge: sprite ↔ text match score, measured by retrieval on held-out families (rank a Gen 5 sprite's true text among candidates).
 - [ ] Diagnostics: where text and image models disagree on real Pokémon (types that are described but not drawn, and the reverse).
+- [ ] Entry heads that take an image, a text, or both: shared heads on the fused embeddings, trained with modality dropout (randomly removing the image or the text) so any combination works. Measured three ways on held-out families: image only, text only, both.
+- [ ] Doodle readiness: doodles are prepared like sprites (crop, flatten, 96 px); training adds sketch-style augmentation (line art, few colors, no shading). Real check: a small set of hand-drawn Gen 5 Pokémon, drawn from memory, scored like the test set.
 
 ## 4. Generation (desktop)
-- [ ] Sprite generator: diffusion LoRA on real sprites, conditioned on the entry and the shared embedding; snapped to Gen V conventions (96×96, limited palette, outline). Evaluated on Gen 5 texts by the judge and the classifier, never trained on their scores.
+- [ ] Sprite generator: diffusion LoRA on real sprites, conditioned on the entry and the shared embedding, and on the doodle when there is one (sketch-guided, e.g. a scribble ControlNet); snapped to Gen V conventions (96×96, limited palette, outline). Evaluated on Gen 5 texts by the judge and the classifier, never trained on their scores.
 - [ ] Sample and pick: K candidate entries/sprites, ranked by text match, type/body agreement and plausibility; K kept modest so candidates can't be selected for fooling the judges.
 - [ ] Cry: retrieval + pitch/time transform by size and type.
 - [ ] Dex voice: open TTS voice with a device-style effect chain; a plausible recast, not an imitation.
@@ -40,9 +43,8 @@ Once every design choice above is fixed, retrain the Dex models, the judge and t
 
 ## 6. One app
 One Gradio app, one process, models loaded lazily:
-- **Type classifier** tab: the course model, unchanged (upload image → types, confidence, time, attention).
-- **Pokédex** tab: flavor text + era → a Pokédex-style page (sprite, name, genus, types, stat bars, abilities, learnset, height/weight, cry, read-aloud).
-- **Draw your own** tab (optional): upload a drawing → types and body from the image → the rest of the entry.
+- **Type classifier** tab: one upload, two answers side by side: the course model (unchanged) and the improved model trained with Dex data (both Gen 5 held out), each with types, confidence, time and attention.
+- **Pokédex** tab: one fake Pokédex. Input is a flavor text, a doodle drawn in the browser (Gradio sketchpad), or both, plus era. Output is a Pokédex-style page (sprite, name, genus, types, stat bars, abilities, learnset, height/weight, cry, read-aloud). Uses the models refit with Gen 5.
 
 Honest about memorization: each model's genuine predictions are on Pokémon it never trained on.
 - Classifier tab: an upload whose perceptual hash matches a training sprite is labeled "in the training set"; Gen 5 sprites and new drawings are genuine predictions.
