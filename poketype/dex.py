@@ -84,6 +84,11 @@ def load():
         "stats": np.array([[e["stats"][s] for s in STATS] for e in ent], dtype=np.float64),
         "abilities": vocabs["abilities"].multi_hot(abil),
         "has_abilities": np.array([e["generation"] >= 3 for e in ent]),
+        # evolution position and rarity: 0-based classes
+        "stage": sp.stage.to_numpy() - 1,
+        "line_length": sp.line_length.to_numpy() - 1,
+        "is_final": sp.is_final.to_numpy().astype(np.float32),
+        "rarity": np.where(sp.is_mythical == 1, 2, np.where(sp.is_legendary == 1, 1, 0)),
     }
     rows = texts.assign(evolution_chain_id=sp.evolution_chain_id.to_numpy())
     return rows, targets, vocabs

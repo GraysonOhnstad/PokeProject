@@ -48,6 +48,27 @@ def past_value(past, key, gen, current):
     return min(later, key=lambda r: r[0])[1] if later else current
 
 
+def evolution_positions(spec):
+    """Per species: stage (1 = unevolved), line_length (stages in its family's longest line),
+    is_final (nothing evolves from it). Babies count as stage 1, as in the games' own lines."""
+    parent = {s: (None if pd.isna(p) else int(p)) for s, p in zip(spec.species_id, spec.evolves_from_species_id)}
+    children = {}
+    for s, p in parent.items():
+        if p is not None:
+            children.setdefault(p, []).append(s)
+
+    def stage(s):
+        return 1 if parent[s] is None else 1 + stage(parent[s])
+
+    stages = {s: stage(s) for s in parent}
+    longest = spec.assign(stage=spec.species_id.map(stages)).groupby("evolution_chain_id").stage.max()
+    return pd.DataFrame({
+        "stage": stages,
+        "line_length": {s: int(longest[c]) for s, c in zip(spec.species_id, spec.evolution_chain_id)},
+        "is_final": {s: s not in children for s in parent},
+    }).rename_axis("species_id")
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     species = read("pokemon_species")
@@ -83,6 +104,7 @@ def main():
             "fold": -1 if chain in test_chains else int(folds[chain]),
         })
     spec = pd.DataFrame(rows)
+    spec = spec.join(evolution_positions(spec), on="species_id")
     spec.to_csv(OUT / "species.csv", index=False)
 
     # Current values, plus past overrides keyed by the last generation they applied to.
