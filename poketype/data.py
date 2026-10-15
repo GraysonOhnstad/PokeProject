@@ -1,4 +1,4 @@
-"""Manifest selection, labels, and the PyTorch Dataset over preprocessed 96x96 images."""
+"""Manifest selection, labels, augmentation, and the PyTorch Dataset over preprocessed images."""
 
 from pathlib import Path
 
@@ -97,15 +97,81 @@ def eval_transform(mean, std, input_size=None):
     return T.Compose(_upscale(input_size) + [T.ToTensor(), T.Normalize(mean, std)])
 
 
-class PokeTypeDataset(Dataset):
-    """Yields (image tensor, 18-dim multi-hot target, loss weight)."""
+AUX_COLUMNS = {"egg": ["egg_group1", "egg_group2"], "shape": ["shape"], "color": ["color"]}
 
-    def __init__(self, rows, transform, weights=None, cache=False, size=SIZE):
+
+def aux_vocab(species):
+    """Category lists for the auxiliary heads (egg groups multi-label; shape, color single)."""
+    return {name: sorted(set(species[cols].stack().dropna())) for name, cols in AUX_COLUMNS.items()}
+
+
+def aux_targets(rows, species, vocab):
+    """Per-image auxiliary labels, looked up by species: {"egg": (n, k) multi-hot float,
+    "shape": (n,) int, "color": (n,) int}. Used only as training targets, never as input."""
+    sp = species.set_index("species_id")
+    out = {}
+    for name, cols in AUX_COLUMNS.items():
+        index = {v: i for i, v in enumerate(vocab[name])}
+        vals = sp.loc[rows["species_id"], cols].to_numpy()
+        if name == "egg":
+            t = np.zeros((len(rows), len(index)), np.float32)
+            for i, row in enumerate(vals):
+                for v in row:
+                    if isinstance(v, str):
+                        t[i, index[v]] = 1
+        else:
+            t = np.array([index[v[0]] for v in vals], np.int64)
+        out[name] = t
+    return out
+
+
+class TrainTransform:
+    """Round-3 training augmentation, applied jointly to the image and its subject mask:
+    optional nearest-neighbor upscale, flip, small shift/scale (strong=True: larger), then
+    optionally paint the background (mask == 0) a random solid color with probability
+    bg_prob, so the model learns to ignore the background. Pokemon colors are never
+    changed. Without bg_prob the mask is not needed."""
+
+    def __init__(self, mean, std, input_size=None, strong=False, bg_prob=0.0):
+        from torchvision.transforms import v2
+        translate, scale = ((0.1, 0.1), (0.8, 1.1)) if strong else ((0.05, 0.05), (0.9, 1.05))
+        self.geometric = v2.Compose(
+            ([v2.Resize(input_size, interpolation=v2.InterpolationMode.NEAREST)] if input_size else [])
+            + [v2.RandomHorizontalFlip(),
+               v2.RandomAffine(degrees=0, translate=translate, scale=scale,
+                               interpolation=v2.InterpolationMode.NEAREST, fill={"Image": BACKGROUND, "Mask": 0})])
+        self.normalize = v2.Normalize(mean, std)
+        self.bg_prob = bg_prob
+
+    def __call__(self, im, mask=None):
+        from torchvision import tv_tensors
+        from torchvision.transforms.v2 import functional as TF
+        image = tv_tensors.Image(TF.pil_to_tensor(im))
+        m = tv_tensors.Mask(torch.from_numpy(mask.astype(np.uint8))[None] if mask is not None
+                            else torch.ones(1, *image.shape[-2:], dtype=torch.uint8))
+        image, m = self.geometric(image, m)
+        x = image.float() / 255
+        if self.bg_prob and torch.rand(()) < self.bg_prob:
+            x = torch.where(m.bool(), x, torch.rand(3, 1, 1))
+        return self.normalize(x)
+
+
+class PokeTypeDataset(Dataset):
+    """Yields (image tensor, 18-dim multi-hot target, loss weight[, aux targets dict]).
+
+    folder: which preprocessed set to read (data/processed/<folder>/), e.g. 96, 192, or
+    "96x2" (the 96 set pre-enlarged 2x, identical to enlarging on the fly but faster).
+    with_mask: also load the subject mask and pass it to the transform (random backgrounds).
+    """
+
+    def __init__(self, rows, transform, weights=None, cache=False, size=SIZE, with_mask=False, aux=None):
         self.paths = rows["path"].tolist()
         self.y = torch.from_numpy(targets(rows))
         self.w = torch.from_numpy(weights if weights is not None else np.ones(len(rows), np.float32))
         self.transform = transform
-        self.size = size  # which preprocessed set to read (data/processed/<size>/)
+        self.size = size
+        self.with_mask = with_mask
+        self.aux = {k: torch.from_numpy(v) for k, v in aux.items()} if aux else None
         # cache=True decodes every image up front; epochs then skip disk reads.
         self.images = [load_image(p, size) for p in self.paths] if cache else None
 
@@ -114,4 +180,7 @@ class PokeTypeDataset(Dataset):
 
     def __getitem__(self, i):
         im = self.images[i] if self.images is not None else load_image(self.paths[i], self.size)
-        return self.transform(im), self.y[i], self.w[i]
+        x = self.transform(im, load_mask(self.paths[i], self.size)) if self.with_mask else self.transform(im)
+        if self.aux is None:
+            return x, self.y[i], self.w[i]
+        return x, self.y[i], self.w[i], {k: v[i] for k, v in self.aux.items()}

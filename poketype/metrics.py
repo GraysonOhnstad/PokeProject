@@ -10,9 +10,21 @@ def exact_match(y, pred):
     return float((y.astype(np.int8) == pred).all(axis=1).mean())
 
 
-def tune_threshold(y, probs, grid=np.linspace(0.05, 0.95, 91)):
-    """Second-type threshold maximizing exact-match accuracy (ties -> lowest)."""
-    scores = [exact_match(y, decode(probs, t)) for t in grid]
+def sample_f1(y, pred):
+    """Mean per-image F1 between predicted and true type sets (partial credit: one of two
+    types right on a dual-typed Pokemon scores 0.67)."""
+    hits = (y.astype(np.int8) & pred).sum(1)
+    return float((2 * hits / (y.sum(1) + pred.sum(1))).mean())
+
+
+OBJECTIVES = {"exact": exact_match, "f1": sample_f1}
+
+
+def tune_threshold(y, probs, objective="exact", grid=np.linspace(0.05, 0.95, 91)):
+    """Second-type threshold maximizing the objective on these images (ties -> lowest).
+    Rounds 1-2 tuned for exact match; round 3 onward tunes for per-image F1."""
+    score = OBJECTIVES[objective]
+    scores = [score(y, decode(probs, t)) for t in grid]
     return float(grid[int(np.argmax(scores))])
 
 
@@ -26,6 +38,7 @@ def evaluate(y, probs, threshold):
         "n": len(y),
         "threshold": threshold,
         "exact_match": exact_match(y, pred),
+        "sample_f1": sample_f1(y, pred),
         "top1_in_types": float(top1),  # top type is one of the true types
         "mAP": float(average_precision_score(y[:, present], probs[:, present], average="macro")),
         "macro_f1": float(f[present].mean()),

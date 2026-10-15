@@ -133,3 +133,47 @@ It prints each run's epochs as before, plus a decision after each stage. If it s
 ```powershell
 tar -a -cf $HOME\Desktop\pokeproject_runs_round2.zip runs reports\round2_comparison.md
 ```
+
+## Round 3: cross-validated sweep over three backbones
+
+One command trains and scores every round-3 configuration (ResNet-18, ConvNeXt-Tiny, ResNet-50; structural tests, 20 Optuna trials each, top-3 re-runs; 5-fold cross-validation, no pruning): roughly **450 training runs, an estimated 25–35 hours**, so plan for several nights. It is fully resumable: stop it any time (Ctrl+C, reboot) and run the same command again; finished runs are never retrained. The test set is never read.
+
+**1. Space and sleep.** Keep at least **10 GB free** on the drive (the sweep warns if it's lower) and leave sleep set to **Never**.
+
+**2. Update the code.** Round 2's logs are now in the repo, so set your local runs aside during the pull as before (answer `n` if git asks "Unlink of file ... failed"):
+
+```powershell
+cd C:\Users\Grayson\Desktop\PokeProject
+Rename-Item runs runs_local
+git pull
+robocopy runs_local runs /E /XC /XN /XO
+Remove-Item -Recurse runs_local
+```
+
+**3. Install Optuna and build the pre-enlarged images** (about a minute; they make training several times faster):
+
+```powershell
+.venv\Scripts\python -m pip install optuna
+.venv\Scripts\python scripts/make_upscaled.py
+```
+
+**4. Quick check (2 minutes):** one short training run, which also shows the per-epoch speed on the GPU:
+
+```powershell
+.venv\Scripts\python scripts/train3.py --fold 0 --set limit=2000 epochs=2 seed=99
+Remove-Item -Recurse runs\r3
+```
+
+**5. Start the sweep:**
+
+```powershell
+.venv\Scripts\python scripts/sweep3.py
+```
+
+Progress and every decision are appended to `runs\r3\decisions.md` (open it any time to see how far it is); after each backbone it prints a time estimate for the rest. ConvNeXt-Tiny and ResNet-50 download their pretrained weights (~100 MB each) the first time.
+
+**6. When it prints `Round 3 sweep finished`,** zip the results and bring them back:
+
+```powershell
+tar -a -cf $HOME\Desktop\pokeproject_round3.zip runs\r3 reports\round3_summary.md
+```

@@ -20,3 +20,4 @@ torch
 torchvision
 gradio
 huggingface_hub
+optuna
