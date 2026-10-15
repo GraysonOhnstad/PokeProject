@@ -66,3 +66,8 @@ Fine-tuning T5 five times would take most of a day on CPU. The fold-0 numbers ar
 
 **D19. Name generation pipeline: concepts → 8 sampled names → filters (not an existing Pokémon name, 3–12 characters, one word).** *open*
 No real-word filter yet (needs a dictionary); the judge and sample-and-pick come later.
+
+## Results-driven decisions
+
+**D20. Stat model for text-only input: the text+aux variant; the upstream-conditioned variant only when upstream fields are concrete.** *open*
+5-fold results (`reports/dex_stats.md`): sampling gives realistic stat lines (lopsidedness KS 0.13 vs 0.79 for averaged lines). True types/body raise BST rank correlation from 0.58 to 0.79, but phase-1 *predicted* (averaged) upstream fields add nothing and shrink 80% intervals to 52% coverage: the model treats fuzzy averages as facts. In the generator, upstream fields will be sampled concrete values (or come from a doodle), which is the situation the upstream variant was trained for; a chain-level check by sampling is still to do. Extra targets (stage, rarity) are kept: small, consistent gains in rank correlation and lopsidedness realism.
