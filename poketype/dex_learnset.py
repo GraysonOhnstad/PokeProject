@@ -37,6 +37,28 @@ def cond_vector(types, stats, generation, stage, line_length, is_final, rarity, 
         emb if emb is not None else np.zeros(384, np.float32), [float(emb is not None)]]).astype(np.float32)
 
 
+def move_prior(entries, moves, rows_ix, smoothing=1e-3):
+    """Log-prior over moves per (generation, type): how often each move is in the level-up
+    learnset of a Pokemon with that type in that generation (each species counted once per
+    game). Built from entries `rows_ix` only. Returns array (10, 18, n_moves)."""
+    index = {m: i for i, m in enumerate(moves)}
+    counts = np.zeros((10, 18, len(moves)))
+    n = np.zeros((10, 18, 1))
+    for i in rows_ix:
+        e = entries[i]
+        present = [index[m] for _, m in e["learnset"] if m in index]
+        for t in e["types"]:
+            ti = TYPES.index(t)
+            counts[e["generation"], ti, present] += 1
+            n[e["generation"], ti] += 1
+    return np.log(counts / np.maximum(n, 1) + smoothing).astype(np.float32)
+
+
+def bias_for(prior, types, generation):
+    """Move log-prior for one entry: the average over its types."""
+    return prior[generation, [TYPES.index(t) for t in types]].mean(0)
+
+
 class Tokens:
     def __init__(self, move_ids):
         self.moves = list(move_ids)
@@ -69,18 +91,23 @@ class LearnsetModel(nn.Module):
         self.norm = nn.LayerNorm(d)
         self.out = nn.Linear(d, n_tokens)
 
-    def forward(self, cond, prev):
-        """cond (B, d_cond); prev (B, T) tokens so far. Returns logits (B, T + 1, vocab):
-        position t predicts token t (position 0 predicts the first token from cond alone)."""
-        x = self.tok(prev)
-        x = torch.cat([self.cond(cond)[:, None], x], 1)
-        x = x + self.pos(torch.arange(x.shape[1]))
+    def forward(self, cond, prev, move_bias=None):
+        """cond (B, d_cond); prev (B, T) tokens so far; move_bias (B, n_moves) log-prior added to
+        the move logits. Returns logits (B, T + 1, vocab): position t predicts token t (position 0
+        predicts the first token). The conditioning is a prefix and is also added at every
+        position, so the model cannot drift away from it over a long sequence."""
+        c = self.cond(cond)[:, None]
+        x = torch.cat([c, self.tok(prev)], 1)
+        x = x + c + self.pos(torch.arange(x.shape[1]))
         mask = nn.Transformer.generate_square_subsequent_mask(x.shape[1])
-        return self.out(self.norm(self.body(x, mask=mask, is_causal=True)))
+        logits = self.out(self.norm(self.body(x, mask=mask, is_causal=True)))
+        if move_bias is not None:
+            logits = torch.cat([logits[..., :MOVE0], logits[..., MOVE0:] + move_bias[:, None]], -1)
+        return logits
 
 
 @torch.no_grad()
-def generate(model, cond, allowed, max_moves=40, temperature=1.0, top_p=0.95, generator=None):
+def generate(model, cond, allowed, max_moves=40, temperature=1.0, top_p=0.95, generator=None, move_bias=None):
     """Sample learnsets. cond (B, d_cond); allowed (B, n_moves) bool: moves available in each
     entry's era. Returns a list of token lists."""
     model.eval()
@@ -91,7 +118,7 @@ def generate(model, cond, allowed, max_moves=40, temperature=1.0, top_p=0.95, ge
     last_level = torch.zeros(B, dtype=torch.long)
     done = torch.zeros(B, dtype=torch.bool)
     for step in range(2 * max_moves + 1):
-        logits = model(cond, seq)[:, -1] / temperature
+        logits = model(cond, seq, move_bias)[:, -1] / temperature
         ok = torch.zeros(B, vocab, dtype=torch.bool)
         if step % 2 == 0:  # a level, or the end (only after at least one move)
             lv = torch.arange(N_LEVELS)
@@ -129,10 +156,10 @@ def pad_batch(seqs, length=None):
     return out
 
 
-def nll(model, cond, seqs, reduction="none"):
+def nll(model, cond, seqs, move_bias=None):
     """Per-sequence summed token NLL and token counts."""
     y = pad_batch(seqs)
-    logits = model(cond, y[:, :-1])
+    logits = model(cond, y[:, :-1], move_bias)
     lp = torch.nn.functional.cross_entropy(logits.transpose(1, 2), y, ignore_index=PAD, reduction="none")
     return lp.sum(1), (y != PAD).sum(1)
 

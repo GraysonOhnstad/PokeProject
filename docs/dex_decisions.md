@@ -97,3 +97,12 @@ Retraining T5 on the whole pool costs another ~2 hours of CPU; the gain is modes
 
 **D28. Fine-tuned MiniLM is adopted for types only; other fields stay on frozen-encoder heads.** *open*
 5-fold result: fine-tuned + kNN reaches types mAP 0.354 (top-1 45.9%) vs 0.339 (42.5%) for the frozen MLP + kNN, which clears the +0.01 keep rule. Egg groups, body, stats and abilities show no gain beyond noise. Best epochs are 2–4, so a final fine-tune is ~2 hours on CPU or minutes on the desktop. Not yet in the generator (v1 uses frozen embeddings; D23); planned for the desktop run with the final refit.
+
+**D29. Name concepts come from the text, not from T5: one notable word from the text or genus plus one concept retrieved by meaning from the canon name-origin vocabulary.** *open*
+On held-out families, T5-generated concepts matched a canon source word 5.8% of the time and were often unrelated ("rhyolite" for Caterpie). Notable words from the species' own texts and genus match 31%; retrieval proposes related words ("antenna, insect, moth" for Caterpie) and the two together match 34%. T5 still does the blending, which it does reasonably (Metapod and Sandshrew rebuilt exactly from their canon words; character similarity 0.71). Notable = rarest by document frequency in the Dex texts. The concept vocabulary only holds words of species the config trained on.
+
+**D30. Generated names must not be English words** (filter: the encoder's 30k-word vocabulary). *open*
+Without it "Cocoon", "Beetle" and "Molasses" passed as names.
+
+**D31. Learnset model v2: the conditioning is added at every position, and a type-and-era move prior is added to the move logits in training and sampling.** *open*
+v1 ranked moves worse than the prior alone (mAP 0.117 vs 0.271) and its learnsets ignored the Pokémon's types (STAB realism KS 0.71): it overfit sequences and stopped using a conditioning that entered at one position only. With the prior as a built-in starting point, the network only has to learn adjustments (ordering, levels, species-specific moves).

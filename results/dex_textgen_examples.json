@@ -1,0 +1,673 @@
+{
+ "genus": [
+  {
+   "species": "Caterpie",
+   "true": "Worm",
+   "pred": "Bugle"
+  },
+  {
+   "species": "Metapod",
+   "true": "Cocoon",
+   "pred": "Cottonweed"
+  },
+  {
+   "species": "Butterfree",
+   "true": "Butterfly",
+   "pred": "Bugle"
+  },
+  {
+   "species": "Sandshrew",
+   "true": "Mouse",
+   "pred": "Big Mouth"
+  },
+  {
+   "species": "Sandslash",
+   "true": "Mouse",
+   "pred": "Spiny Ball"
+  },
+  {
+   "species": "Nidoran♀",
+   "true": "Poison Pin",
+   "pred": "Poison Poison"
+  },
+  {
+   "species": "Nidorina",
+   "true": "Poison Pin",
+   "pred": "Poison Poison"
+  },
+  {
+   "species": "Nidoqueen",
+   "true": "Drill",
+   "pred": "Poison Poison"
+  },
+  {
+   "species": "Clefairy",
+   "true": "Fairy",
+   "pred": "Balloon"
+  },
+  {
+   "species": "Clefable",
+   "true": "Fairy",
+   "pred": "Fairy"
+  },
+  {
+   "species": "Oddish",
+   "true": "Weed",
+   "pred": "Seed"
+  },
+  {
+   "species": "Gloom",
+   "true": "Weed",
+   "pred": "Poison Poison"
+  },
+  {
+   "species": "Vileplume",
+   "true": "Flower",
+   "pred": "Poison Poison"
+  },
+  {
+   "species": "Diglett",
+   "true": "Mole",
+   "pred": "Seed"
+  },
+  {
+   "species": "Dugtrio",
+   "true": "Mole",
+   "pred": "Paradox"
+  },
+  {
+   "species": "Bellsprout",
+   "true": "Flower",
+   "pred": "Seed"
+  },
+  {
+   "species": "Weepinbell",
+   "true": "Flycatcher",
+   "pred": "Poison Poison"
+  },
+  {
+   "species": "Victreebel",
+   "true": "Flycatcher",
+   "pred": "Beetle"
+  },
+  {
+   "species": "Magnemite",
+   "true": "Magnet",
+   "pred": "Thunderbolt"
+  },
+  {
+   "species": "Magneton",
+   "true": "Magnet",
+   "pred": "Sun"
+  },
+  {
+   "species": "Shellder",
+   "true": "Bivalve",
+   "pred": "Sea Lion"
+  },
+  {
+   "species": "Cloyster",
+   "true": "Bivalve",
+   "pred": "Sea Lion"
+  },
+  {
+   "species": "Krabby",
+   "true": "River Crab",
+   "pred": "Balloon"
+  },
+  {
+   "species": "Kingler",
+   "true": "Pincer",
+   "pred": "Pincer"
+  },
+  {
+   "species": "Cubone",
+   "true": "Lonely",
+   "pred": "Skewer"
+  }
+ ],
+ "names": [
+  {
+   "species": "Caterpie",
+   "canon_words": "caterpillar, pī",
+   "from_canon": "Caterp",
+   "pred_words": "rhyolite, rhyolite, rhyolite",
+   "new_names": [
+    "Rhyolite",
+    "Rhyolite",
+    "Rhyolite",
+    "Rhyolite",
+    "Rhyolite"
+   ]
+  },
+  {
+   "species": "Metapod",
+   "canon_words": "metamorphosis, pod",
+   "from_canon": "Metapod",
+   "pred_words": "cocoon",
+   "new_names": [
+    "Cocoon",
+    "Cocoon",
+    "Cocoono",
+    "Cocoon",
+    "Cocoon"
+   ]
+  },
+  {
+   "species": "Butterfree",
+   "canon_words": "butterfly, free, patapata",
+   "from_canon": "Flatapata",
+   "pred_words": "flora, roosevelt, roosevelt",
+   "new_names": [
+    "Florevelt",
+    "Floroivelt",
+    "Florivelt",
+    "Floreol",
+    "Florevelt"
+   ]
+  },
+  {
+   "species": "Sandshrew",
+   "canon_words": "sand, shrew",
+   "from_canon": "Sandshrew",
+   "pred_words": "pigeon, pigeon",
+   "new_names": [
+    "Pisferon",
+    "Pipota",
+    "Pispar",
+    "Piom",
+    "Piopy"
+   ]
+  },
+  {
+   "species": "Sandslash",
+   "canon_words": "sand, slash",
+   "from_canon": "Sandlash",
+   "pred_words": "tadpole, tadpole, tadpole",
+   "new_names": [
+    "Tadpole",
+    "Tadpole",
+    "Tadpole",
+    "Tadpole",
+    "Tadpole"
+   ]
+  },
+  {
+   "species": "Nidoran♀",
+   "canon_words": "needle, nido",
+   "from_canon": "Nido",
+   "pred_words": "rhinoceros, rhinoceros, rhinoceros",
+   "new_names": [
+    "Rhalo",
+    "Rhyloros",
+    "Rhiarpuris",
+    "Rhiod",
+    "Rharros"
+   ]
+  },
+  {
+   "species": "Nidorina",
+   "canon_words": "needle, rhinoceros, ina",
+   "from_canon": "Nida",
+   "pred_words": "rhinoceros, rhinoceros, rhinoceros",
+   "new_names": [
+    "Rhipa",
+    "Rhroclo",
+    "Rhachy",
+    "Rhipruk",
+    "Rharaltu"
+   ]
+  },
+  {
+   "species": "Nidoqueen",
+   "canon_words": "nīdoru, queen, nido",
+   "from_canon": "Nido",
+   "pred_words": "rhinoceros, rhinoceros, rhinoceros",
+   "new_names": [
+    "Rhionon",
+    "Rheleros",
+    "Rhaxlo",
+    "Rhonaros",
+    "Rheoniros"
+   ]
+  },
+  {
+   "species": "Clefairy",
+   "canon_words": "clef, fairy",
+   "from_canon": "Cleffair",
+   "pred_words": "faye, faye, faye",
+   "new_names": [
+    "Fayefaye",
+    "Fayfaye",
+    "Faye",
+    "Fayefaye",
+    "Fayefaye"
+   ]
+  },
+  {
+   "species": "Clefable",
+   "canon_words": "clef, fable",
+   "from_canon": "Cleffable",
+   "pred_words": "feisty, feisty, feisty",
+   "new_names": [
+    "Floety",
+    "Faissey",
+    "Feisy",
+    "Foisety",
+    "Feisty"
+   ]
+  },
+  {
+   "species": "Oddish",
+   "canon_words": "odd, radish",
+   "from_canon": "Odish",
+   "pred_words": "weed, weed, weed",
+   "new_names": [
+    "Ritchweed",
+    "Mussweed",
+    "Rashad",
+    "Vatsweed",
+    "Mushweed"
+   ]
+  },
+  {
+   "species": "Gloom",
+   "canon_words": "goo, glue, bloom",
+   "from_canon": "Gool",
+   "pred_words": "beetle, beetle, beetle",
+   "new_names": [
+    "Beetle",
+    "Beetle",
+    "Beetletle",
+    "Beebletle",
+    "Beetle"
+   ]
+  },
+  {
+   "species": "Vileplume",
+   "canon_words": "vile, plume, bloom",
+   "from_canon": "Vilme",
+   "pred_words": "bud, budda, budda",
+   "new_names": [
+    "Budda",
+    "Budda",
+    "Dambida",
+    "Budda",
+    "Budda"
+   ]
+  },
+  {
+   "species": "Diglett",
+   "canon_words": "dig, let",
+   "from_canon": "Diglet",
+   "pred_words": "molasses, molasses",
+   "new_names": [
+    "Molasses",
+    "Molasses",
+    "Molasses",
+    "Molasses",
+    "Molasses"
+   ]
+  },
+  {
+   "species": "Dugtrio",
+   "canon_words": "dug, trio",
+   "from_canon": "Dugad",
+   "pred_words": "molasses, molasses, molasses",
+   "new_names": [
+    "Molasses",
+    "Molasses",
+    "Molasses",
+    "Molasses",
+    "Molasses"
+   ]
+  },
+  {
+   "species": "Bellsprout",
+   "canon_words": "bell, sprout",
+   "from_canon": "Bellzen",
+   "pred_words": "flower, eon",
+   "new_names": [
+    "Floreon",
+    "Bouteon",
+    "Floreon",
+    "Floroon",
+    "Floron"
+   ]
+  },
+  {
+   "species": "Weepinbell",
+   "canon_words": "weeping, bell",
+   "from_canon": "Weebell",
+   "pred_words": "arachnid, arachnid, arachnid",
+   "new_names": [
+    "Ariarachnid",
+    "Arinid",
+    "Arachnid",
+    "Arachnid",
+    "Arira"
+   ]
+  },
+  {
+   "species": "Victreebel",
+   "canon_words": "victory, tree, bell",
+   "from_canon": "Viabell",
+   "pred_words": "arachnid, arachnid, arachnid",
+   "new_names": [
+    "Alu",
+    "Ariarachnid",
+    "Arinid",
+    "Arirbi",
+    "Arachnid"
+   ]
+  },
+  {
+   "species": "Magnemite",
+   "canon_words": "magnet, mite, might",
+   "from_canon": "Magnetise",
+   "pred_words": "magnetism, magnetism",
+   "new_names": [
+    "Magnetism",
+    "Magnetism",
+    "Magnetism",
+    "magnetism",
+    "Magnetism"
+   ]
+  },
+  {
+   "species": "Magneton",
+   "canon_words": "magnet, ton, magnetron",
+   "from_canon": "Magnetton",
+   "pred_words": "magnetism, magnetism",
+   "new_names": [
+    "Magneti",
+    "Magnetigte",
+    "Magnetism",
+    "Magnetism",
+    "Magneti"
+   ]
+  },
+  {
+   "species": "Shellder",
+   "canon_words": "shell, shelter",
+   "from_canon": "Shelley",
+   "pred_words": "valve, valve",
+   "new_names": [
+    "Valve",
+    "Lavulla",
+    "Vivulus",
+    "Alvael",
+    "Leove"
+   ]
+  },
+  {
+   "species": "Cloyster",
+   "canon_words": "clam, oyster, cloister",
+   "from_canon": "Clamcloister",
+   "pred_words": "abracadabra, abracadabra, abracadabra",
+   "new_names": [
+    "Bracadabra",
+    "Abracadabra",
+    "Abracadabra",
+    "Abracadabra",
+    "Marecadabra"
+   ]
+  },
+  {
+   "species": "Krabby",
+   "canon_words": "crab, crabby",
+   "from_canon": "Crabby",
+   "pred_words": "crab, crab",
+   "new_names": [
+    "SpinyCrab",
+    "Cyclop",
+    "Crabscot",
+    "Crabcy",
+    "Caldur"
+   ]
+  },
+  {
+   "species": "Kingler",
+   "canon_words": "king crab, angler, fiddler crab",
+   "from_canon": "King crab",
+   "pred_words": "abracadabra, abracadabra, abracadabra",
+   "new_names": [
+    "Abracadabra",
+    "Abracadabra",
+    "Abracadabra",
+    "Ababra",
+    "Abracadabra"
+   ]
+  },
+  {
+   "species": "Cubone",
+   "canon_words": "cub, bone",
+   "from_canon": "Cubbon",
+   "pred_words": "shabby, shabby, shabby",
+   "new_names": [
+    "Shabby",
+    "Swabuby",
+    "Shabby",
+    "Shubatby",
+    "Shabby"
+   ]
+  },
+  {
+   "species": "Marowak",
+   "canon_words": "bone marrow, whack",
+   "from_canon": "Bonwhack",
+   "pred_words": "abracadabra, abracadabra, abracadabra",
+   "new_names": [
+    "Abracadabra",
+    "Labraea",
+    "Abracabra",
+    "Abracadabra",
+    "Abracadabra"
+   ]
+  },
+  {
+   "species": "Hitmonlee",
+   "canon_words": "hit, monster, bruce lee",
+   "from_canon": "Hitbrucee",
+   "pred_words": "knuckle, knuckle",
+   "new_names": [
+    "Skouckle",
+    "Kulle",
+    "Knuckle",
+    "Skuckle",
+    "Skkuckle"
+   ]
+  },
+  {
+   "species": "Hitmonchan",
+   "canon_words": "hit, monster, jackie chan",
+   "from_canon": "Hitmachan",
+   "pred_words": "punch, punch",
+   "new_names": [
+    "Punchmack",
+    "Punchemp",
+    "Punchin",
+    "Punchton",
+    "Punch"
+   ]
+  },
+  {
+   "species": "Koffing",
+   "canon_words": "coughing",
+   "from_canon": "Coughing",
+   "pred_words": "toxic, poison",
+   "new_names": [
+    "Toxe",
+    "Toxist",
+    "Torkacine",
+    "toxicon",
+    "Toxito"
+   ]
+  },
+  {
+   "species": "Weezing",
+   "canon_words": "wheezing",
+   "from_canon": "Whiezing",
+   "pred_words": "arachnid, arachnid, arachnid",
+   "new_names": [
+    "Ararac",
+    "Arachnid",
+    "Agrachnit",
+    "Arinome",
+    "Agraire"
+   ]
+  }
+ ],
+ "flavor": [
+  {
+   "species": "Caterpie",
+   "fields": "flavor | era: gen 1 | types: bug | genus: Worm | shape: armor | color: green | egg: bug | height: 0.3 m | weight: 2.9 kg | stage 1 of 3 | total stats 195",
+   "generated": "Worms its hide and shatter with its needlelike head. The spike on the top of its head is a very popular repellent for bugs.",
+   "real": "Its short feet are tipped with suction pads that enable it to tirelessly climb slopes and walls."
+  },
+  {
+   "species": "Metapod",
+   "fields": "flavor | era: gen 1 | types: bug | genus: Cocoon | shape: squiggle | color: green | egg: bug | height: 0.7 m | weight: 9.9 kg | stage 2 of 3 | total stats 205",
+   "generated": "It wraps its shell around tree branches to absorb sunlight.",
+   "real": "This Pokémon is vulnerable to attack while its shell is soft, exposing its weak and tender body."
+  },
+  {
+   "species": "Butterfree",
+   "fields": "flavor | era: gen 1 | types: bug/flying | genus: Butterfly | shape: bug-wings | color: white | egg: bug | height: 1.1 m | weight: 32.0 kg | stage 3 of 3 | total stats 385",
+   "generated": "They fly through the sky, taking off its broad, ferocious wings and wings to attack. It flies by flapping its wings and flying in the dark.",
+   "real": "In battle, it flaps its wings at high speed to release highly toxic dust into the air."
+  },
+  {
+   "species": "Sandshrew",
+   "fields": "flavor | era: gen 1 | types: ground | genus: Mouse | shape: upright | color: yellow | egg: ground | height: 0.6 m | weight: 12.0 kg | stage 1 of 2 | total stats 310",
+   "generated": "As a result of growing older [self], its long hair has grown. The hair has changed in many ways.",
+   "real": "Burrows deep underground in arid locations far from water. It only emerges to hunt for food."
+  },
+  {
+   "species": "Sandslash",
+   "fields": "flavor | era: gen 1 | types: ground | genus: Mouse | shape: upright | color: yellow | egg: ground | height: 1.0 m | weight: 29.5 kg | stage 2 of 2 | total stats 460",
+   "generated": "It can freely control its surroundings. It may even be able to control a truck.",
+   "real": "Curls up into a spiny ball when threatened. It can roll while curled up to attack or escape."
+  },
+  {
+   "species": "Nidoran♀",
+   "fields": "flavor | era: gen 1 | types: poison | genus: Poison Pin | shape: quadruped | color: blue | egg: monster/ground | height: 0.4 m | weight: 7.0 kg | stage 1 of 3 | total stats 275",
+   "generated": "It charges with its huge mouth. If it has any thigh pain, it bites with its snout.",
+   "real": "Although small, its venomous barbs render this Pokémon dangerous. The female has smaller horns."
+  },
+  {
+   "species": "Nidorina",
+   "fields": "flavor | era: gen 1 | types: poison | genus: Poison Pin | shape: quadruped | color: blue | egg: no-eggs | height: 0.8 m | weight: 20.0 kg | stage 2 of 3 | total stats 365",
+   "generated": "Its horn contains a poison that causes a fainting intruder to burrow.",
+   "real": "The female's horn develops slowly. Prefers physical attacks such as clawing and biting."
+  },
+  {
+   "species": "Nidoqueen",
+   "fields": "flavor | era: gen 1 | types: poison/ground | genus: Drill | shape: upright | color: blue | egg: no-eggs | height: 1.3 m | weight: 60.0 kg | stage 3 of 3 | total stats 485",
+   "generated": "Because its legs are hollow, it's so powerful, it can easily smash boulders with its horn.",
+   "real": "Its hard scales provide strong protection. It uses its hefty bulk to execute powerful moves."
+  },
+  {
+   "species": "Clefairy",
+   "fields": "flavor | era: gen 1 | types: normal | genus: Fairy | shape: upright | color: pink | egg: fairy | height: 0.6 m | weight: 7.5 kg | stage 2 of 3 | total stats 318",
+   "generated": "It is rumored to have a kindhearted nature. If its Trainer is a Trainer, it will ring to the Trainer to startle it.",
+   "real": "Its magical and cute appeal has many admirers. It is rare and found only in certain areas."
+  },
+  {
+   "species": "Clefable",
+   "fields": "flavor | era: gen 1 | types: normal | genus: Fairy | shape: upright | color: pink | egg: fairy | height: 1.3 m | weight: 40.0 kg | stage 3 of 3 | total stats 468",
+   "generated": "It can dance in any environment. It makes its appearance by rubbing its tail to make its enemies move.",
+   "real": "A timid fairy Pokémon that is rarely seen. It will run and hide the moment it senses people."
+  },
+  {
+   "species": "Oddish",
+   "fields": "flavor | era: gen 1 | types: grass/poison | genus: Weed | shape: legs | color: blue | egg: plant | height: 0.5 m | weight: 5.4 kg | stage 1 of 3 | total stats 330",
+   "generated": "Its pink orbs are well-developed. It moves when it sees an approaching storm.",
+   "real": "During the day, it keeps its face buried in the ground. At night, it wanders around sowing its seeds."
+  },
+  {
+   "species": "Gloom",
+   "fields": "flavor | era: gen 1 | types: grass/poison | genus: Weed | shape: humanoid | color: blue | egg: plant | height: 0.8 m | weight: 8.6 kg | stage 2 of 3 | total stats 405",
+   "generated": "The flower petals on its head are filled with oil and energy. The silky and supple silk in its nostrils is very dangerous.",
+   "real": "The fluid that oozes from its mouth isn't drool. It is a nectar that is used to attract prey."
+  },
+  {
+   "species": "Vileplume",
+   "fields": "flavor | era: gen 1 | types: grass/poison | genus: Flower | shape: humanoid | color: red | egg: plant | height: 1.2 m | weight: 18.6 kg | stage 3 of 3 | total stats 490",
+   "generated": "Its aroma is filled with bud-like aroma. It becomes very active at night when the aroma comes off.",
+   "real": "The larger its petals, the more toxic pollen it contains. Its big head is heavy and hard to hold up."
+  },
+  {
+   "species": "Diglett",
+   "fields": "flavor | era: gen 1 | types: ground | genus: Mole | shape: blob | color: brown | egg: ground | height: 0.2 m | weight: 0.8 kg | stage 1 of 2 | total stats 275",
+   "generated": "Mole-like spores grow in the roots of trees. They grow at high speed at night.",
+   "real": "Lives about one yard underground where it feeds on plant roots. It sometimes appears above ground."
+  },
+  {
+   "species": "Dugtrio",
+   "fields": "flavor | era: gen 1 | types: ground | genus: Mole | shape: heads | color: brown | egg: ground | height: 0.7 m | weight: 33.3 kg | stage 2 of 2 | total stats 425",
+   "generated": "Although the pair are very similar, they will appear to be related. If one goes to sleep, its tail becomes sluggish and dreadful.",
+   "real": "A team of [pre-evolution] triplets. It triggers huge earthquakes by burrowing 60 miles underground."
+  },
+  {
+   "species": "Bellsprout",
+   "fields": "flavor | era: gen 1 | types: grass/poison | genus: Flower | shape: humanoid | color: green | egg: plant | height: 0.7 m | weight: 4.0 kg | stage 1 of 3 | total stats 340",
+   "generated": "A surprisingly light scent induces an outbreak of poisonous poison. It can easily be seen bursting with a drop of poison.",
+   "real": "A carnivorous Pokémon that traps and eats bugs. It uses its root feet to soak up needed moisture."
+  },
+  {
+   "species": "Weepinbell",
+   "fields": "flavor | era: gen 1 | types: grass/poison | genus: Flycatcher | shape: blob | color: green | egg: plant | height: 1.0 m | weight: 6.4 kg | stage 2 of 3 | total stats 430",
+   "generated": "By extending its large mouth to keep its prey warm, it can easily snap a tree trunk.",
+   "real": "It spits out Poisonpowder to immobilize the enemy and then finishes it with a spray of Acid."
+  },
+  {
+   "species": "Victreebel",
+   "fields": "flavor | era: gen 1 | types: grass/poison | genus: Flycatcher | shape: blob | color: green | egg: plant | height: 1.7 m | weight: 15.5 kg | stage 3 of 3 | total stats 520",
+   "generated": "Although its fragrance is bitter, it doesn't change when it is dry. It catches pollen from inside its body.",
+   "real": "Said to live in huge colonies deep in jungles, although no one has ever returned from there."
+  },
+  {
+   "species": "Magnemite",
+   "fields": "flavor | era: gen 1 | types: electric | genus: Magnet | shape: arms | color: gray | egg: mineral | height: 0.3 m | weight: 6.0 kg | stage 1 of 3 | total stats 365",
+   "generated": "It attaches magnetic materials to any object. It can be uncoachable.",
+   "real": "Uses anti-gravity to stay suspended. Appears without warning and uses Thunder Wave and similar moves."
+  },
+  {
+   "species": "Magneton",
+   "fields": "flavor | era: gen 1 | types: electric | genus: Magnet | shape: heads | color: gray | egg: mineral | height: 1.0 m | weight: 60.0 kg | stage 2 of 3 | total stats 515",
+   "generated": "A magnet magnetized by three magnets stabs two foes with their four magnetic tails.",
+   "real": "Formed by several MAGNEMITEs linked together. They frequently appear when sunspots flare up."
+  },
+  {
+   "species": "Shellder",
+   "fields": "flavor | era: gen 1 | types: water | genus: Bivalve | shape: ball | color: purple | egg: water3 | height: 0.3 m | weight: 4.0 kg | stage 1 of 2 | total stats 325",
+   "generated": "Its shell was first discovered in ancient seas. When it was discovered, it became a rare Pokémon.",
+   "real": "Its hard shell repels any kind of attack. It is vulnerable only when its shell is open."
+  },
+  {
+   "species": "Cloyster",
+   "fields": "flavor | era: gen 1 | types: water/ice | genus: Bivalve | shape: ball | color: purple | egg: water3 | height: 1.5 m | weight: 132.5 kg | stage 2 of 2 | total stats 565",
+   "generated": "The shell on its hind legs allows it to see the entire world in reverse. It can see the waves at the same time as radar.",
+   "real": "When attacked, it launches its horns in quick volleys. Its innards have never been seen."
+  },
+  {
+   "species": "Krabby",
+   "fields": "flavor | era: gen 1 | types: water | genus: River Crab | shape: armor | color: red | egg: water3 | height: 0.4 m | weight: 6.5 kg | stage 1 of 2 | total stats 325",
+   "generated": "It can swim in water and be found swimming alongside thick streams. It does so in caves.",
+   "real": "Its pincers are not only powerful weapons, they are used for balance when walking sideways."
+  },
+  {
+   "species": "Kingler",
+   "fields": "flavor | era: gen 1 | types: water | genus: Pincer | shape: armor | color: red | egg: water3 | height: 1.3 m | weight: 60.0 kg | stage 2 of 2 | total stats 475",
+   "generated": "It has a rugged pincer that is made of hardened steel. It can easily pincers.",
+   "real": "The large pincer has 10000 hp of crushing power. However, its huge size makes it unwieldy to use."
+  },
+  {
+   "species": "Cubone",
+   "fields": "flavor | era: gen 1 | types: ground | genus: Lonely | shape: upright | color: brown | egg: monster | height: 0.4 m | weight: 6.5 kg | stage 1 of 2 | total stats 310",
+   "generated": "In the darkness of night, it becomes unmoving due to its silent nature. However, it is a man who has an entire life left to live.",
+   "real": "Because it never removes its skull helmet, no one has ever seen this Pokémon's real face."
+  }
+ ]
+}

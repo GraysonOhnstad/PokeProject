@@ -1,0 +1,10 @@
+{
+ "genus_exact": 0.045454545454545456,
+ "genus_exact_knn": 0.045454545454545456,
+ "concepts_hit": 0.05813953488372093,
+ "name_exact": 0.06976744186046512,
+ "name_char_sim": 0.7146292094659116,
+ "name_filter_pass": 0.971656976744186,
+ "flavor_types_mAP_generated": 0.2350248644411045,
+ "flavor_types_mAP_real": 0.2995515208743347
+}

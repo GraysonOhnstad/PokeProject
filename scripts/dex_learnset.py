@@ -32,7 +32,8 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 from dex_phase1 import embed  # noqa: E402
 from poketype.dex import DEX, STATS, load, natural  # noqa: E402
-from poketype.dex_learnset import LearnsetModel, Tokens, cond_vector, generate, move_scores, nll  # noqa: E402
+from poketype.dex_learnset import (LearnsetModel, Tokens, bias_for, cond_vector, generate,  # noqa: E402
+                                   move_prior, move_scores, nll)
 
 CSV = ROOT / "data" / "raw" / "csv"
 SAMPLES = 16
@@ -64,11 +65,13 @@ def entry_weights(sids):
     return (1.0 / s.map(s.value_counts())).to_numpy(np.float32)
 
 
-def train_model(cond, seqs, fit_ix, stop_ix, sids, n_tokens, epochs=60, patience=6, seed=0, log=print):
+def train_model(cond, seqs, fit_ix, stop_ix, sids, n_tokens, bias, epochs=60, patience=6, seed=0, log=print):
+    """bias: (n_entries, n_moves) move log-prior per entry, added to the move logits."""
     torch.manual_seed(seed)
     model = LearnsetModel(n_tokens, cond.shape[1])
     opt = torch.optim.AdamW(model.parameters(), lr=5e-4, weight_decay=1e-2)
     c = torch.tensor(cond)
+    bias_t = torch.tensor(bias)
     w_fit = torch.tensor(entry_weights(sids[fit_ix]))
     best, state, wait = float("inf"), None, 0
     for epoch in range(1, epochs + 1):
@@ -76,13 +79,13 @@ def train_model(cond, seqs, fit_ix, stop_ix, sids, n_tokens, epochs=60, patience
         perm = torch.randperm(len(fit_ix))
         for b in perm.split(64):
             ix = fit_ix[b.numpy()]
-            tot, n = nll(model, c[ix], [seqs[i] for i in ix])
+            tot, n = nll(model, c[ix], [seqs[i] for i in ix], bias_t[ix])
             loss = ((tot / n) * w_fit[b]).sum() / w_fit[b].sum()
             opt.zero_grad()
             loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             opt.step()
-        v = mean_nll(model, c, seqs, stop_ix, sids)
+        v = mean_nll(model, c, seqs, stop_ix, sids, bias_t)
         if v < best - 1e-4:
             best, state, wait = v, {k: p.clone() for k, p in model.state_dict().items()}, 0
         else:
@@ -95,12 +98,12 @@ def train_model(cond, seqs, fit_ix, stop_ix, sids, n_tokens, epochs=60, patience
 
 
 @torch.no_grad()
-def mean_nll(model, c, seqs, ix, sids):
+def mean_nll(model, c, seqs, ix, sids, bias):
     model.eval()
     w = entry_weights(sids[ix])
     per = []
     for b in np.array_split(ix, max(1, len(ix) // 512)):
-        tot, n = nll(model, c[b], [seqs[i] for i in b])
+        tot, n = nll(model, c[b], [seqs[i] for i in b], bias[b])
         per.append((tot / n).numpy())
     return float(np.average(np.concatenate(per), weights=w))
 
@@ -164,14 +167,17 @@ def main():
         is_stop = np.isin(chain[tr], list(stop_fams))
         fit_ix, stop_ix = tr[~is_stop], tr[is_stop]
         print(f"fold {f}: fit {len(fit_ix)} / stop {len(stop_ix)} / eval {len(ev)} entries", flush=True)
-        model = train_model(cond, seqs, fit_ix, stop_ix, sids, tokens.size)
+        prior = move_prior(entries, tokens.moves, fit_ix)
+        bias = np.stack([bias_for(prior, e["types"], e["generation"]) for e in entries])
+        model = train_model(cond, seqs, fit_ix, stop_ix, sids, tokens.size, bias)
 
         # one entry per held-out species: its latest game
         latest = pd.Series(ev).groupby(sids[ev]).max().to_numpy()
         c = torch.tensor(cond[latest]).repeat_interleave(SAMPLES, 0)
         al = torch.tensor(allowed[latest]).repeat_interleave(SAMPLES, 0)
         gen = torch.Generator().manual_seed(f)
-        out = generate(model, c, al, generator=gen)
+        b = torch.tensor(bias[latest]).repeat_interleave(SAMPLES, 0)
+        out = generate(model, c, al, generator=gen, move_bias=b)
         samples = [out[i * SAMPLES:(i + 1) * SAMPLES] for i in range(len(latest))]
         scores = move_scores(samples, tokens, n_moves)
 
@@ -200,7 +206,7 @@ def main():
             "map_generator": per_row_ap(y, scores, al_latest),
             "map_type_prior": per_row_ap(y, prior, al_latest),
             "map_text_knn": per_row_ap(y, knn, al_latest),
-            "nll_per_token": mean_nll(model, torch.tensor(cond), seqs, ev, sids),
+            "nll_per_token": mean_nll(model, torch.tensor(cond), seqs, ev, sids, torch.tensor(bias)),
             "ks_length": float(ks_2samp(R_gen.length, R_real.length)[0]),
             "ks_stab": float(ks_2samp(R_gen.stab, R_real.stab)[0]),
             "ks_max_level": float(ks_2samp(R_gen.max_level, R_real.max_level)[0]),

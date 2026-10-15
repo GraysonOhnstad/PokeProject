@@ -25,6 +25,7 @@ from poketype.dex_text import Masker, clean_text, species_token
 from poketype.labels import TYPES
 
 MAX_NAME = 12
+TYPE_WORDS = set(TYPES) | {"pokémon", "pokemon", "self", "evolution"}
 NAME_OK = re.compile(r"^[A-Z][a-zé'\-]*[a-zé]$")  # one capitalized word, like Farfetch'd or Porygon-Z
 
 
@@ -90,6 +91,31 @@ class DexGenerator:
         self.masker = Masker(species["name"].to_dict(),
                              {s: (None if pd.isna(p) else int(p)) for s, p in species.evolves_from_species_id.items()},
                              lambda s, g: species_token(latest[s], genus[s]))
+        self._naming_data(species, bundle)
+
+    def _naming_data(self, species, bundle):
+        """Name-concept vocabulary (canon source words of the species this config trained on, with
+        embeddings), word rarity for picking notable words from a text, and a real-word list."""
+        from pathlib import Path
+        allowed = species.index if self.b["config"] == "all" else species.index[species.fold >= 0]
+        origins = json.loads((DEX / "name_origins.json").read_text(encoding="utf-8"))
+        vocab = sorted({c for s in allowed for c in origins[str(s)]["components"][:3]
+                        if re.fullmatch(r"[a-z][a-z ]+", c)})
+        cache = Path(bundle).parent / "concepts.npz"
+        if cache.exists() and list(np.load(cache)["words"]) == vocab:
+            vecs = np.load(cache)["vecs"]
+        else:
+            vecs = np.stack([self.embed(w) for w in vocab])
+            np.savez(cache, words=np.array(vocab), vecs=vecs)
+        self.concepts, self.concept_vecs = vocab, vecs
+        texts = pd.read_csv(DEX / "texts.csv")
+        texts = texts[texts.species_id.isin(allowed)]
+        df = {}
+        for t in texts.text_masked:
+            for w in set(re.findall(r"[a-z]+", t.lower())):
+                df[w] = df.get(w, 0) + 1
+        self.idf = {w: np.log(len(texts) / c) for w, c in df.items()}
+        self.real_words = {w for w in self.enc_tok.get_vocab() if w.isalpha() and len(w) > 2}
 
     # ---- text -------------------------------------------------------------------------------
     @torch.no_grad()
@@ -155,7 +181,7 @@ class DexGenerator:
         self._stats(cands, x, rng)
         self._abilities(cands, x, era, rng)
         self._learnsets(cands, emb, era)
-        self._genus_and_name(cands, masked, seed)
+        self._genus_and_name(cands, masked, emb, rng, seed)
         best = max(cands, key=lambda c: c["score"] + (0 if c["name"] else -5))
         return self._present(best, text, era), [self._present(c, text, era) for c in cands]
 
@@ -228,17 +254,32 @@ class DexGenerator:
         for c, s in zip(cands, seqs):
             c["learnset"] = self.tokens.decode(s)
 
-    def _genus_and_name(self, cands, masked, seed):
+    def notable_words(self, text, n=4):
+        """The rarest content words of a text (by document frequency in the Dex texts)."""
+        words = re.findall(r"[a-z]+", re.sub(r"<[^<>]*>", " ", text.lower()))
+        words = [w for w in dict.fromkeys(words) if len(w) > 3 and w not in TYPE_WORDS and w in self.real_words]
+        return sorted(words, key=lambda w: -self.idf.get(w, 8.0))[:n]
+
+    def _genus_and_name(self, cands, masked, emb, rng, seed):
+        """Genus from T5. Name: one notable word from the text or genus plus one concept retrieved
+        from the canon name-origin vocabulary by meaning, blended by T5, then filtered (one
+        capitalized word, 3-12 characters, not a real Pokemon, not an English word)."""
         txt = bracketed(masked)
         src = [f"genus | types: {'/'.join(c['types'])} | text: {txt}" for c in cands]
-        genus = [g[0].strip() for g in self.t5(src, seed=seed)]
-        src = [f"concepts | genus: {g} | types: {'/'.join(c['types'])} | text: {txt}" for c, g in zip(cands, genus)]
-        concepts = [w[0] for w in self.t5(src, seed=seed + 1)]
-        names = self.t5([f"name | {w}" for w in concepts], n=8, max_new=12, seed=seed + 2)
-        for c, g, w, ns in zip(cands, genus, concepts, names):
-            words = {s.strip().lower() for s in w.split(",")}
+        genus = [" ".join(dict.fromkeys(g[0].strip().split())) for g in self.t5(src, seed=seed)]
+        retrieved = [self.concepts[i] for i in np.argsort(-(self.concept_vecs @ emb))[:6]]
+        pairs = []
+        for g in genus:
+            own = self.notable_words(masked + " " + g) or [g.lower()]
+            a = own[rng.integers(len(own))]
+            b = next((r for r in rng.permutation(retrieved) if r[:4] != a[:4]), retrieved[0])
+            pairs.append(f"{a}, {b}")
+        names = self.t5([f"name | {w}" for w in pairs], n=8, max_new=12, seed=seed + 2)
+        for c, g, w, ns in zip(cands, genus, pairs, names):
+            parts = {s.strip().lower() for s in w.split(",")}
             ok = [x.strip() for x in ns if NAME_OK.match(x.strip()) and 3 <= len(x.strip()) <= MAX_NAME
-                  and x.strip().lower() not in self.existing and x.strip().lower() not in words]
+                  and x.strip().lower() not in self.existing and x.strip().lower() not in parts
+                  and x.strip().lower() not in self.real_words]
             c["genus"], c["concepts"], c["name"] = g, w, (ok[0] if ok else None)
 
     def _present(self, c, text, era):
