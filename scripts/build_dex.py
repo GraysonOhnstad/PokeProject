@@ -4,7 +4,7 @@ Each mainline game group with a level-up learnset gives one entry per default-fo
 species, with that game's types, base stats, EV yield, abilities and level-up
 learnset (egg, tutor and TM moves left out). Past values come from PokeAPI's
 *_past tables, which list only what changed and the last generation it applied to.
-Flavor texts are cleaned, family names are masked as <name>, and each text is
+Flavor texts are cleaned, names are masked by role (poketype/dex_text.py), and each text is
 paired with the entry from its own game.
 
     py scripts/build_dex.py
@@ -21,6 +21,9 @@ from pathlib import Path
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+from poketype.dex_text import Masker, clean_text  # noqa: E402
+
 CSV = ROOT / "data" / "raw" / "csv"
 OUT = ROOT / "data" / "dex"
 
@@ -29,7 +32,6 @@ SPECIAL = 9  # Gen 1's single Special stat
 # Spin-offs and Japan-only releases with no English flavor text of their own.
 SKIP_VERSION_GROUPS = {"colosseum", "xd", "red-green-japan", "blue-japan"}
 LEVEL_UP = 1
-NAME_TOKEN = "<name>"
 
 
 def read(name):
@@ -44,21 +46,6 @@ def past_value(past, key, gen, current):
     """Value in force in `gen`: the earliest past record covering it, else `current`."""
     later = [(g, v) for g, v in past.get(key, []) if g >= gen]
     return min(later, key=lambda r: r[0])[1] if later else current
-
-
-def clean_text(t):
-    t = t.replace("\xad\n", "").replace("\xad", "")
-    t = re.sub(r"[\n\x0c]+", " ", t)
-    t = t.replace("POKéMON", "Pokémon").replace("’", "'").replace("“", '"').replace("”", '"')
-    t = re.sub(r"\b[A-Z][A-Z'.]{2,}\b", lambda m: m.group(0).title(), t)  # Gen 1-3 ALL-CAPS names
-    return re.sub(r"\s+", " ", t).strip()
-
-
-def masker(names):
-    """Regex replacing any of `names` (one evolution family), case-insensitively."""
-    alts = sorted({re.escape(n.replace("’", "'")) for n in names}, key=len, reverse=True)
-    pattern = re.compile(r"(?<![\w])(" + "|".join(alts) + r")(?![\w])", re.IGNORECASE)
-    return lambda t: pattern.sub(NAME_TOKEN, t)
 
 
 def main():
@@ -160,14 +147,16 @@ def main():
             f.write(json.dumps(e) + "\n")
 
     # Flavor texts, cleaned and masked per family, paired with their game's entry.
-    family_names = spec.groupby("evolution_chain_id").name.apply(list)
-    masks = {c: masker(n) for c, n in family_names.items()}
+    types_at = {(e["species_id"], e["version_group_id"]): e["types"] for e in entries}
+    latest = {e["species_id"]: e["types"] for e in sorted(entries, key=lambda e: e["version_group_id"])}
+    parent = {s: (None if pd.isna(p) else int(p)) for s, p in zip(spec.species_id, spec.evolves_from_species_id)}
+    mask = Masker(dict(zip(spec.species_id, spec.name)), parent,
+                  lambda s, g: types_at.get((s, g), latest[s]))
     ft = read("pokemon_species_flavor_text").query("language_id == 9")
     ft = ft.assign(version_group_id=ft.version_id.map(versions.version_group_id))
     ft = ft[ft.version_group_id.isin(vg.index)]
-    chain_of = spec.set_index("species_id").evolution_chain_id
     ft = ft.assign(text=ft.flavor_text.map(clean_text))
-    ft = ft.assign(text_masked=[masks[chain_of[s]](t) for s, t in zip(ft.species_id, ft.text)])
+    ft = ft.assign(text_masked=[mask(t, s, g) for s, g, t in zip(ft.species_id, ft.version_group_id, ft.text)])
     ft = ft.drop_duplicates(["species_id", "version_group_id", "text"])
     have = {(e["species_id"], e["version_group_id"]) for e in entries}
     ft = ft[[k in have for k in zip(ft.species_id, ft.version_group_id)]]
