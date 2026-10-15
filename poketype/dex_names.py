@@ -21,16 +21,24 @@ import numpy as np
 
 VOWELS = set("aeiouy")
 
-# Never part of a name idea or a generated name; matched as substrings, with inflections listed.
-BLOCKED = set("""sex sexy sexual orgasm porn porno nude naked erotic fetish rape raped rapes raping rapist
-slut whore penis vagina anus anal boob nipple dick cock cunt fuck shit bitch bastard nazi hitler
-racist nigger negro fag faggot retard suicide genocide""".split())
+# Words a generated name must not contain, matched anywhere inside it (so "pen" + "island" is caught),
+# with inflections listed. Two tiers:
+#   HARD  slurs, hate and sexual violence: always blocked, no setting turns this off
+#   SOFT  sexual and profane words: blocked by default; the user may turn this tier off
+# Name ideas always use both tiers; the setting only decides whether an accidental hidden word in a
+# finished name is rejected.
+HARD_BLOCKED = set("""nigger negro fag faggot retard nazi hitler racist rape raped rapes raping rapist
+genocide suicide""".split())
+SOFT_BLOCKED = set("""sex sexy sexual orgasm porn porno nude naked erotic fetish slut whore penis vagina anus
+anal boob nipple dick cock cunt fuck shit bitch bastard""".split())
 
 
-def blocked(name, min_len=4):
-    """True if `name` contains a blocked word (words shorter than min_len must match exactly)."""
+def blocked(name, soft=True, min_len=4):
+    """True if `name` contains a blocked word (words shorter than min_len must match exactly).
+    soft=False checks the always-on tier only."""
     n = re.sub(r"[^a-z]", "", name.lower())
-    return any((b in n) if len(b) >= min_len else (b == n) for b in BLOCKED)
+    words = HARD_BLOCKED | SOFT_BLOCKED if soft else HARD_BLOCKED
+    return any((b in n) if len(b) >= min_len else (b == n) for b in words)
 
 
 def respellings(name):
@@ -71,7 +79,7 @@ def _starts(w):
     return starts
 
 
-def splice(a, b, min_len=4, max_len=12):
+def splice(a, b, min_len=4, max_len=12, soft=True):
     """Candidate blends of words a and b: {candidate: (seam overlap, syllable seam, kept a, kept b)}."""
     a, b = re.sub(r"[^a-z]", "", a.lower()), re.sub(r"[^a-z]", "", b.lower())
     out = {}
@@ -95,7 +103,7 @@ def splice(a, b, min_len=4, max_len=12):
     for cand, feat in list(out.items()):
         for r in respellings(cand):
             out.setdefault(r, feat)
-    return {c: f for c, f in out.items() if not blocked(c)}
+    return {c: f for c, f in out.items() if not blocked(c, soft)}
 
 
 class CharLM:
@@ -160,14 +168,14 @@ def recognizable(name, word):
     return best
 
 
-def rank(a, b, scorer, extra=(), top=None):
+def rank(a, b, scorer, extra=(), top=None, soft=True):
     """Score every splice of a and b (plus `extra` candidates, e.g. T5 blends); best first.
     Returns [(name, score)]. Score: name-likeness + bonuses for keeping >= 3 recognizable letters
     of each word, for a seam on shared letters or syllable edges, and for a 6-10 letter length."""
-    cands = splice(a, b)
-    for e in extra:
+    cands = splice(a, b, soft=soft)
+    for e in extra:  # e.g. T5 blends: filtered like the splices
         e = re.sub(r"[^a-z]", "", e.lower())
-        if e and e not in cands:
+        if e and e not in cands and not blocked(e, soft):
             cands[e] = (0, False, 0.5, 0.5)
     words = [re.sub(r"[^a-z]", "", w.lower()) for w in (a, b)]
     scored = []

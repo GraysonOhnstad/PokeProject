@@ -55,9 +55,12 @@ def main():
     p.add_argument("--textgen", default=str(ROOT / "runs" / "dex_textgen"))
     p.add_argument("--json", action="store_true")
     p.add_argument("--no-llm", action="store_true", help="skip name inspiration (offline idea pools only)")
+    p.add_argument("--unfiltered-names", action="store_true",
+                   help="allow names that hide sexual or profane words (slurs and hate terms stay blocked)")
     args = p.parse_args()
     t0 = time.time()
-    gen = DexGenerator(args.bundle, args.textgen, llm=None if args.no_llm else DEFAULT_LLM)
+    gen = DexGenerator(args.bundle, args.textgen, llm=None if args.no_llm else DEFAULT_LLM,
+                       filter_names=not args.unfiltered_names)
     t1 = time.time()
     entry, _ = gen.generate(args.text, era=args.era, k=args.candidates, seed=args.seed)
     if args.json:

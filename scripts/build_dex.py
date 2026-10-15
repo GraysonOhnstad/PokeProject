@@ -32,6 +32,7 @@ SPECIAL = 9  # Gen 1's single Special stat
 # Spin-offs and Japan-only releases with no English flavor text of their own.
 SKIP_VERSION_GROUPS = {"colosseum", "xd", "red-green-japan", "blue-japan"}
 LEVEL_UP = 1
+SIGNATURE_FAMILIES = 2  # a move or ability held by this many evolution families or fewer is "signature"
 
 
 def read(name):
@@ -193,9 +194,18 @@ def main():
     ability_names = english(read("ability_names"), "ability_id")
     used_moves = sorted({m for e in entries for _, m in e["learnset"]})
     used_abil = sorted({a for e in entries for a in e["abilities"].values() if a})
+    # Signature moves and abilities: held by at most SIGNATURE_FAMILIES evolution families, counting
+    # every form and every learn method (so a move most Pokemon get by TM is never "signature")
+    chain_of_pokemon = pokemon.set_index("id").species_id.map(spec.set_index("species_id").evolution_chain_id)
+    all_moves = read("pokemon_moves")
+    move_fams = all_moves.assign(chain=all_moves.pokemon_id.map(chain_of_pokemon)).groupby("move_id").chain.nunique()
+    all_abil = read("pokemon_abilities")
+    abil_fams = all_abil.assign(chain=all_abil.pokemon_id.map(chain_of_pokemon)).groupby("ability_id").chain.nunique()
     vocab = {"moves": {int(m): move_names[m] for m in used_moves},
              "abilities": {int(a): ability_names[a] for a in used_abil},
-             "version_groups": {int(g): vg.identifier[g] for g in vg.index}}
+             "version_groups": {int(g): vg.identifier[g] for g in vg.index},
+             "signature_moves": sorted(int(m) for m in used_moves if move_fams.get(m, 0) <= SIGNATURE_FAMILIES),
+             "signature_abilities": sorted(int(a) for a in used_abil if abil_fams.get(a, 0) <= SIGNATURE_FAMILIES)}
     (OUT / "vocab.json").write_text(json.dumps(vocab, indent=1, ensure_ascii=False), encoding="utf-8")
 
     # Checks and summary.

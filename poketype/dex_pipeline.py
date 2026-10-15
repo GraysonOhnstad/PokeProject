@@ -136,8 +136,11 @@ def one_hot(i, n):
 
 
 class DexGenerator:
-    def __init__(self, bundle, textgen_dir, threads=8, llm=DEFAULT_LLM):
-        """llm: GGUF instruction model for name inspiration (None or missing file: offline idea pools)."""
+    def __init__(self, bundle, textgen_dir, threads=8, llm=DEFAULT_LLM, filter_names=True):
+        """llm: GGUF instruction model for name inspiration (None or missing file: offline idea pools).
+        filter_names: reject names hiding sexual or profane words (slurs and hate terms are always
+        rejected; see poketype/dex_names.py)."""
+        self.filter_names = filter_names
         torch.set_num_threads(threads)
         from transformers import AutoModel, AutoModelForSeq2SeqLM, AutoTokenizer
         b = torch.load(bundle, weights_only=False)
@@ -169,6 +172,10 @@ class DexGenerator:
         vocab = json.loads((DEX / "vocab.json").read_text(encoding="utf-8"))
         self.move_names = {int(k): v for k, v in vocab["moves"].items()}
         self.ability_names = {int(k): v for k, v in vocab["abilities"].items()}
+        # signature moves and abilities (held by <= 2 families) are never given to a generated Pokemon
+        sig_a, sig_m = set(vocab.get("signature_abilities", [])), set(vocab.get("signature_moves", []))
+        self.signature_ability_ix = [i for i, a in enumerate(self.v["abilities"]) if int(a) in sig_a]
+        self.signature_move_mask = np.array([int(m) in sig_m for m in self.b["learnset"]["moves"]])
         self.existing = {n.lower() for n in species["name"]}
         latest = {}
         for line in open(DEX / "entries.jsonl", encoding="utf-8"):
@@ -366,6 +373,7 @@ class DexGenerator:
                     continue
                 p = out[slot][i].softmax(0).numpy().copy()
                 p[list(used)] = 0
+                p[self.signature_ability_ix] = 0
                 if not allow_none and len(p) > n:
                     p[n:] = 0
                 j = int(rng.choice(len(p), p=p / p.sum()))
@@ -380,7 +388,7 @@ class DexGenerator:
                          for c in cands])
         bias = np.stack([bias_for(ls["prior"], c["types"], era) for c in cands])
         logits, size = self.learnset(torch.tensor(cond), torch.tensor(bias))
-        allowed = np.tile(self.move_gen <= era, (len(cands), 1))
+        allowed = np.tile((self.move_gen <= era) & ~self.signature_move_mask, (len(cands), 1))
         sets = sample_learnsets(logits.numpy(), size.numpy(), ls["size_sd"], allowed, self.moves, self.levels,
                                 era, rng, ls["temperature"])
         for c, s in zip(cands, sets):  # moves "on evolution" (level 0) only for evolved Pokemon
@@ -500,7 +508,8 @@ class DexGenerator:
                     continue
                 # splices of the two ideas plus T5's blends, ranked by name-likeness, recognizable
                 # pieces of both ideas, seam and length (poketype/dex_names.py)
-                for x, score in rank(parts[0], parts[1], self.name_scorer, extra=[x.strip() for x in ns]):
+                for x, score in rank(parts[0], parts[1], self.name_scorer, extra=[x.strip() for x in ns],
+                                     soft=self.filter_names):
                     if (NAME_OK.match(x) and 3 <= len(x) <= MAX_NAME and x.lower() not in self.existing
                             and x.lower() not in self.real_words and not wordnet().synsets(x.lower())
                             and not self.too_close(x)):

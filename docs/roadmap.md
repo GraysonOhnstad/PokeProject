@@ -61,8 +61,10 @@ Honest about memorization: each model's genuine predictions are on Pokémon it n
 - Pokédex tab: input text that closely matches a real entry gets a note naming that Pokémon.
 - Originality checks on every generated entry, before sample-and-pick: name not an existing one; sprite not a near-copy of any real sprite (perceptual hash and shared-embedding similarity); stat line/learnset flagged when several fields match a real Pokémon exactly.
 
+Modes: with a GPU and internet, full naming (local Llama 3.1 8B + Wikipedia); without them, offline naming, and the page says which. Entry rerolls are kept in a per-text gallery, like sprite versions. A setting lets the user turn off the default name filter (slurs and hate terms stay blocked).
+
 Runs on the desktop GPU behind a Gradio share link; on CPU, everything but sprite generation works (slowly), so the page says so instead of failing. Weights on GitHub Releases.
 
 ## 7. Later
 - Evolution lines generated in the background for every entry: decide line length and the entry's position, then the other members conditioned on it (types gained or kept, profile carried through, learnsets extended, size and genus), with evolution methods and levels. Trained on real families only; kept for the single-entry fields only if it improves them on held-out families. The Pokédex can show the line, with members' sprites generated on demand.
-- Signature moves and abilities.
+- Signature moves and abilities: generated Pokémon currently never get them (D44); a tuned abilities/moves model would decide between passing on a former signature and creating a new one.
