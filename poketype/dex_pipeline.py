@@ -25,6 +25,7 @@ from poketype.dex_text import Masker, clean_text, species_token
 from poketype.labels import TYPES
 
 MAX_NAME = 12
+NAME_OK = re.compile(r"^[A-Z][a-zé'\-]*[a-zé]$")  # one capitalized word, like Farfetch'd or Porygon-Z
 
 
 def bracketed(text):
@@ -74,7 +75,7 @@ class DexGenerator:
         for m in (self.stats, self.abil, self.learnset):
             m.eval()
         self.t5_tok = AutoTokenizer.from_pretrained(textgen_dir)
-        self.t5 = AutoModelForSeq2SeqLM.from_pretrained(textgen_dir).eval()
+        self.t5_model = AutoModelForSeq2SeqLM.from_pretrained(textgen_dir).eval()
 
         species = pd.read_csv(DEX / "species.csv").set_index("species_id")
         vocab = json.loads((DEX / "vocab.json").read_text(encoding="utf-8"))
@@ -103,7 +104,7 @@ class DexGenerator:
         """Sampled T5 outputs: n per source."""
         torch.manual_seed(seed)
         enc = self.t5_tok(sources, padding=True, truncation=True, max_length=160, return_tensors="pt")
-        g = self.t5.generate(**enc, max_new_tokens=max_new, num_return_sequences=n, do_sample=True, top_p=0.9)
+        g = self.t5_model.generate(**enc, max_new_tokens=max_new, num_return_sequences=n, do_sample=True, top_p=0.9)
         out = self.t5_tok.batch_decode(g, skip_special_tokens=True)
         return [out[i * n:(i + 1) * n] for i in range(len(sources))]
 
@@ -235,9 +236,9 @@ class DexGenerator:
         concepts = [w[0] for w in self.t5(src, seed=seed + 1)]
         names = self.t5([f"name | {w}" for w in concepts], n=8, max_new=12, seed=seed + 2)
         for c, g, w, ns in zip(cands, genus, concepts, names):
-            ok = [x.strip() for x in ns if x.strip().lower() not in self.existing
-                  and 3 <= len(x.strip()) <= MAX_NAME and " " not in x.strip()
-                  and x.strip().lower() not in {s.strip() for s in w.split(",")}]
+            words = {s.strip().lower() for s in w.split(",")}
+            ok = [x.strip() for x in ns if NAME_OK.match(x.strip()) and 3 <= len(x.strip()) <= MAX_NAME
+                  and x.strip().lower() not in self.existing and x.strip().lower() not in words]
             c["genus"], c["concepts"], c["name"] = g, w, (ok[0] if ok else None)
 
     def _present(self, c, text, era):

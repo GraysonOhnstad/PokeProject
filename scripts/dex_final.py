@@ -42,9 +42,11 @@ def log(msg):
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--with-gen5", action="store_true")
+    p.add_argument("--smoke", action="store_true", help="2-epoch run into runs/dex/smoke, to test the code path")
     args = p.parse_args()
     torch.set_num_threads(8)
-    out_dir = ROOT / "runs" / "dex" / ("all" if args.with_gen5 else "gen5_heldout")
+    out_dir = ROOT / "runs" / "dex" / ("smoke" if args.smoke else "all" if args.with_gen5 else "gen5_heldout")
+    ep = (lambda n: 2) if args.smoke else (lambda n: n)
     out_dir.mkdir(parents=True, exist_ok=True)
 
     rows, targets, vocabs = load()
@@ -66,7 +68,7 @@ def main():
     Xt = torch.tensor(X_text)
     _, best, states = train(model, lambda b: Xt[b], T, row_weights(sid, [fit_ix, stop_ix]), fit_ix, stop_ix,
                             np.array([], dtype=int), [{"params": model.parameters(), "lr": 1e-3, "weight_decay": 1e-2}],
-                            epochs=200, patience=25, keep_states=True)
+                            epochs=ep(200), patience=25, keep_states=True)
     # residual spread of log height/weight on the stopping families, for sampling sizes
     model.load_state_dict(states["height"])
     with torch.no_grad():
@@ -89,7 +91,7 @@ def main():
                  one_hot(targets["color"], len(vocabs["color"])), targets["egg"],
                  targets["log_height"], targets["log_weight"], mu_hw, sd_hw)
     X_up = np.concatenate([X_text, U], 1)
-    stats_model = fit_stats(X_up, targets, rows, pool, aux=True)
+    stats_model = fit_stats(X_up, targets, rows, pool, aux=True, epochs=ep(300))
     bundle["stats"] = {"d_in": X_up.shape[1], "state": stats_model.state_dict(), "mu_hw": mu_hw, "sd_hw": sd_hw}
     log(f"stats: done ({(time.time() - t0) / 60:.1f} min)")
 
@@ -104,7 +106,7 @@ def main():
                          one_hot(targets["color"], len(vocabs["color"])), targets["egg"],
                          st / st.sum(1, keepdims=True), (cont - mu_c) / sd_c], 1).astype(np.float32)
     X_ab = np.concatenate([X_text, U2], 1)
-    ab_model = dex_abilities.fit(X_ab, A, rows, pool, targets["abilities"])
+    ab_model = dex_abilities.fit(X_ab, A, rows, pool, targets["abilities"], epochs=ep(200))
     bundle["abilities"] = {"d_in": X_ab.shape[1], "n": dex_abilities.N_ABIL, "state": ab_model.state_dict(),
                            "mu_c": mu_c, "sd_c": sd_c}
     log(f"abilities: done ({(time.time() - t0) / 60:.1f} min)")
@@ -123,7 +125,10 @@ def main():
     is_stop = np.isin(chain[e_pool], list(stop_fams))
     cond = dex_learnset.conditioning(entries, species, text_emb)
     seqs = [tokens.encode(e["learnset"]) for e in entries]
-    ls_model = dex_learnset.train_model(cond, seqs, e_pool[~is_stop], e_pool[is_stop], e_sid, tokens.size, log=log)
+    fit_e, stop_e = e_pool[~is_stop], e_pool[is_stop]
+    if args.smoke:
+        fit_e, stop_e = fit_e[:300], stop_e[:100]
+    ls_model = dex_learnset.train_model(cond, seqs, fit_e, stop_e, e_sid, tokens.size, epochs=ep(60), log=log)
     mv = pd.read_csv(ROOT / "data" / "raw" / "csv" / "moves.csv").set_index("id")
     bundle["learnset"] = {"d_cond": cond.shape[1], "n_tokens": tokens.size, "moves": tokens.moves,
                           "move_gen": mv.generation_id.reindex(tokens.moves).tolist(),
