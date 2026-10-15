@@ -22,7 +22,7 @@ Why Gen 5: it introduced no new evolutions or pre-evolutions of older Pokémon, 
 - Test-set evaluation with standard classification metrics.
 - Inference timer: seconds for a single-image prediction.
 - Gradio UI: upload image → predicted label(s) + inference time.
-- Deploy to Hugging Face Spaces with `app.py`, model weights, `requirements.txt` (plus a class-name mapping file).
+- Deploy: code on GitHub; run the Gradio app with a share link (`python app.py --share`). Instructor update (2026-10): this replaces Hugging Face Spaces, which now requires a paid plan for Gradio apps. The repo keeps `app.py`, `requirements.txt` and the class-name mapping; model weights too large for git go on a GitHub Release.
 - Instructor has approved a custom (non-torchvision) dataset.
 
 ## Data sources

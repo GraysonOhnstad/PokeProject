@@ -1,10 +1,12 @@
 """Gradio app: upload or pick a Pokemon image -> predicted type(s) + inference time.
 
-Deployed as a Hugging Face Space; scripts/build_space.py assembles the Space folder
-(this file, the poketype package, model.pt, classes.json, examples/).
+scripts/build_space.py assembles the app folder (this file, the poketype package,
+model.pt, classes.json, examples/). Run it with `python app.py --share` for a temporary
+public Gradio link.
 """
 
 import json
+import sys
 from pathlib import Path
 
 import gradio as gr
@@ -86,4 +88,5 @@ with gr.Blocks(title="Pokémon Type Classifier") as demo:
     image.clear(lambda: (None, "", None, None, ""), outputs=[*outputs, key], api_name="clear")
 
 if __name__ == "__main__":
-    demo.launch()
+    # --share: Gradio prints a temporary public link (the course deployment: code on GitHub + share link)
+    demo.launch(share="--share" in sys.argv)
