@@ -128,11 +128,13 @@ def main():
     fit_e, stop_e = e_pool[~is_stop], e_pool[is_stop]
     if args.smoke:
         fit_e, stop_e = fit_e[:300], stop_e[:100]
-    ls_model = dex_learnset.train_model(cond, seqs, fit_e, stop_e, e_sid, tokens.size, epochs=ep(60), log=log)
+    prior = dex_learnset.move_prior(entries, tokens.moves, fit_e)
+    bias = np.stack([dex_learnset.bias_for(prior, e["types"], e["generation"]) for e in entries])
+    ls_model = dex_learnset.train_model(cond, seqs, fit_e, stop_e, e_sid, tokens.size, bias, epochs=ep(60), log=log)
     mv = pd.read_csv(ROOT / "data" / "raw" / "csv" / "moves.csv").set_index("id")
     bundle["learnset"] = {"d_cond": cond.shape[1], "n_tokens": tokens.size, "moves": tokens.moves,
                           "move_gen": mv.generation_id.reindex(tokens.moves).tolist(),
-                          "state": ls_model.state_dict()}
+                          "state": ls_model.state_dict(), "prior": prior}
     log(f"learnset: done ({(time.time() - t0) / 60:.1f} min)")
 
     torch.save(bundle, out_dir / "dex.pt")

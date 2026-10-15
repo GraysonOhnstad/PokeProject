@@ -18,7 +18,7 @@ import torch
 import torch.nn.functional as F
 
 from poketype.dex import DEX, STATS, natural
-from poketype.dex_learnset import LearnsetModel, Tokens, cond_vector, generate as generate_learnset
+from poketype.dex_learnset import LearnsetModel, Tokens, bias_for, cond_vector, generate as generate_learnset
 from poketype.dex_models import AbilityModel, Heads
 from poketype.dex_stats import SCALE, StatModel
 from poketype.dex_text import Masker, clean_text, species_token
@@ -166,6 +166,10 @@ class DexGenerator:
         type_sets, type_lp = set_logprobs(p_types)
         _, knn_lp = set_logprobs(knn_types)
         egg_sets, egg_lp = set_logprobs(p_egg)
+        if "no-eggs" in self.v["egg"]:  # "No Eggs" (Undiscovered) is never paired with another group
+            ne = self.v["egg"].index("no-eggs")
+            egg_lp = np.where([len(s) == 2 and ne in s for s in egg_sets], -np.inf, egg_lp)
+            egg_lp = egg_lp - np.logaddexp.reduce(egg_lp)
         cands = []
         for c in range(k):
             ti = rng.choice(len(type_sets), p=np.exp(type_lp))
@@ -250,7 +254,9 @@ class DexGenerator:
                                            c["line_length"], c["stage"] == c["line_length"], c["rarity"], emb)
                          for c in cands])
         allowed = torch.tensor(np.tile(self.move_gen <= era, (len(cands), 1)))
-        seqs = generate_learnset(self.learnset, torch.tensor(cond), allowed)
+        prior = self.b["learnset"].get("prior")
+        bias = None if prior is None else torch.tensor(np.stack([bias_for(prior, c["types"], era) for c in cands]))
+        seqs = generate_learnset(self.learnset, torch.tensor(cond), allowed, move_bias=bias)
         for c, s in zip(cands, seqs):
             c["learnset"] = self.tokens.decode(s)
 
