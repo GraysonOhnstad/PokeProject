@@ -32,6 +32,7 @@ from poketype.labels import TYPES
 MAX_NAME = 12
 DEFAULT_LLM = DEX.parent / "models" / "Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf"  # name inspiration
 PAIRS = 3  # idea pairs tried per candidate
+BASIS_SHARE = 0.7  # share of idea pairs that start from the inspired basis (reports/dex_inspire_eval.md)
 STOPWORDS = set("""about above after again against also among around because been before being below
 between both could does doing done down during each either even ever every from further have having here
 into itself just like many more most much must neither only onto other over same should some such than
@@ -454,7 +455,9 @@ class DexGenerator:
         """Two ideas from different pools, never sharing a root; literal words are rare picks.
         With a basis, the first idea is a basis word (earlier ones likelier) and the second mostly
         an inspired concept: the creature plus something striking about it."""
-        if ideas.get("basis"):
+        # with a basis, most pairs start from it; 30% still come from the offline pools, since on held-out
+        # Pokedex texts the two sources together found canon name words more often than either alone
+        if ideas.get("basis") and rng.random() < BASIS_SHARE:
             basis = ideas["basis"]
             wb = np.array([1 / (i + 1) ** 2 for i in range(len(basis))])  # the head noun dominates
             a = basis[rng.choice(len(basis), p=wb / wb.sum())]

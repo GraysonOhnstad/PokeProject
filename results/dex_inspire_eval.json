@@ -1,0 +1,6269 @@
+{
+ "summary": {
+  "hit_offline": 0.25,
+  "hit_basis": 0.08139534883720931,
+  "hit_inspired": 0.13953488372093023,
+  "hit_inspired_facts": 0.18023255813953487,
+  "hit_all": 0.31976744186046513,
+  "n": 172,
+  "has_basis": 0.9244186046511628
+ },
+ "rows": [
+  {
+   "name": "Caterpie",
+   "canon": [
+    "caterpillar"
+   ],
+   "text": "this Pokémon has a voracious appetite. It can devour leaves bigger than its body right before your eyes. From its antenna, this Pokémon releases a terrifically strong odor.",
+   "basis": [
+    "Caterpillar",
+    "Ant"
+   ],
+   "basis_words": [
+    "caterpillar"
+   ],
+   "concepts": [
+    "munch",
+    "odor",
+    "bristle",
+    "leaf",
+    "venom",
+    "silk",
+    "titan",
+    "gigas"
+   ],
+   "genus_options": [
+    "Devourer",
+    "Leaf Eater",
+    "Stinker"
+   ],
+   "true_genus": "Worm Pokémon",
+   "hit_offline": false,
+   "hit_basis": true,
+   "hit_inspired": true,
+   "hit_inspired_facts": true,
+   "hit_all": true
+  },
+  {
+   "name": "Metapod",
+   "canon": [
+    "metamorphosis",
+    "pod"
+   ],
+   "text": "The shell covering this Pokémon's body is as hard as an iron slab. this Pokémon does not move very much. It stays still because it is preparing its soft innards for evolution inside the hard shell.",
+   "basis": [
+    "Tortoise",
+    "Armadillo"
+   ],
+   "basis_words": [
+    "tortoise",
+    "armadillo"
+   ],
+   "concepts": [
+    "tortus",
+    "carapax",
+    "armadillo",
+    "gigas",
+    "immobilitas",
+    "fortis",
+    "embryon",
+    "sclera"
+   ],
+   "genus_options": [
+    "Tortoise",
+    "Armadillo",
+    "Shell"
+   ],
+   "true_genus": "Cocoon Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Butterfree",
+   "canon": [
+    "butterfly",
+    "free",
+    "patapata"
+   ],
+   "text": "this Pokémon has a superior ability to search for delicious honey from flowers. It can even search out, extract, and carry honey from flowers that are blooming over six miles from its nest.",
+   "basis": [
+    "Honey bee",
+    "Bumblebee"
+   ],
+   "basis_words": [
+    "honey",
+    "honeybee",
+    "bumblebee"
+   ],
+   "concepts": [
+    "apis",
+    "mellifera",
+    "apiarius",
+    "mellivora",
+    "foragius",
+    "volans"
+   ],
+   "genus_options": [
+    "Honey",
+    "Bee",
+    "Forager"
+   ],
+   "true_genus": "Butterfly Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Sandshrew",
+   "canon": [
+    "sand",
+    "shrew"
+   ],
+   "text": "this Pokémon has a very dry hide that is extremely tough. The Pokémon can roll into a ball that repels any attack. At night, it burrows into the desert sand to sleep.",
+   "basis": [
+    "Desert tortoise",
+    "Armadillo"
+   ],
+   "basis_words": [
+    "desert",
+    "tortoise",
+    "armadillo"
+   ],
+   "concepts": [
+    "desert",
+    "tortoise",
+    "ball",
+    "roll",
+    "hide",
+    "tough",
+    "burrow",
+    "sand"
+   ],
+   "genus_options": [
+    "Roller",
+    "Balladillo",
+    "Desert Ball"
+   ],
+   "true_genus": "Mouse Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": true,
+   "hit_inspired_facts": true,
+   "hit_all": true
+  },
+  {
+   "name": "Sandslash",
+   "canon": [
+    "sand",
+    "slash"
+   ],
+   "text": "this Pokémon can roll up its body as if it were a ball covered with large spikes. In battle, this Pokémon will try to make the foe flinch by jabbing it with its spines. It then leaps at the stunned foe to tear wildly with its sharp claws.",
+   "basis": [
+    "Porcupine",
+    "Ball python"
+   ],
+   "basis_words": [
+    "python",
+    "ball",
+    "porcupine"
+   ],
+   "concepts": [
+    "spike",
+    "ball",
+    "python",
+    "rodent",
+    "sharp",
+    "claw",
+    "flinch",
+    "wild"
+   ],
+   "genus_options": [
+    "Ball",
+    "Porcupine",
+    "Ball Python"
+   ],
+   "true_genus": "Mouse Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Nidoran♀",
+   "canon": [
+    "needle",
+    "nido"
+   ],
+   "text": "Nidoran has barbs that secrete a powerful poison. They are thought to have developed as protection for this small-bodied Pokémon. When enraged, it releases a horrible toxin from its horn.",
+   "basis": [
+    "Porcupine",
+    "Adder"
+   ],
+   "basis_words": [
+    "porcupine",
+    "adder"
+   ],
+   "concepts": [
+    "quill",
+    "tox",
+    "adder",
+    "rodent",
+    "horn",
+    "venom",
+    "cytotoxin",
+    "proteolytic"
+   ],
+   "genus_options": [
+    "Quill",
+    "Adder",
+    "Thorn"
+   ],
+   "true_genus": "Poison Pin Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": true
+  },
+  {
+   "name": "Nidorina",
+   "canon": [
+    "needle",
+    "rhinoceros",
+    "ina"
+   ],
+   "text": "When this Pokémon are with their friends or family, they keep their barbs tucked away to prevent hurting each other. This Pokémon appears to become nervous if separated from the others.",
+   "basis": [
+    "Porcupine",
+    "Hedgehog"
+   ],
+   "basis_words": [
+    "porcupine",
+    "hedgehog"
+   ],
+   "concepts": [
+    "porc",
+    "quill",
+    "longev",
+    "nervos",
+    "spina",
+    "rodent",
+    "primit",
+    "barb"
+   ],
+   "genus_options": [
+    "Quill",
+    "Prickly",
+    "Spine"
+   ],
+   "true_genus": "Poison Pin Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Nidoqueen",
+   "canon": [
+    "queen",
+    "nido"
+   ],
+   "text": "this Pokémon's body is encased in extremely hard scales. It is adept at sending foes flying with harsh tackles. This Pokémon is at its strongest when it is defending its young.",
+   "basis": [
+    "Armadillo"
+   ],
+   "basis_words": [
+    "armadillo"
+   ],
+   "concepts": [
+    "protector",
+    "tackle",
+    "shield",
+    "mother",
+    "roll",
+    "ball",
+    "strong",
+    "guard"
+   ],
+   "genus_options": [
+    "Roller",
+    "Armadillo",
+    "Tank"
+   ],
+   "true_genus": "Drill Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Clefairy",
+   "canon": [
+    "clef",
+    "fairy"
+   ],
+   "text": "On every night of a full moon, groups of this Pokémon come out to play. When dawn arrives, the tired this Pokémon return to their quiet mountain retreats and go to sleep nestled up against each other.",
+   "basis": [
+    "Mountain goat"
+   ],
+   "basis_words": [
+    "goat",
+    "mountain"
+   ],
+   "concepts": [
+    "frost",
+    "crepus",
+    "lumin",
+    "nestor",
+    "cohort",
+    "cryos",
+    "altior",
+    "conger"
+   ],
+   "genus_options": [
+    "Moon",
+    "Goat",
+    "Herder"
+   ],
+   "true_genus": "Fairy Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Clefable",
+   "canon": [
+    "clef",
+    "fable"
+   ],
+   "text": "this Pokémon moves by skipping lightly as if it were flying using its wings. Its bouncy step lets it even walk on water. It is known to take strolls on lakes on quiet, moonlit nights.",
+   "basis": [
+    "Gerridae",
+    "Fairyfly"
+   ],
+   "basis_words": [
+    "water",
+    "gerridae",
+    "strider",
+    "fairyfly"
+   ],
+   "concepts": [
+    "skim",
+    "aqua",
+    "volans",
+    "gerrid",
+    "fairy",
+    "buoy",
+    "luna",
+    "skip"
+   ],
+   "genus_options": [
+    "Water Walker",
+    "Water Strider",
+    "Fairy Fly"
+   ],
+   "true_genus": "Fairy Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Oddish",
+   "canon": [
+    "odd",
+    "radish"
+   ],
+   "text": "this Pokémon searches for fertile, nutrient- rich soil, then plants itself. During the daytime, while it is planted, this Pokémon's feet are thought to change shape and become similar to the roots of trees.",
+   "basis": [
+    "Succulent plant",
+    "Eelgrass"
+   ],
+   "basis_words": [
+    "plant",
+    "succulent",
+    "eelgrass"
+   ],
+   "concepts": [
+    "xerophyte",
+    "rhizome",
+    "euryhaline",
+    "succus",
+    "terra",
+    "geotropism",
+    "dormancy"
+   ],
+   "genus_options": [
+    "Succulent",
+    "Burrowing",
+    "Rooted"
+   ],
+   "true_genus": "Weed Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Gloom",
+   "canon": [
+    "goo",
+    "glue",
+    "bloom"
+   ],
+   "text": "this Pokémon releases a foul fragrance from the pistil of its flower. When faced with danger, the stench worsens. If this Pokémon is feeling calm and secure, it does not release its usual stinky aroma.",
+   "basis": [
+    "Skunk",
+    "Rafflesia"
+   ],
+   "basis_words": [
+    "skunk",
+    "rafflesia"
+   ],
+   "concepts": [
+    "skunk",
+    "rafflesia",
+    "stench",
+    "odor",
+    "bloom",
+    "bloomate",
+    "malodor",
+    "inflorescence"
+   ],
+   "genus_options": [
+    "Stinker",
+    "Skunk",
+    "Rafflesia"
+   ],
+   "true_genus": "Weed Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": true,
+   "hit_inspired_facts": true,
+   "hit_all": true
+  },
+  {
+   "name": "Vileplume",
+   "canon": [
+    "vile",
+    "plume",
+    "bloom"
+   ],
+   "text": "this Pokémon has the world's largest petals. They are used to attract prey that are then doused with toxic spores. Once the prey are immobilized, this Pokémon catches and devours them.",
+   "basis": [
+    "Rafflesia",
+    "Amorphophallus titanum"
+   ],
+   "basis_words": [
+    "titan",
+    "rafflesia",
+    "titanum",
+    "amorphophallus",
+    "arum"
+   ],
+   "concepts": [
+    "gigantia",
+    "toxica",
+    "spathe",
+    "spadix",
+    "carrion",
+    "putrida",
+    "inflores",
+    "floribunda",
+    "carnivora"
+   ],
+   "genus_options": [
+    "Flower",
+    "Rafflesia",
+    "Carrion"
+   ],
+   "true_genus": "Flower Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": true,
+   "hit_all": true
+  },
+  {
+   "name": "Diglett",
+   "canon": [
+    "dig",
+    "let"
+   ],
+   "text": "this Pokémon are raised in most farms. The reason is simple - wherever this Pokémon burrows, the soil is left perfectly tilled for planting crops. This soil is made ideal for growing delicious vegetables.",
+   "basis": [
+    "Badger",
+    "Groundhog"
+   ],
+   "basis_words": [
+    "badger",
+    "groundhog"
+   ],
+   "concepts": [
+    "burrow",
+    "tiller",
+    "soil",
+    "farm",
+    "root",
+    "digger",
+    "tillage",
+    "fertile"
+   ],
+   "genus_options": [
+    "Farmer",
+    "Burrower",
+    "Tiller"
+   ],
+   "true_genus": "Mole Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Dugtrio",
+   "canon": [
+    "dug",
+    "trio"
+   ],
+   "text": "this Pokémon are actually triplets that emerged from one body. As a result, each triplet thinks exactly like the other two triplets. They work cooperatively to burrow endlessly.",
+   "basis": [
+    "Ant",
+    "Prairie dog"
+   ],
+   "basis_words": [
+    "prairie"
+   ],
+   "concepts": [
+    "triplet",
+    "sync",
+    "burrow",
+    "ant",
+    "prairie",
+    "dog",
+    "colony",
+    "kin"
+   ],
+   "genus_options": [
+    "Triplet",
+    "Ant",
+    "Burrower"
+   ],
+   "true_genus": "Mole Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": true
+  },
+  {
+   "name": "Bellsprout",
+   "canon": [
+    "bell",
+    "sprout"
+   ],
+   "text": "this Pokémon's thin and flexible body lets it bend and sway to avoid any attack, however strong it may be. From its mouth, this Pokémon spits a corrosive fluid that melts even iron.",
+   "basis": [
+    "Limax maximus",
+    "Cone snail"
+   ],
+   "basis_words": [
+    "maximus",
+    "slug",
+    "leopard",
+    "snail",
+    "cone",
+    "limax"
+   ],
+   "concepts": [
+    "flex",
+    "corrosive",
+    "limax",
+    "radula",
+    "venom",
+    "acidic",
+    "melt",
+    "proboscis"
+   ],
+   "genus_options": [
+    "Slip",
+    "Slug",
+    "Acid"
+   ],
+   "true_genus": "Flower Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Weepinbell",
+   "canon": [
+    "weeping",
+    "bell"
+   ],
+   "text": "this Pokémon has a large hook on its rear end. At night, the Pokémon hooks on to a tree branch and goes to sleep. If it moves around in its sleep, it may wake up to find itself on the ground.",
+   "basis": [
+    "Chameleon",
+    "Anolidae"
+   ],
+   "basis_words": [
+    "chameleon",
+    "anolidae",
+    "anole"
+   ],
+   "concepts": [
+    "hook",
+    "chameleon",
+    "tree",
+    "branch",
+    "sleep",
+    "fall",
+    "climb",
+    "escape"
+   ],
+   "genus_options": [
+    "Hook",
+    "Chameleon",
+    "Tree Sitter"
+   ],
+   "true_genus": "Flycatcher Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Victreebel",
+   "canon": [
+    "victory",
+    "tree",
+    "bell"
+   ],
+   "text": "this Pokémon has a long vine that extends from its head. This vine is waved and flicked about as if it were an animal to attract prey. When an unsuspecting prey draws near, this Pokémon swallows it whole.",
+   "basis": [
+    "Venus flytrap",
+    "Utricularia"
+   ],
+   "basis_words": [
+    "venus",
+    "flytrap",
+    "utricularia",
+    "bladderwort"
+   ],
+   "concepts": [
+    "vine",
+    "snap",
+    "carnivore",
+    "adapt",
+    "prey",
+    "swallow",
+    "trap",
+    "dormant"
+   ],
+   "genus_options": [
+    "Vine",
+    "Carnivore",
+    "Snaptrap"
+   ],
+   "true_genus": "Flycatcher Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Magnemite",
+   "canon": [
+    "magnet",
+    "mite",
+    "might"
+   ],
+   "text": "this Pokémon floats in the air by emitting electromagnetic waves from the units at its sides. These waves block gravity. This Pokémon becomes incapable of flight if its internal electrical supply is depleted.",
+   "basis": [
+    "Bat",
+    "Richmond Flying Squirrels"
+   ],
+   "basis_words": [
+    "bats",
+    "squirrels",
+    "richmond",
+    "flying"
+   ],
+   "concepts": [
+    "aero",
+    "grav",
+    "lux",
+    "vol",
+    "bat",
+    "wing",
+    "glide",
+    "aura"
+   ],
+   "genus_options": [
+    "Flying",
+    "Bat",
+    "Glider"
+   ],
+   "true_genus": "Magnet Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": true
+  },
+  {
+   "name": "Magneton",
+   "canon": [
+    "magnet",
+    "ton",
+    "magnetron"
+   ],
+   "text": "this Pokémon emits a powerful magnetic force that is fatal to electronics and precision instruments. Because of this, it is said that some towns warn people to keep this Pokémon inside a POKé Ball.",
+   "basis": [
+    "Magnetotactic bacteria",
+    "Electric eel"
+   ],
+   "basis_words": [
+    "bacteria",
+    "electric",
+    "magnetotactic"
+   ],
+   "concepts": [
+    "magnet",
+    "bio",
+    "force",
+    "iron",
+    "shock",
+    "volt",
+    "anaer",
+    "greig"
+   ],
+   "genus_options": [
+    "Magnet",
+    "Electric",
+    "Shockwave"
+   ],
+   "true_genus": "Magnet Pokémon",
+   "hit_offline": true,
+   "hit_basis": true,
+   "hit_inspired": true,
+   "hit_inspired_facts": true,
+   "hit_all": true
+  },
+  {
+   "name": "Shellder",
+   "canon": [
+    "shell",
+    "shelter"
+   ],
+   "text": "At night, this Pokémon uses its broad tongue to burrow a hole in the seafloor sand and then sleep in it. While it is sleeping, this Pokémon closes its shell, but leaves its tongue hanging out.",
+   "basis": [
+    "Tortoise",
+    "Sea turtle"
+   ],
+   "basis_words": [
+    "turtle",
+    "tortoise"
+   ],
+   "concepts": [
+    "tongue",
+    "burrow",
+    "nocturn",
+    "shell",
+    "sea",
+    "tort",
+    "slow",
+    "deep"
+   ],
+   "genus_options": [
+    "Turtle",
+    "Shell Dweller",
+    "Night Digger"
+   ],
+   "true_genus": "Bivalve Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": true,
+   "hit_inspired_facts": true,
+   "hit_all": true
+  },
+  {
+   "name": "Cloyster",
+   "canon": [
+    "clam",
+    "oyster",
+    "cloister"
+   ],
+   "text": "this Pokémon is capable of swimming in the sea. It does so by swallowing water, then jetting it out toward the rear. This Pokémon shoots spikes from its shell using the same system.",
+   "basis": [
+    "Dugong",
+    "Manatee"
+   ],
+   "basis_words": [
+    "dugong",
+    "manatee"
+   ],
+   "concepts": [
+    "aquas",
+    "hydro",
+    "spina",
+    "sire",
+    "jeti",
+    "shelli",
+    "veloci",
+    "acuti"
+   ],
+   "genus_options": [
+    "Siren",
+    "Sea Siren",
+    "Aquaslug"
+   ],
+   "true_genus": "Bivalve Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Krabby",
+   "canon": [
+    "crab",
+    "crabby"
+   ],
+   "text": "this Pokémon live on beaches, burrowed inside holes dug into the sand. On sandy beaches with little in the way of food, these Pokémon can be seen squabbling with each other over territory.",
+   "basis": [
+    "Sandpiper",
+    "Plover"
+   ],
+   "basis_words": [
+    "sandpiper",
+    "plover"
+   ],
+   "concepts": [
+    "aren",
+    "terr",
+    "squab",
+    "cosm",
+    "bill",
+    "emer",
+    "char",
+    "plovi"
+   ],
+   "genus_options": [
+    "Sand Digger",
+    "Sandpiper",
+    "Shorebird"
+   ],
+   "true_genus": "River Crab Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Kingler",
+   "canon": [
+    "king crab",
+    "angler",
+    "fiddler crab"
+   ],
+   "text": "this Pokémon has an enormous, oversized claw. It waves this huge claw in the air to communicate with others. However, because the claw is so heavy, the Pokémon quickly tires.",
+   "basis": [
+    "Tortoise",
+    "Manatee"
+   ],
+   "basis_words": [
+    "tortoise",
+    "manatee"
+   ],
+   "concepts": [
+    "brachy",
+    "tortus",
+    "manus"
+   ],
+   "genus_options": [
+    "Giant",
+    "Claw",
+    "Tortoise"
+   ],
+   "true_genus": "Pincer Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": true
+  },
+  {
+   "name": "Cubone",
+   "canon": [
+    "cub",
+    "bone"
+   ],
+   "text": "this Pokémon pines for the mother it will never see again. Seeing a likeness of its mother in the full moon, it cries. The stains on the skull the Pokémon wears are made by the tears it sheds.",
+   "basis": [
+    "Orangutan",
+    "Gibbon"
+   ],
+   "basis_words": [
+    "orangutan",
+    "gibbon"
+   ],
+   "concepts": [
+    "lun",
+    "pong",
+    "siam",
+    "syndact",
+    "orph",
+    "gibb",
+    "chrom",
+    "plei"
+   ],
+   "genus_options": [
+    "Orphan",
+    "Gibbon",
+    "Moon"
+   ],
+   "true_genus": "Lonely Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Marowak",
+   "canon": [
+    "bone marrow",
+    "whack"
+   ],
+   "text": "this Pokémon is the evolved form of a its pre-evolution that has overcome its sadness at the loss of its mother and grown tough. This Pokémon's tempered and hardened spirit is not easily broken.",
+   "basis": [],
+   "basis_words": [],
+   "concepts": [],
+   "genus_options": [],
+   "true_genus": "Bone Keeper Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Hitmonlee",
+   "canon": [
+    "hit",
+    "monster",
+    "bruce lee"
+   ],
+   "text": "this Pokémon's legs freely contract and stretch. Using these springlike legs, it bowls over foes with devastating kicks. After battle, it rubs down its legs and loosens the muscles to overcome fatigue.",
+   "basis": [
+    "Springbok",
+    "Gazelle"
+   ],
+   "basis_words": [
+    "springbok",
+    "gazelle"
+   ],
+   "concepts": [
+    "spring",
+    "bok",
+    "gazelle",
+    "stretch",
+    "kick",
+    "leap",
+    "bounce",
+    "flex"
+   ],
+   "genus_options": [
+    "Springer",
+    "Leap",
+    "Gazelle"
+   ],
+   "true_genus": "Kicking Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Hitmonchan",
+   "canon": [
+    "hit",
+    "monster",
+    "jackie chan"
+   ],
+   "text": "this Pokémon is said to possess the spirit of a boxer who had been working towards a world championship. This Pokémon has an indomitable spirit and will never give up in the face of adversity.",
+   "basis": [
+    "World championship",
+    "Rocky Balboa"
+   ],
+   "basis_words": [
+    "championship",
+    "world",
+    "rocky",
+    "balboa"
+   ],
+   "concepts": [
+    "titans",
+    "champion",
+    "spirit",
+    "indomitable",
+    "knockout",
+    "resilience",
+    "valor",
+    "triumph"
+   ],
+   "genus_options": [
+    "Champion",
+    "Fighter",
+    "Brawler"
+   ],
+   "true_genus": "Punching Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Koffing",
+   "canon": [
+    "coughing"
+   ],
+   "text": "this Pokémon embodies toxic substances. It mixes the toxins with raw garbage to set off a chemical reaction that results in a terribly powerful poison gas. The higher the temperature, the more gas is concocted by this Pokémon.",
+   "basis": [
+    "Bombardier beetle",
+    "Poison dart frog"
+   ],
+   "basis_words": [
+    "beetle",
+    "bombardier",
+    "frog",
+    "poison",
+    "dart"
+   ],
+   "concepts": [
+    "tox",
+    "gaster",
+    "pyro",
+    "gland",
+    "hydro",
+    "perox",
+    "dart",
+    "mutant"
+   ],
+   "genus_options": [
+    "Toxin",
+    "Beetle Frog",
+    "Chemical"
+   ],
+   "true_genus": "Poison Gas Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Weezing",
+   "canon": [
+    "wheezing"
+   ],
+   "text": "this Pokémon loves the gases given off by rotted kitchen garbage. This Pokémon will find a dirty, unkempt house and make it its home. At night, when the people in the house are asleep, it will go through the trash.",
+   "basis": [
+    "Housefly",
+    "Dung beetle"
+   ],
+   "basis_words": [
+    "beetle",
+    "dung",
+    "housefly"
+   ],
+   "concepts": [
+    "garb",
+    "flyer",
+    "dunger",
+    "miasma",
+    "nexus",
+    "omnivore",
+    "astrum",
+    "bulker"
+   ],
+   "genus_options": [
+    "Fly",
+    "Garbage",
+    "Pest"
+   ],
+   "true_genus": "Poison Gas Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Jynx",
+   "canon": [
+    "jinx"
+   ],
+   "text": "this Pokémon walks rhythmically, swaying and shaking its hips as if it were dancing. Its motions are so bouncingly alluring, people seeing it are compelled to shake their hips without giving any thought to what they are doing.",
+   "basis": [],
+   "basis_words": [],
+   "concepts": [],
+   "genus_options": [],
+   "true_genus": "Human Shape Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Kabuto",
+   "canon": [
+    "kabutogani",
+    "horseshoe crab"
+   ],
+   "text": "this Pokémon is a Pokémon that has been regenerated from a fossil. However, in extremely rare cases, living examples have been discovered. The Pokémon has not changed at all for 300 million years.",
+   "basis": [
+    "Coelacanth",
+    "Tullimonstrum"
+   ],
+   "basis_words": [
+    "monster",
+    "tully",
+    "coelacanth",
+    "tullimonstrum"
+   ],
+   "concepts": [
+    "coelacanth",
+    "fossil",
+    "ancient",
+    "regen",
+    "devonian",
+    "marine",
+    "tully",
+    "monster",
+    "relic"
+   ],
+   "genus_options": [
+    "Fossil",
+    "Coelacanth",
+    "Ancient"
+   ],
+   "true_genus": "Shellfish Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Kabutops",
+   "canon": [
+    "kabutogani",
+    "kabuto",
+    "ops"
+   ],
+   "text": "this Pokémon swam underwater to hunt for its prey in ancient times. The Pokémon was apparently evolving from being a water-dweller to living on land as evident from the beginnings of change in its gills and legs.",
+   "basis": [
+    "Ichthyostega",
+    "Tiktaalik"
+   ],
+   "basis_words": [
+    "ichthyostega",
+    "tiktaalik"
+   ],
+   "concepts": [
+    "stego",
+    "tetra",
+    "fish",
+    "limb",
+    "adapt",
+    "rostr",
+    "fin",
+    "gill",
+    "tera"
+   ],
+   "genus_options": [
+    "Transition",
+    "Fishwalker",
+    "Amphibian"
+   ],
+   "true_genus": "Shellfish Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Mew",
+   "canon": [
+    "mutant",
+    "mutation",
+    "new"
+   ],
+   "text": "this Pokémon is said to possess the genetic composition of all Pokémon. It is capable of making itself invisible at will, so it entirely avoids notice even if it approaches people.",
+   "basis": [
+    "Axolotl",
+    "Chameleon"
+   ],
+   "basis_words": [
+    "axolotl",
+    "chameleon",
+    "chameleons"
+   ],
+   "concepts": [
+    "axo",
+    "chame",
+    "camo",
+    "regen",
+    "adapt",
+    "shift",
+    "camou",
+    "meta"
+   ],
+   "genus_options": [
+    "Chameleon",
+    "Axolotl",
+    "Camouflage"
+   ],
+   "true_genus": "New Species Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": true
+  },
+  {
+   "name": "Chikorita",
+   "canon": [
+    "chicory",
+    "ita",
+    "kore"
+   ],
+   "text": "In battle, this Pokémon waves its leaf around to keep the foe at bay. However, a sweet fragrance also wafts from the leaf, becalming the battling Pokémon and creating a cozy, friendly atmosphere all around.",
+   "basis": [
+    "Orchid",
+    "Venus flytrap"
+   ],
+   "basis_words": [
+    "orchid",
+    "venus",
+    "flytrap"
+   ],
+   "concepts": [
+    "orchid",
+    "venus",
+    "fly",
+    "bee",
+    "lauras",
+    "cret",
+    "snap",
+    "tranq"
+   ],
+   "genus_options": [
+    "Orchid",
+    "Bee",
+    "Snap"
+   ],
+   "true_genus": "Leaf Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Bayleef",
+   "canon": [
+    "bay leaf"
+   ],
+   "text": "this Pokémon's neck is ringed by curled-up leaves. Inside each tubular leaf is a small shoot of a tree. The fragrance of this shoot makes people peppy.",
+   "basis": [
+    "Bromeliaceae",
+    "Philodendron"
+   ],
+   "basis_words": [
+    "bromeliaceae",
+    "bromeliad",
+    "philodendron"
+   ],
+   "concepts": [
+    "fragrantia",
+    "bromel",
+    "terra",
+    "vitalis",
+    "folium",
+    "arbor",
+    "fragrans"
+   ],
+   "genus_options": [
+    "Tree",
+    "Leaf",
+    "Fragrant"
+   ],
+   "true_genus": "Leaf Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": true,
+   "hit_all": true
+  },
+  {
+   "name": "Meganium",
+   "canon": [
+    "mega",
+    "geranium"
+   ],
+   "text": "The fragrance of this Pokémon's flower soothes and calms emotions. In battle, this Pokémon gives off more of its becalming scent to blunt the foe's fighting spirit.",
+   "basis": [
+    "Orchid",
+    "Gardenia"
+   ],
+   "basis_words": [
+    "orchid",
+    "gardenia"
+   ],
+   "concepts": [
+    "orchid",
+    "lauras",
+    "flor",
+    "calm",
+    "scent",
+    "bee",
+    "petal",
+    "cor",
+    "lobe"
+   ],
+   "genus_options": [
+    "Orchid",
+    "Gardenia",
+    "Scent"
+   ],
+   "true_genus": "Herb Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Cyndaquil",
+   "canon": [
+    "cinder",
+    "quill"
+   ],
+   "text": "this Pokémon protects itself by flaring up the flames on its back. The flames are vigorous if the Pokémon is angry. However, if it is tired, the flames splutter fitfully with incomplete combustion.",
+   "basis": [
+    "Fire-bellied toad",
+    "Dragon"
+   ],
+   "basis_words": [
+    "toad",
+    "fire",
+    "dragon",
+    "bellied"
+   ],
+   "concepts": [
+    "flam",
+    "ignis",
+    "dracon",
+    "toad",
+    "ignit",
+    "combust",
+    "serp",
+    "pyro"
+   ],
+   "genus_options": [
+    "Dragon",
+    "Toad",
+    "Ember"
+   ],
+   "true_genus": "Fire Mouse Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Quilava",
+   "canon": [
+    "quill",
+    "lava"
+   ],
+   "text": "this Pokémon keeps its foes at bay with the intensity of its flames and gusts of superheated air. This Pokémon applies its outstanding nimbleness to dodge attacks even while scorching the foe with flames.",
+   "basis": [
+    "Komodo dragon"
+   ],
+   "basis_words": [
+    "dragon",
+    "komodo"
+   ],
+   "concepts": [
+    "flam",
+    "aer",
+    "veloc",
+    "nim",
+    "ign",
+    "drag",
+    "therm",
+    "tox"
+   ],
+   "genus_options": [
+    "Flame",
+    "Dragon",
+    "Blaze"
+   ],
+   "true_genus": "Volcano Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Typhlosion",
+   "canon": [
+    "typhoon",
+    "explosion",
+    "typhon"
+   ],
+   "text": "this Pokémon obscures itself behind a shimmering heat haze that it creates using its intensely hot flames. This Pokémon creates blazing explosive blasts that burn everything to cinders.",
+   "basis": [
+    "Dragon",
+    "Mirage"
+   ],
+   "basis_words": [
+    "dragon",
+    "mirage"
+   ],
+   "concepts": [
+    "pyro",
+    "fata",
+    "mirage",
+    "levi",
+    "vrtra",
+    "dino",
+    "ignis",
+    "aero"
+   ],
+   "genus_options": [
+    "Dragon",
+    "Blaze",
+    "Inferno"
+   ],
+   "true_genus": "Volcano Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": true
+  },
+  {
+   "name": "Totodile",
+   "canon": [
+    "tot",
+    "crocodile"
+   ],
+   "text": "Despite the smallness of its body, this Pokémon's jaws are very powerful. While the Pokémon may think it is just playfully nipping, its bite has enough power to cause serious injury.",
+   "basis": [
+    "Shrew",
+    "Mouse"
+   ],
+   "basis_words": [
+    "mouse",
+    "shrew"
+   ],
+   "concepts": [
+    "mors",
+    "veno",
+    "sanguis",
+    "mutila",
+    "venen",
+    "morsus",
+    "scurra",
+    "mortif"
+   ],
+   "genus_options": [
+    "Shrew",
+    "Mouse",
+    "Biter"
+   ],
+   "true_genus": "Big Jaw Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Croconaw",
+   "canon": [
+    "crocodile",
+    "gnaw",
+    "maw"
+   ],
+   "text": "Once this Pokémon has clamped its jaws on its foe, it will absolutely not let go. Because the tips of its fangs are forked back like barbed fishhooks, they become impossible to remove when they have sunk in.",
+   "basis": [
+    "Viper",
+    "Rattlesnake"
+   ],
+   "basis_words": [
+    "viper",
+    "rattlesnake"
+   ],
+   "concepts": [
+    "barb",
+    "venom",
+    "fang",
+    "hemotox",
+    "toxin",
+    "rictus",
+    "gland",
+    "ligature"
+   ],
+   "genus_options": [
+    "Fang",
+    "Snake",
+    "Grip"
+   ],
+   "true_genus": "Big Jaw Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Feraligatr",
+   "canon": [
+    "feral",
+    "ferocious",
+    "alligator"
+   ],
+   "text": "this Pokémon intimidates its foes by opening its huge mouth. In battle, it will kick the ground hard with its thick and powerful hind legs to charge at the foe at an incredible speed.",
+   "basis": [
+    "Hippopotamus",
+    "Rhinoceros"
+   ],
+   "basis_words": [
+    "hippopotamus",
+    "rhinoceros"
+   ],
+   "concepts": [
+    "kicks",
+    "hippo",
+    "rhino",
+    "charge",
+    "speed",
+    "ancient",
+    "aquatic",
+    "horn"
+   ],
+   "genus_options": [
+    "Horned",
+    "Hippo",
+    "Beast"
+   ],
+   "true_genus": "Big Jaw Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": true
+  },
+  {
+   "name": "Hoothoot",
+   "canon": [
+    "hoot",
+    "cuckoo",
+    "cuckoo clock"
+   ],
+   "text": "this Pokémon has an internal organ that senses and tracks the earth's rotation. Using this special organ, this Pokémon begins hooting at precisely the same time every day.",
+   "basis": [
+    "Mourning dove",
+    "Northern flicker"
+   ],
+   "basis_words": [
+    "dove",
+    "mourning",
+    "flicker",
+    "northern"
+   ],
+   "concepts": [
+    "rotator",
+    "solar",
+    "hooter",
+    "flicker",
+    "rotund",
+    "avian",
+    "solaris",
+    "chronos"
+   ],
+   "genus_options": [
+    "Hooter",
+    "Flicker",
+    "Woodpecker"
+   ],
+   "true_genus": "Owl Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": true
+  },
+  {
+   "name": "Noctowl",
+   "canon": [
+    "nocturnal",
+    "owl"
+   ],
+   "text": "this Pokémon never fails at catching prey in darkness. This Pokémon owes its success to its superior vision that allows it to see in minimal light, and to its soft, supple wings that make no sound in flight.",
+   "basis": [
+    "Moth",
+    "Nyctalus"
+   ],
+   "basis_words": [
+    "moth",
+    "nyctalus",
+    "noctule"
+   ],
+   "concepts": [
+    "aerotropis",
+    "nyctalux",
+    "somnium",
+    "tenebros",
+    "noctivox",
+    "silens",
+    "ocellux",
+    "luminaris"
+   ],
+   "genus_options": [
+    "Dark",
+    "Moth",
+    "Batwing"
+   ],
+   "true_genus": "Owl Pokémon",
+   "hit_offline": true,
+   "hit_basis": true,
+   "hit_inspired": true,
+   "hit_inspired_facts": true,
+   "hit_all": true
+  },
+  {
+   "name": "Cleffa",
+   "canon": [
+    "clef",
+    "fairy",
+    "fable"
+   ],
+   "text": "On nights with many shooting stars, this Pokémon can be seen dancing in a ring. They dance through the night and stop only at the break of day, when these Pokémon quench their thirst with the morning dew.",
+   "basis": [
+    "Firefly"
+   ],
+   "basis_words": [
+    "firefly",
+    "fireflies"
+   ],
+   "concepts": [
+    "stellalux",
+    "lumin",
+    "nocti",
+    "ignis",
+    "luxur",
+    "astrum",
+    "dewdrop",
+    "celest"
+   ],
+   "genus_options": [
+    "Glow",
+    "Firefly",
+    "Starlight"
+   ],
+   "true_genus": "Star Shape Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Togepi",
+   "canon": [
+    "toge",
+    "piyopiyo"
+   ],
+   "text": "As its energy, this Pokémon uses the positive emotions of compassion and pleasure exuded by people and Pokémon. This Pokémon stores up feelings of happiness inside its shell, then shares them with others.",
+   "basis": [
+    "Tortoise",
+    "Manatee"
+   ],
+   "basis_words": [
+    "tortoise",
+    "manatee"
+   ],
+   "concepts": [
+    "gigantia",
+    "sirenia",
+    "eudaimonia",
+    "pleasuria",
+    "empathia",
+    "shellaria",
+    "manatia",
+    "joyaria"
+   ],
+   "genus_options": [
+    "Happiness",
+    "Shell",
+    "Gentle Giant"
+   ],
+   "true_genus": "Spike Ball Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Togetic",
+   "canon": [
+    "toge",
+    "chick"
+   ],
+   "text": "No records exist of this Pokémon being seen in the wilds. Rumors abound that it evolves under the loving care of a trusted human companion, upon whom the Pokémon then bestows great joy.",
+   "basis": [],
+   "basis_words": [],
+   "concepts": [],
+   "genus_options": [],
+   "true_genus": "Happiness Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Bellossom",
+   "canon": [
+    "bell",
+    "belle"
+   ],
+   "text": "A this Pokémon grows flowers more beautifully if it has evolved from a smelly its pre-evolution—the more stinky the better. At night, this Pokémon closes its petals and goes to sleep.",
+   "basis": [
+    "Rafflesia",
+    "Flower"
+   ],
+   "basis_words": [
+    "flower",
+    "rafflesia"
+   ],
+   "concepts": [
+    "odor",
+    "rafflesia",
+    "flora",
+    "noct",
+    "bloom",
+    "stench",
+    "petal"
+   ],
+   "genus_options": [
+    "Flower",
+    "Rafflesia",
+    "Bloom"
+   ],
+   "true_genus": "Flower Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Yanma",
+   "canon": [
+    "hawker"
+   ],
+   "text": "this Pokémon is capable of seeing 360 degrees without having to move its eyes. It is a great flier that is adept at making sudden stops and turning midair. This Pokémon uses its flying ability to quickly chase down targeted prey.",
+   "basis": [
+    "Dragonfly",
+    "Mantis"
+   ],
+   "basis_words": [
+    "praying",
+    "dragonfly",
+    "mantis"
+   ],
+   "concepts": [
+    "omnid",
+    "specter",
+    "volans",
+    "apex",
+    "veloc",
+    "sighter",
+    "mantis",
+    "gyro"
+   ],
+   "genus_options": [
+    "Flyer",
+    "Dragonfly",
+    "Hunter"
+   ],
+   "true_genus": "Clear Wing Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Unown",
+   "canon": [
+    "unknown"
+   ],
+   "text": "It is hard to believe these strangely shaped Pokémon are truly living creatures. I've pointed out that the species' many forms resemble writing from other lands; no one will take me seriously.",
+   "basis": [
+    "Egyptian hieroglyphs",
+    "Cuneiform"
+   ],
+   "basis_words": [
+    "egyptian",
+    "hieroglyphs",
+    "hieroglyphics",
+    "cuneiform"
+   ],
+   "concepts": [
+    "glyph",
+    "scribe",
+    "hiero",
+    "cune",
+    "phos",
+    "alph",
+    "scripta",
+    "icon"
+   ],
+   "genus_options": [
+    "Glyph",
+    "Hieroglyph",
+    "Script"
+   ],
+   "true_genus": "Symbol Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Girafarig",
+   "canon": [
+    "giraffe"
+   ],
+   "text": "this Pokémon's rear head also has a brain, but it is small. The rear head attacks in response to smells and sounds. Approaching this Pokémon from behind can cause the rear head to suddenly lash out and bite.",
+   "basis": [
+    "Salamander",
+    "Axolotl"
+   ],
+   "basis_words": [
+    "salamander",
+    "axolotl"
+   ],
+   "concepts": [
+    "axolotl",
+    "salamander",
+    "brain",
+    "bite",
+    "lash",
+    "sound",
+    "smell",
+    "limb"
+   ],
+   "genus_options": [
+    "Dual",
+    "Salamander",
+    "Axolotl"
+   ],
+   "true_genus": "Long Neck Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Dunsparce",
+   "canon": [
+    "dun",
+    "sparse"
+   ],
+   "text": "this Pokémon has a drill for its tail. It uses this tail to burrow into the ground backwards. This Pokémon is known to make its nest in complex shapes deep under the ground.",
+   "basis": [
+    "Groundhog",
+    "Gopher"
+   ],
+   "basis_words": [
+    "pocket",
+    "groundhog",
+    "gopher"
+   ],
+   "concepts": [
+    "drill",
+    "burrow",
+    "ground",
+    "hog",
+    "gopher",
+    "nest",
+    "complex",
+    "soil"
+   ],
+   "genus_options": [
+    "Driller",
+    "Burrower",
+    "Tunnel"
+   ],
+   "true_genus": "Land Snake Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Shuckle",
+   "canon": [
+    "shuck",
+    "barnacle",
+    "turtle"
+   ],
+   "text": "this Pokémon quietly hides itself under rocks, keeping its body concealed inside its hard shell while eating berries it has stored away. The berries mix with its body fluids to become a juice.",
+   "basis": [
+    "Tortoise",
+    "Chelydridae"
+   ],
+   "basis_words": [
+    "turtle",
+    "snapping",
+    "tortoise",
+    "chelydridae"
+   ],
+   "concepts": [
+    "tort",
+    "shell",
+    "berry",
+    "juice",
+    "slow",
+    "giant",
+    "fossil",
+    "chelydra"
+   ],
+   "genus_options": [
+    "Tortoise",
+    "Shell",
+    "Slow"
+   ],
+   "true_genus": "Mold Pokémon",
+   "hit_offline": false,
+   "hit_basis": true,
+   "hit_inspired": true,
+   "hit_inspired_facts": true,
+   "hit_all": true
+  },
+  {
+   "name": "Heracross",
+   "canon": [
+    "hercules beetle",
+    "cross"
+   ],
+   "text": "this Pokémon charges in a straight line at its foe, slips beneath the foe's grasp, and then scoops up and hurls the opponent with its mighty horn. This Pokémon even has enough power to topple a massive tree.",
+   "basis": [
+    "Rhinoceros",
+    "Aurochs"
+   ],
+   "basis_words": [
+    "rhino",
+    "rhinoceros",
+    "aurochs"
+   ],
+   "concepts": [
+    "rhin",
+    "bull",
+    "charged",
+    "slip",
+    "scoop",
+    "hurl",
+    "crush"
+   ],
+   "genus_options": [
+    "Rampager",
+    "Horned",
+    "Bull"
+   ],
+   "true_genus": "Single Horn Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Houndour",
+   "canon": [
+    "hound",
+    "dour"
+   ],
+   "text": "this Pokémon hunt as a coordinated pack. They communicate with each other using a variety of cries to corner their prey. This Pokémon's remarkable teamwork is unparalleled.",
+   "basis": [
+    "Wolf",
+    "Coyote"
+   ],
+   "basis_words": [
+    "wolf",
+    "wolves",
+    "coyote",
+    "coyotes"
+   ],
+   "concepts": [
+    "pack",
+    "canis",
+    "hunt",
+    "cry",
+    "territory",
+    "prey",
+    "cooperative",
+    "adapt"
+   ],
+   "genus_options": [
+    "Pack",
+    "Wolf",
+    "Coyote"
+   ],
+   "true_genus": "Dark Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": true
+  },
+  {
+   "name": "Houndoom",
+   "canon": [
+    "hound",
+    "doom"
+   ],
+   "text": "In a this Pokémon pack, the one with its horns raked sharply towards the back serves a leadership role. These Pokémon choose their leader by fighting amongst themselves.",
+   "basis": [
+    "Bighorn sheep"
+   ],
+   "basis_words": [
+    "sheep",
+    "bighorn"
+   ],
+   "concepts": [
+    "ramus",
+    "dominus",
+    "bicornis",
+    "pugna",
+    "levis",
+    "cervus",
+    "hierarchus",
+    "victor"
+   ],
+   "genus_options": [
+    "Ram",
+    "Horned",
+    "Leader"
+   ],
+   "true_genus": "Dark Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Tyrogue",
+   "canon": [
+    "tyro",
+    "tyke",
+    "rogue"
+   ],
+   "text": "this Pokémon becomes stressed out if it does not get to train every day. When raising this Pokémon, the Trainer must establish and uphold various training methods.",
+   "basis": [],
+   "basis_words": [],
+   "concepts": [],
+   "genus_options": [],
+   "true_genus": "Scuffle Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Hitmontop",
+   "canon": [
+    "hit",
+    "monster",
+    "top"
+   ],
+   "text": "this Pokémon spins on its head at high speed, all the while delivering kicks. This technique is a remarkable mix of both offense and defense at the same time. The Pokémon travels faster spinning than it does walking.",
+   "basis": [
+    "Mantis"
+   ],
+   "basis_words": [
+    "praying",
+    "mantis"
+   ],
+   "concepts": [
+    "spiro",
+    "mantis",
+    "veloc",
+    "kick",
+    "gyro",
+    "spin",
+    "visu",
+    "tact"
+   ],
+   "genus_options": [
+    "Mantis",
+    "Spinner",
+    "Whirl"
+   ],
+   "true_genus": "Handstand Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Smoochum",
+   "canon": [
+    "smooch",
+    "chum",
+    "kiss"
+   ],
+   "text": "this Pokémon actively runs about, but also falls quite often. Whenever the chance arrives, it will look for its reflection to make sure its face hasn't become dirty.",
+   "basis": [
+    "Snowshoe hare"
+   ],
+   "basis_words": [
+    "hare",
+    "snowshoe"
+   ],
+   "concepts": [
+    "glide",
+    "mirror",
+    "wander",
+    "cycle",
+    "flicker",
+    "fall",
+    "litter"
+   ],
+   "genus_options": [
+    "Hare",
+    "Snowshoe",
+    "Fumble"
+   ],
+   "true_genus": "Kiss Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Miltank",
+   "canon": [
+    "milk",
+    "tank",
+    "character class"
+   ],
+   "text": "this Pokémon gives over five gallons of milk on a daily basis. Its sweet milk is enjoyed by children and grown-ups alike. People who can't drink milk turn it into yogurt and eat it instead.",
+   "basis": [
+    "Cattle"
+   ],
+   "basis_words": [
+    "cattle"
+   ],
+   "concepts": [
+    "lacta",
+    "bovina",
+    "dairia",
+    "pastora",
+    "muncha",
+    "suckla",
+    "lactea",
+    "cervina"
+   ],
+   "genus_options": [
+    "Milk",
+    "Cow",
+    "Dairy"
+   ],
+   "true_genus": "Milk Cow Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": true,
+   "hit_all": true
+  },
+  {
+   "name": "Suicune",
+   "canon": [
+    "sui",
+    "kun"
+   ],
+   "text": "this Pokémon embodies the compassion of a pure spring of water. It runs across the land with gracefulness. This Pokémon has the power to purify dirty water.",
+   "basis": [
+    "Water deer",
+    "Nilgai"
+   ],
+   "basis_words": [
+    "deer",
+    "water",
+    "nilgai"
+   ],
+   "concepts": [
+    "aquari",
+    "lumin",
+    "fugax",
+    "purif",
+    "nil",
+    "bov",
+    "cerv",
+    "velox"
+   ],
+   "genus_options": [
+    "Spring",
+    "Water Deer",
+    "Gentle Runner"
+   ],
+   "true_genus": "Aurora Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Larvitar",
+   "canon": [
+    "larva",
+    "tar",
+    "reptar"
+   ],
+   "text": "this Pokémon is born deep under the ground. To come up to the surface, this Pokémon must eat its way through the soil above. Until it does so, this Pokémon cannot see its parent's face.",
+   "basis": [
+    "Earthworm",
+    "Blind mole-rat"
+   ],
+   "basis_words": [
+    "mole",
+    "blind",
+    "earthworm"
+   ],
+   "concepts": [
+    "tunnel",
+    "subterra",
+    "parthen",
+    "mole",
+    "burrow",
+    "blind",
+    "longa",
+    "fossor"
+   ],
+   "genus_options": [
+    "Worm",
+    "Burrower",
+    "Blind Dig"
+   ],
+   "true_genus": "Rock Skin Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Pupitar",
+   "canon": [
+    "pupa",
+    "tar",
+    "reptar"
+   ],
+   "text": "this Pokémon creates a gas inside its body that it compresses and forcefully ejects to propel itself like a jet. The body is very durable - it avoids damage even if it hits solid steel.",
+   "basis": [
+    "Octopus",
+    "Squid"
+   ],
+   "basis_words": [
+    "octopus",
+    "squid"
+   ],
+   "concepts": [
+    "jet",
+    "steel",
+    "octo",
+    "squid",
+    "compress",
+    "propel",
+    "biolum",
+    "axon"
+   ],
+   "genus_options": [
+    "Jet",
+    "Squid",
+    "Jetter"
+   ],
+   "true_genus": "Hard Shell Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Tyranitar",
+   "canon": [
+    "tyrant",
+    "tyrannosaurus",
+    "tar"
+   ],
+   "text": "this Pokémon is so overwhelmingly powerful, it can bring down a whole mountain to make its nest. This Pokémon wanders about in mountains seeking new opponents to fight.",
+   "basis": [],
+   "basis_words": [],
+   "concepts": [],
+   "genus_options": [],
+   "true_genus": "Armor Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Wurmple",
+   "canon": [
+    "worm",
+    "rumple",
+    "simple"
+   ],
+   "text": "this Pokémon is targeted by normal/flying swallow pokémon as prey. This Pokémon will try to resist by pointing the spikes on its rear at the attacking predator. It will weaken the foe by leaking poison from the spikes.",
+   "basis": [
+    "Skunk",
+    "Porcupine"
+   ],
+   "basis_words": [
+    "skunk",
+    "porcupine"
+   ],
+   "concepts": [
+    "spike",
+    "toxin",
+    "odor",
+    "fear",
+    "quill",
+    "defend",
+    "resist",
+    "longevity"
+   ],
+   "genus_options": [
+    "Skunk",
+    "Porcupine",
+    "Quill"
+   ],
+   "true_genus": "Worm Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Silcoon",
+   "canon": [
+    "silk",
+    "cocoon"
+   ],
+   "text": "this Pokémon was thought to endure hunger and not consume anything before its evolution. However, it is now thought that this Pokémon slakes its thirst by drinking rainwater that collects on its silk.",
+   "basis": [
+    "Mushroom",
+    "Bombyx mori"
+   ],
+   "basis_words": [
+    "mushroom",
+    "mori",
+    "bombyx",
+    "silkworm"
+   ],
+   "concepts": [
+    "silken",
+    "hydrous",
+    "leucistic",
+    "mulberry",
+    "agaric",
+    "guanyin",
+    "polypus",
+    "sericidae"
+   ],
+   "genus_options": [
+    "Silk",
+    "Moth",
+    "Mulberry"
+   ],
+   "true_genus": "Cocoon Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": true,
+   "hit_all": true
+  },
+  {
+   "name": "Beautifly",
+   "canon": [
+    "beauty",
+    "butterfly",
+    "beautify"
+   ],
+   "text": "A colorful and incredibly beautiful but also greedy Pokémon. In an effort to keep its favorite food all to itself, it will chase away bug/flying tiny bee pokémon as they try to gather nectar.",
+   "basis": [
+    "Bee-eater",
+    "Sunbird"
+   ],
+   "basis_words": [
+    "eater",
+    "sunbird"
+   ],
+   "concepts": [
+    "luxuria",
+    "avior",
+    "nectaria",
+    "insectivora",
+    "vigilans",
+    "dominus",
+    "fugax",
+    "spectabilis"
+   ],
+   "genus_options": [
+    "Bee Eater",
+    "Sunbird",
+    "Nectar Thief"
+   ],
+   "true_genus": "Butterfly Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": true
+  },
+  {
+   "name": "Cascoon",
+   "canon": [
+    "cask",
+    "cast"
+   ],
+   "text": "If it is attacked, this Pokémon remains motionless however badly it may be hurt. It does so because if it were to move, its body would be weak upon evolution. This Pokémon will also not forget the pain it endured.",
+   "basis": [
+    "Tortoise",
+    "Armadillo"
+   ],
+   "basis_words": [
+    "tortoise",
+    "armadillo"
+   ],
+   "concepts": [
+    "gigas",
+    "tortus",
+    "immob",
+    "sclera",
+    "dolor",
+    "memora",
+    "carapa",
+    "fortis"
+   ],
+   "genus_options": [
+    "Tortoise",
+    "Armadillo",
+    "Ball"
+   ],
+   "true_genus": "Cocoon Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Dustox",
+   "canon": [
+    "dust",
+    "toxic"
+   ],
+   "text": "When this Pokémon flaps its wings, a fine dust is scattered all over. This dust is actually a powerful poison that will even make a pro wrestler sick. This Pokémon searches for food using its antennae like radar.",
+   "basis": [
+    "Tarantula",
+    "Stink bug"
+   ],
+   "basis_words": [
+    "stink",
+    "tarantula"
+   ],
+   "concepts": [
+    "poison",
+    "antennae",
+    "dust",
+    "radar",
+    "stink",
+    "tarantula",
+    "spinneret",
+    "chelicera"
+   ],
+   "genus_options": [
+    "Poison",
+    "Stinger",
+    "Dust Bug"
+   ],
+   "true_genus": "Poison Moth Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": true,
+   "hit_inspired_facts": true,
+   "hit_all": true
+  },
+  {
+   "name": "Wingull",
+   "canon": [
+    "wing",
+    "gull"
+   ],
+   "text": "this Pokémon has the habit of carrying prey and valuables in its beak and hiding them in all sorts of locations. This Pokémon rides the winds and flies as if it were skating across the sky.",
+   "basis": [
+    "Vulture",
+    "Albatross"
+   ],
+   "basis_words": [
+    "vulture",
+    "albatross"
+   ],
+   "concepts": [
+    "aerius",
+    "valtor",
+    "skypick",
+    "windskate",
+    "bonekeeper",
+    "scavenger",
+    "aerialist",
+    "avior"
+   ],
+   "genus_options": [
+    "Scavenger",
+    "Wind Rider",
+    "Sky Skater"
+   ],
+   "true_genus": "Seagull Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Pelipper",
+   "canon": [
+    "pelican",
+    "skipper",
+    "flipper"
+   ],
+   "text": "this Pokémon searches for food while in flight by skimming the wave tops. This Pokémon dips its large bill in the sea to scoop up food, then swallows everything in one big gulp.",
+   "basis": [
+    "Sandpiper",
+    "Oystercatcher"
+   ],
+   "basis_words": [
+    "sandpiper",
+    "oystercatcher"
+   ],
+   "concepts": [
+    "skim",
+    "wave",
+    "scoop",
+    "gulp",
+    "bill",
+    "rhyncho",
+    "kinesis",
+    "miocene"
+   ],
+   "genus_options": [
+    "Skimmer",
+    "Shore Bird",
+    "Billfish"
+   ],
+   "true_genus": "Water Bird Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Slakoth",
+   "canon": [
+    "slack off",
+    "sloth"
+   ],
+   "text": "this Pokémon lolls around for over twenty hours every day. Because it moves so little, it does not need much food. This Pokémon's sole daily meal consists of just three leaves.",
+   "basis": [
+    "Sloth",
+    "Green iguana"
+   ],
+   "basis_words": [
+    "green",
+    "sloth",
+    "iguana"
+   ],
+   "concepts": [
+    "sedent",
+    "folivora",
+    "iguana",
+    "carnivora",
+    "herbivora",
+    "pygmaeus",
+    "folium",
+    "dormio"
+   ],
+   "genus_options": [
+    "Sloth",
+    "Leaf Eater",
+    "Slow Muncher"
+   ],
+   "true_genus": "Slacker Pokémon",
+   "hit_offline": false,
+   "hit_basis": true,
+   "hit_inspired": true,
+   "hit_inspired_facts": true,
+   "hit_all": true
+  },
+  {
+   "name": "Vigoroth",
+   "canon": [
+    "vigor",
+    "vigorous",
+    "sloth"
+   ],
+   "text": "this Pokémon is simply incapable of remaining still. Even when it tries to sleep, the blood in its veins grows agitated, compelling this Pokémon to run wild throughout the jungle before it can settle down.",
+   "basis": [
+    "Springbok",
+    "Thomson's gazelle"
+   ],
+   "basis_words": [
+    "thomson",
+    "springbok",
+    "gazelle"
+   ],
+   "concepts": [
+    "agitate",
+    "leap",
+    "antelope",
+    "run",
+    "zigzag",
+    "speed",
+    "chase",
+    "bound"
+   ],
+   "genus_options": [
+    "Pronger",
+    "Springer",
+    "Frenzy"
+   ],
+   "true_genus": "Wild Monkey Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Slaking",
+   "canon": [
+    "slack",
+    "king",
+    "slacking"
+   ],
+   "text": "Wherever this Pokémon live, rings of over a yard in diameter appear in grassy fields. They are made by the Pokémon as it eats all the grass within reach while lying prone on the ground.",
+   "basis": [
+    "Grasshopper",
+    "Locust"
+   ],
+   "basis_words": [
+    "grasshopper",
+    "locust"
+   ],
+   "concepts": [
+    "grass",
+    "locust",
+    "triassic",
+    "swarm",
+    "herbivore",
+    "ancient",
+    "migratory",
+    "caelifera",
+    "ensifera"
+   ],
+   "genus_options": [
+    "Locust",
+    "Grasshopper",
+    "Swarm"
+   ],
+   "true_genus": "Lazy Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Nosepass",
+   "canon": [
+    "nose",
+    "north",
+    "compass"
+   ],
+   "text": "this Pokémon had been said to be completely unmoving, with its magnetic nose pointed due north. However, close observation has revealed that the Pokémon actually moves by a little over 3/8 of an inch every year.",
+   "basis": [
+    "Silphium laciniatum"
+   ],
+   "basis_words": [
+    "plant",
+    "compass",
+    "laciniatum",
+    "silphium"
+   ],
+   "concepts": [
+    "magnet",
+    "silphium",
+    "lacini",
+    "inch",
+    "parasit",
+    "wasp",
+    "arctic",
+    "slow"
+   ],
+   "genus_options": [
+    "Magnet",
+    "Silphium",
+    "Gnat"
+   ],
+   "true_genus": "Compass Pokémon",
+   "hit_offline": true,
+   "hit_basis": true,
+   "hit_inspired": true,
+   "hit_inspired_facts": true,
+   "hit_all": true
+  },
+  {
+   "name": "Gulpin",
+   "canon": [
+    "gulping",
+    "sculpin",
+    "gulp in"
+   ],
+   "text": "Most of this Pokémon's body is made up of its stomach - its heart and brain are very small in comparison. This Pokémon's stomach contains special enzymes that dissolve anything.",
+   "basis": [
+    "Star-nosed mole",
+    "Naked mole-rat"
+   ],
+   "basis_words": [
+    "mole",
+    "star",
+    "nosed",
+    "naked"
+   ],
+   "concepts": [
+    "dissolve",
+    "digest",
+    "speed",
+    "star",
+    "mole",
+    "enzyme",
+    "adapt",
+    "longev"
+   ],
+   "genus_options": [
+    "Digester",
+    "Stomach",
+    "Acid"
+   ],
+   "true_genus": "Stomach Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Swalot",
+   "canon": [
+    "swallow",
+    "a lot"
+   ],
+   "text": "When this Pokémon spots prey, it spurts out a hideously toxic fluid from its pores and sprays the target. Once the prey has weakened, this Pokémon gulps it down whole with its cavernous mouth.",
+   "basis": [
+    "Asian giant hornet",
+    "Latrodectus"
+   ],
+   "basis_words": [
+    "hornet",
+    "asian",
+    "giant",
+    "spider",
+    "black",
+    "widow"
+   ],
+   "concepts": [
+    "toxic",
+    "spray",
+    "latro",
+    "mand",
+    "vesp",
+    "neuro",
+    "latrotoxin",
+    "cavern"
+   ],
+   "genus_options": [
+    "Venom",
+    "Hornet",
+    "Widow"
+   ],
+   "true_genus": "Poison Bag Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Carvanha",
+   "canon": [
+    "carve",
+    "carnivore",
+    "piranha"
+   ],
+   "text": "this Pokémon's strongly developed jaws and its sharply pointed fangs pack the destructive power to rip out boat hulls. Many boats have been attacked and sunk by this Pokémon.",
+   "basis": [
+    "Goblin shark",
+    "Tiger shark"
+   ],
+   "basis_words": [
+    "shark",
+    "goblin",
+    "tiger"
+   ],
+   "concepts": [
+    "fang",
+    "jaws",
+    "shark",
+    "goblin",
+    "tiger",
+    "rip",
+    "sink",
+    "swift",
+    "protrude"
+   ],
+   "genus_options": [
+    "Jaw",
+    "Shark",
+    "Mauler"
+   ],
+   "true_genus": "Savage Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Sharpedo",
+   "canon": [
+    "shark",
+    "sharp",
+    "torpedo"
+   ],
+   "text": "Nicknamed \"the bully of the sea,\" this Pokémon is widely feared. Its cruel fangs grow back immediately if they snap off. Just one of these Pokémon can thoroughly tear apart a supertanker.",
+   "basis": [
+    "Great white shark"
+   ],
+   "basis_words": [
+    "shark",
+    "great",
+    "white"
+   ],
+   "concepts": [
+    "teeth",
+    "regrow",
+    "massive",
+    "ocean",
+    "predator",
+    "ancient",
+    "apex",
+    "formidable"
+   ],
+   "genus_options": [
+    "Shark",
+    "Bully",
+    "Fanged"
+   ],
+   "true_genus": "Brutal Pokémon",
+   "hit_offline": true,
+   "hit_basis": true,
+   "hit_inspired": true,
+   "hit_inspired_facts": true,
+   "hit_all": true
+  },
+  {
+   "name": "Numel",
+   "canon": [
+    "numb",
+    "camel"
+   ],
+   "text": "this Pokémon stores magma of almost 2,200 degrees Fahrenheit within its body. If it gets wet, the magma cools and hardens. In that event, the Pokémon's body grows heavy and its movements become sluggish.",
+   "basis": [
+    "Lava",
+    "Magma"
+   ],
+   "basis_words": [
+    "lava",
+    "magma"
+   ],
+   "concepts": [
+    "magma",
+    "ignis",
+    "flux",
+    "pyro",
+    "therm",
+    "lithos",
+    "visc",
+    "ardor"
+   ],
+   "genus_options": [
+    "Magma",
+    "Lava",
+    "Melt"
+   ],
+   "true_genus": "Numb Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Camerupt",
+   "canon": [
+    "camel",
+    "erupt"
+   ],
+   "text": "this Pokémon has a volcano inside its body. Magma of 18,000 degrees Fahrenheit courses through its body. Occasionally, the humps on this Pokémon's back erupt, spewing the superheated magma.",
+   "basis": [
+    "Lava",
+    "Magma"
+   ],
+   "basis_words": [
+    "lava",
+    "molten",
+    "magma"
+   ],
+   "concepts": [
+    "pyro",
+    "magm",
+    "ignis",
+    "flux",
+    "visc",
+    "sulfur",
+    "erupt",
+    "melt"
+   ],
+   "genus_options": [
+    "Magma",
+    "Lava",
+    "Volcano"
+   ],
+   "true_genus": "Eruption Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": true,
+   "hit_inspired_facts": true,
+   "hit_all": true
+  },
+  {
+   "name": "Seviper",
+   "canon": [
+    "sever",
+    "severe",
+    "serpent"
+   ],
+   "text": "this Pokémon's swordlike tail serves two purposes - it slashes foes and douses them with secreted poison. This Pokémon will not give up its long- running blood feud with normal cat ferret pokémon.",
+   "basis": [
+    "Ferret",
+    "Skunk"
+   ],
+   "basis_words": [
+    "ferret",
+    "skunk"
+   ],
+   "concepts": [
+    "venom",
+    "ferrox",
+    "toxiskin",
+    "skar",
+    "ferroxin",
+    "toxifur",
+    "skunktail",
+    "toxifero"
+   ],
+   "genus_options": [
+    "Ferret",
+    "Skunk",
+    "Polecat"
+   ],
+   "true_genus": "Fang Snake Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Lunatone",
+   "canon": [
+    "lunar",
+    "stone"
+   ],
+   "text": "this Pokémon becomes active around the time of the full moon. Instead of walking, it moves by floating in midair. The Pokémon's intimidating red eyes cause all those who see it to become transfixed with fear.",
+   "basis": [
+    "Flying squirrel",
+    "Frog"
+   ],
+   "basis_words": [
+    "squirrel",
+    "flying",
+    "frog"
+   ],
+   "concepts": [
+    "glint",
+    "levitate",
+    "oculus",
+    "terraglide",
+    "aeropex",
+    "noctilux",
+    "spectator",
+    "vigilux"
+   ],
+   "genus_options": [
+    "Moon",
+    "Glider",
+    "Shadow"
+   ],
+   "true_genus": "Meteorite Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": true
+  },
+  {
+   "name": "Regirock",
+   "canon": [
+    "regis",
+    "rock"
+   ],
+   "text": "this Pokémon was sealed away by people long ago. If this Pokémon's body is damaged in battle, it is said to seek out suitable rocks on its own to repair itself.",
+   "basis": [
+    "Tortoise",
+    "Armadillo"
+   ],
+   "basis_words": [
+    "tortoise",
+    "armadillo"
+   ],
+   "concepts": [
+    "gigas",
+    "carapax",
+    "lithos",
+    "poly",
+    "embryo",
+    "mammalia",
+    "dasypus",
+    "chelon",
+    "kybos"
+   ],
+   "genus_options": [
+    "Ancient",
+    "Tortoise",
+    "Rockwalker"
+   ],
+   "true_genus": "Rock Peak Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Groudon",
+   "canon": [
+    "ground",
+    "don",
+    "do"
+   ],
+   "text": "this Pokémon has long been described in mythology as the Pokémon that raised lands and expanded continents. This Pokémon took to sleep after a cataclysmic battle with water sea basin pokémon.",
+   "basis": [
+    "Tiamat",
+    "Leviathan"
+   ],
+   "basis_words": [
+    "tiamat",
+    "leviathan"
+   ],
+   "concepts": [
+    "geos",
+    "terra",
+    "chaos",
+    "kampf",
+    "serp",
+    "aqua",
+    "abyss",
+    "dracon"
+   ],
+   "genus_options": [
+    "Titan",
+    "Sea Dragon",
+    "Leviathan"
+   ],
+   "true_genus": "Continent Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Shellos",
+   "canon": [
+    "shell",
+    "loss",
+    "lost"
+   ],
+   "text": "Found in abundance on seashores bordering warm waters. this Pokémon are unexpectedly friendly and will crawl toward any person they see. Take care not to get coated in mucus!",
+   "basis": [
+    "Aplysiida",
+    "Abalone"
+   ],
+   "basis_words": [
+    "hare",
+    "aplysiida",
+    "abalone"
+   ],
+   "concepts": [
+    "mucus",
+    "lepus",
+    "marinus",
+    "gastropod",
+    "abalone",
+    "rhinophore",
+    "sediment",
+    "leviathan"
+   ],
+   "genus_options": [
+    "Sea Hare",
+    "Abalone",
+    "Mollusk"
+   ],
+   "true_genus": "Sea Slug Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Gastrodon",
+   "canon": [
+    "gastropod",
+    "gastropteron",
+    "don"
+   ],
+   "text": "The softness of its body helps disperse the force of impacts, so although its body is uncommonly squishy, it's also surprisingly resilient.",
+   "basis": [
+    "Starfish",
+    "Slug"
+   ],
+   "basis_words": [
+    "slug",
+    "starfish"
+   ],
+   "concepts": [
+    "squish",
+    "resil",
+    "echin",
+    "arion",
+    "vesti",
+    "peni",
+    "disco"
+   ],
+   "genus_options": [
+    "Slug",
+    "Starfish",
+    "Cushion"
+   ],
+   "true_genus": "Sea Slug Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": true
+  },
+  {
+   "name": "Stunky",
+   "canon": [
+    "skunk",
+    "stunk",
+    "stinky"
+   ],
+   "text": "The poison that gushes from its aft end is accompanied by an utterly evil-smelling odor with such potency that one whiff can induce memory loss.",
+   "basis": [
+    "Bombardier beetle"
+   ],
+   "basis_words": [
+    "beetle",
+    "bombardier"
+   ],
+   "concepts": [
+    "odor",
+    "forget",
+    "blast",
+    "spray",
+    "leak",
+    "control",
+    "mix",
+    "fume"
+   ],
+   "genus_options": [
+    "Poison",
+    "Beetle",
+    "Stench"
+   ],
+   "true_genus": "Skunk Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": true
+  },
+  {
+   "name": "Skuntank",
+   "canon": [
+    "skunk",
+    "stank",
+    "stink"
+   ],
+   "text": "In its belly, it reserves stinky fluid that it shoots from its tail during battle. As this Pokémon's diet varies, so does the stench of its fluid.",
+   "basis": [
+    "Stink bug",
+    "Skunk"
+   ],
+   "basis_words": [
+    "stink",
+    "skunk"
+   ],
+   "concepts": [
+    "odor",
+    "stench",
+    "skunk",
+    "spray",
+    "stink",
+    "pungent",
+    "irritant",
+    "venom"
+   ],
+   "genus_options": [
+    "Stinker",
+    "Skunk",
+    "Stench"
+   ],
+   "true_genus": "Skunk Pokémon",
+   "hit_offline": true,
+   "hit_basis": true,
+   "hit_inspired": true,
+   "hit_inspired_facts": true,
+   "hit_all": true
+  },
+  {
+   "name": "Chatot",
+   "canon": [
+    "chat",
+    "parrot"
+   ],
+   "text": "A versatile performer skilled in the imitation of human speech. It is said that older, more experienced this Pokémon can even understand the meaning of the words they mimic.",
+   "basis": [
+    "Parrot",
+    "Myna"
+   ],
+   "basis_words": [
+    "parrot",
+    "myna"
+   ],
+   "concepts": [
+    "mimic",
+    "imitate",
+    "grey",
+    "amazon",
+    "starling",
+    "aplonis",
+    "coleto",
+    "vocal"
+   ],
+   "genus_options": [
+    "Mimic",
+    "Parrot",
+    "Starling"
+   ],
+   "true_genus": "Music Note Pokémon",
+   "hit_offline": false,
+   "hit_basis": true,
+   "hit_inspired": true,
+   "hit_inspired_facts": true,
+   "hit_all": true
+  },
+  {
+   "name": "Carnivine",
+   "canon": [
+    "carnivore",
+    "vine"
+   ],
+   "text": "Though this is a plant Pokémon, it has a gluttonous and unruly temperament. this Pokémon attacks its prey with its cavernous maw wide open.",
+   "basis": [
+    "Venus flytrap",
+    "Utricularia"
+   ],
+   "basis_words": [
+    "venus",
+    "flytrap",
+    "utricularia",
+    "bladderwort"
+   ],
+   "concepts": [
+    "snap",
+    "maw",
+    "carnivora",
+    "glut",
+    "utric",
+    "dion",
+    "snaptr",
+    "angio",
+    "tuber"
+   ],
+   "genus_options": [
+    "Maw",
+    "Trap",
+    "Carnivore"
+   ],
+   "true_genus": "Bug Catcher Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": true,
+   "hit_inspired_facts": true,
+   "hit_all": true
+  },
+  {
+   "name": "Finneon",
+   "canon": [
+    "fin",
+    "neon"
+   ],
+   "text": "What a gorgeous sight this Pokémon is as it swims with its long, pink-painted caudal fins fluttering behind it. this Pokémon's beautiful appearance has led to its nickname: \"finery fish.\"",
+   "basis": [
+    "Butterflyfish",
+    "Wrasse"
+   ],
+   "basis_words": [
+    "butterflyfish",
+    "wrasse"
+   ],
+   "concepts": [
+    "finery",
+    "caudal",
+    "butterfly",
+    "wrasse",
+    "spiny",
+    "dorsal",
+    "ephippium",
+    "marine"
+   ],
+   "genus_options": [
+    "Finery",
+    "Butterfly",
+    "Angelfish"
+   ],
+   "true_genus": "Wing Fish Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Lumineon",
+   "canon": [
+    "luminous",
+    "neon"
+   ],
+   "text": "Uses its gleaming fins to hunt its prey. The view of this Pokémon schooling near the surface of the sea at night is breathtaking— it's as though there were shining stars right there.",
+   "basis": [
+    "Mackerel",
+    "Sardine"
+   ],
+   "basis_words": [
+    "mackerel",
+    "sardine"
+   ],
+   "concepts": [
+    "lumin",
+    "fins",
+    "star",
+    "macker",
+    "sard",
+    "drift",
+    "lamp",
+    "swift",
+    "maneu"
+   ],
+   "genus_options": [
+    "Starlight",
+    "Bioluminescent",
+    "Schooling"
+   ],
+   "true_genus": "Neon Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": true,
+   "hit_inspired_facts": true,
+   "hit_all": true
+  },
+  {
+   "name": "Snover",
+   "canon": [
+    "snow",
+    "cover",
+    "snowed over"
+   ],
+   "text": "One is likely to encounter this Pokémon while out in the snow. There are stories of this Pokémon appearing in human settlements but doing no harm—rather, they bond with the children.",
+   "basis": [
+    "Arctic fox",
+    "Polar bear"
+   ],
+   "basis_words": [
+    "arctic",
+    "bear",
+    "polar"
+   ],
+   "concepts": [
+    "arctic",
+    "ursus",
+    "cryo",
+    "lemmus",
+    "subnivean",
+    "glacio",
+    "ferox",
+    "ursiform"
+   ],
+   "genus_options": [
+    "Snow",
+    "Fox",
+    "Polar"
+   ],
+   "true_genus": "Frost Tree Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": true,
+   "hit_all": true
+  },
+  {
+   "name": "Abomasnow",
+   "canon": [
+    "abominable snowman",
+    "yeti"
+   ],
+   "text": "A powerful Pokémon that can split huge boulders with ease. Dislikes associating with others and chooses to live quietly deep within the mountains, playing with the snow.",
+   "basis": [
+    "Marmot",
+    "Groundhog"
+   ],
+   "basis_words": [
+    "marmot",
+    "groundhog"
+   ],
+   "concepts": [
+    "boulder",
+    "marmota",
+    "terrag",
+    "geodrak",
+    "petro",
+    "solus",
+    "alpin",
+    "fissur"
+   ],
+   "genus_options": [
+    "Splitter",
+    "Boulder",
+    "Mountain"
+   ],
+   "true_genus": "Frost Tree Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": true
+  },
+  {
+   "name": "Magnezone",
+   "canon": [
+    "magnetic zone",
+    "magnetic field"
+   ],
+   "text": "I theorize that a special magnetic field influenced this Pokémon, changing its molecular structure and causing it to evolve. It emits strange radio waves toward space from its antenna.",
+   "basis": [
+    "Magnetosphere",
+    "Aurora"
+   ],
+   "basis_words": [
+    "aurora",
+    "magnetosphere"
+   ],
+   "concepts": [
+    "auror",
+    "magnet",
+    "ion",
+    "field",
+    "wave",
+    "storm",
+    "glow",
+    "dynamo"
+   ],
+   "genus_options": [
+    "Magnetic",
+    "Aurora",
+    "Magnet"
+   ],
+   "true_genus": "Magnet Area Pokémon",
+   "hit_offline": true,
+   "hit_basis": true,
+   "hit_inspired": true,
+   "hit_inspired_facts": true,
+   "hit_all": true
+  },
+  {
+   "name": "Togekiss",
+   "canon": [
+    "toge",
+    "kiss"
+   ],
+   "text": "Scant few have ever sighted this Pokémon. After studying what literature remains, I am certain this Pokémon will reveal itself when peace reigns in the land.",
+   "basis": [],
+   "basis_words": [],
+   "concepts": [],
+   "genus_options": [],
+   "true_genus": "Jubilee Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Yanmega",
+   "canon": [
+    "yanma",
+    "mega",
+    "meganeura"
+   ],
+   "text": "Extremely violent. When hunting, it wastes none of its energy, aiming only for prey's most vulnerable spots. Any who manage to tame this Pokémon must be of incredible bravery.",
+   "basis": [
+    "Komodo dragon",
+    "Saltwater crocodile"
+   ],
+   "basis_words": [
+    "dragon",
+    "crocodile",
+    "komodo",
+    "saltwater"
+   ],
+   "concepts": [
+    "ferocity",
+    "venom",
+    "climb",
+    "rampage",
+    "killer",
+    "predator",
+    "fierce",
+    "brutal"
+   ],
+   "genus_options": [
+    "Assassin",
+    "Killer",
+    "Predator"
+   ],
+   "true_genus": "Ogre Darner Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Probopass",
+   "canon": [
+    "probe",
+    "proboscis",
+    "compass"
+   ],
+   "text": "It is able to emit powerful magnetism, allowing it control over the iron sand that forms its luscious mustache. Using this iron sand, this Pokémon forms hard stones with which it smites its prey.",
+   "basis": [
+    "Electric eel",
+    "Magnetotactic bacteria"
+   ],
+   "basis_words": [
+    "electric",
+    "eels",
+    "bacteria",
+    "magnetotactic"
+   ],
+   "concepts": [
+    "volt",
+    "magnetite",
+    "greigite",
+    "anaerobe",
+    "eel",
+    "shock",
+    "iron",
+    "sand"
+   ],
+   "genus_options": [
+    "Electric",
+    "Eel",
+    "Magnet"
+   ],
+   "true_genus": "Compass Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Uxie",
+   "canon": [
+    "uma",
+    "pixie"
+   ],
+   "text": "A Pokémon feared but also respected for stealing away the memories of evildoers. I have found records that suggest this Pokémon holds dominion over knowledge.",
+   "basis": [
+    "Kitsune",
+    "Yuki-onna"
+   ],
+   "basis_words": [
+    "yuki",
+    "kitsune",
+    "onna"
+   ],
+   "concepts": [
+    "omniscia",
+    "khaos",
+    "mnemosyne",
+    "yuki",
+    "kitsune",
+    "exorcista",
+    "sylph",
+    "mnemotrix"
+   ],
+   "genus_options": [
+    "Memory",
+    "Fox",
+    "Yuki"
+   ],
+   "true_genus": "Knowledge Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Mesprit",
+   "canon": [
+    "uma",
+    "spirit"
+   ],
+   "text": "Known as the Being of Emotion. In legend, this Pokémon was feared, as any who showed disrespect would have their emotions thrown into disarray.",
+   "basis": [
+    "Emotion"
+   ],
+   "basis_words": [
+    "emotion"
+   ],
+   "concepts": [
+    "dys",
+    "pathos",
+    "affectus",
+    "emotio",
+    "turbulus",
+    "fluxus",
+    "dissonus"
+   ],
+   "genus_options": [
+    "Emotion",
+    "Feeling",
+    "Sentiment"
+   ],
+   "true_genus": "Emotion Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Dialga",
+   "canon": [
+    "diamond",
+    "clock dial"
+   ],
+   "text": "This Pokémon is revered as a deity in Hisuian legend. The birth of this Pokémon was what caused the vast river of time to begin flowing in our world.",
+   "basis": [
+    "Mallard"
+   ],
+   "basis_words": [
+    "mallard"
+   ],
+   "concepts": [
+    "chrono",
+    "mallard",
+    "deity",
+    "timeless",
+    "riverine",
+    "hybrid",
+    "isolate",
+    "ephemeral"
+   ],
+   "genus_options": [
+    "Deity",
+    "Time Bird",
+    "River Duck"
+   ],
+   "true_genus": "Temporal Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Heatran",
+   "canon": [
+    "heat transfer",
+    "dragon"
+   ],
+   "text": "Stories tell of this Pokémon being birthed from the boiling magma within Mount Coronet. Its molten-steel body holds many mysteries.",
+   "basis": [
+    "Coronet",
+    "Magma"
+   ],
+   "basis_words": [
+    "magma",
+    "coronet"
+   ],
+   "concepts": [
+    "molten",
+    "ignis",
+    "magm",
+    "cor",
+    "peer",
+    "crown",
+    "visc",
+    "steam",
+    "furnace"
+   ],
+   "genus_options": [
+    "Magma",
+    "Furnace",
+    "Molt"
+   ],
+   "true_genus": "Lava Dome Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Phione",
+   "canon": [
+    "clione"
+   ],
+   "text": "Can be seen floating offshore during seasons when the seas are warm. Its azure body blends in with the ocean waters—logic suggests this is a defense mechanism against natural predators.",
+   "basis": [
+    "Physalia utriculus",
+    "Portuguese man o' war"
+   ],
+   "basis_words": [
+    "portuguese",
+    "utriculus",
+    "physalia",
+    "jellyfish",
+    "bluebottle"
+   ],
+   "concepts": [
+    "azure",
+    "physalia",
+    "utriculus",
+    "pneuma",
+    "cnido",
+    "marina",
+    "ventus",
+    "solis"
+   ],
+   "genus_options": [
+    "Drifter",
+    "Blighter"
+   ],
+   "true_genus": "Sea Drifter Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Manaphy",
+   "canon": [
+    "mana",
+    "fay"
+   ],
+   "text": "Rumored to migrate across the oceans and visit Hisui's coastal waters only rarely. Although this Pokémon resembles water sea drifter pokémon, it is also quite different. The relation between the two is unclear.",
+   "basis": [],
+   "basis_words": [],
+   "concepts": [],
+   "genus_options": [],
+   "true_genus": "Seafaring Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Bunnelby",
+   "canon": [
+    "bunny",
+    "tunnel",
+    "wallaby"
+   ],
+   "text": "It's very sensitive to danger. The sound of flying/steel raven pokémon's flapping will have this Pokémon digging a hole to hide underground in moments.",
+   "basis": [
+    "Groundhog"
+   ],
+   "basis_words": [
+    "groundhog"
+   ],
+   "concepts": [
+    "burrow",
+    "sensitive",
+    "timid",
+    "hider",
+    "ground",
+    "under",
+    "hide",
+    "longevity"
+   ],
+   "genus_options": [
+    "Burrower",
+    "Groundhog",
+    "Nuisance"
+   ],
+   "true_genus": "Digging Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": true
+  },
+  {
+   "name": "Diggersby",
+   "canon": [
+    "digger",
+    "bunny"
+   ],
+   "text": "The fur on its belly retains heat exceptionally well. People used to make heavy winter clothing from fur shed by this Pokémon.",
+   "basis": [
+    "Arctic fox"
+   ],
+   "basis_words": [
+    "arctic"
+   ],
+   "concepts": [
+    "therm",
+    "camo",
+    "insul",
+    "furia",
+    "cryo",
+    "polar",
+    "adapt",
+    "core"
+   ],
+   "genus_options": [
+    "Fur",
+    "Fox",
+    "Insulator"
+   ],
+   "true_genus": "Digging Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Fletchling",
+   "canon": [
+    "fletching",
+    "fledgling",
+    "hatchling"
+   ],
+   "text": "When this Pokémon gets excited, its body temperature increases sharply. If you touch a this Pokémon with bare hands, you might get burned.",
+   "basis": [
+    "Thermophile",
+    "Thermite"
+   ],
+   "basis_words": [
+    "bacteria",
+    "thermophile",
+    "thermophilic",
+    "thermite"
+   ],
+   "concepts": [
+    "pyro",
+    "ignis",
+    "thermos",
+    "fungus",
+    "inferno",
+    "combust",
+    "sordium",
+    "ignite"
+   ],
+   "genus_options": [
+    "Thermite",
+    "Heat",
+    "Ember"
+   ],
+   "true_genus": "Tiny Robin Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Fletchinder",
+   "canon": [
+    "fletching",
+    "tinder",
+    "cinder"
+   ],
+   "text": "From its beak, it expels embers that set the tall grass on fire. Then it pounces on the bewildered prey that pop out of the grass.",
+   "basis": [
+    "Hoatzin",
+    "Emu"
+   ],
+   "basis_words": [
+    "hoatzin"
+   ],
+   "concepts": [
+    "ember",
+    "stink",
+    "hoatzin",
+    "emu",
+    "pyro",
+    "pounce",
+    "avian",
+    "tall",
+    "unique"
+   ],
+   "genus_options": [
+    "Ember",
+    "Stinkbird",
+    "Flamebird"
+   ],
+   "true_genus": "Ember Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Talonflame",
+   "canon": [
+    "talon",
+    "flame"
+   ],
+   "text": "Its favorite foods are water/flying seagull pokémon and normal/flying woodpecker pokémon. It attacks with a powerful kick and grasps them firmly in its talons.",
+   "basis": [
+    "Osprey",
+    "Gyrfalcon"
+   ],
+   "basis_words": [
+    "osprey",
+    "gyrfalcon"
+   ],
+   "concepts": [
+    "talons",
+    "aquila",
+    "piscator",
+    "avis",
+    "gripus",
+    "falcatus",
+    "marinus",
+    "avior"
+   ],
+   "genus_options": [
+    "Bird",
+    "Talon",
+    "Falcon"
+   ],
+   "true_genus": "Scorching Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": true,
+   "hit_inspired_facts": true,
+   "hit_all": true
+  },
+  {
+   "name": "Scatterbug",
+   "canon": [
+    "scatter",
+    "bug",
+    "litterbug"
+   ],
+   "text": "When under attack from bird Pokémon, it spews a poisonous black powder that causes paralysis on contact.",
+   "basis": [
+    "Poison dart frog",
+    "Black mamba"
+   ],
+   "basis_words": [
+    "frog",
+    "poison",
+    "dart",
+    "black",
+    "mamba"
+   ],
+   "concepts": [
+    "toxidart",
+    "mambifrog",
+    "venomix",
+    "dartotoxin",
+    "alkalox",
+    "phosphorid",
+    "mambiflora",
+    "toxinema"
+   ],
+   "genus_options": [
+    "Venom",
+    "Poison Dart",
+    "Black Fang"
+   ],
+   "true_genus": "Scatterdust Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Spewpa",
+   "canon": [
+    "spew",
+    "pupa"
+   ],
+   "text": "It lives hidden within thicket shadows. When predators attack, it quickly bristles the fur covering its body in an effort to threaten them.",
+   "basis": [
+    "Porcupine",
+    "Hedgehog"
+   ],
+   "basis_words": [
+    "porcupine",
+    "hedgehog"
+   ],
+   "concepts": [
+    "spine",
+    "porc",
+    "prick",
+    "quill",
+    "bristle",
+    "thorn",
+    "rodent",
+    "defend"
+   ],
+   "genus_options": [
+    "Thicket",
+    "Porcupine",
+    "Quill"
+   ],
+   "true_genus": "Scatterdust Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Vivillon",
+   "canon": [
+    "vivid",
+    "papillon",
+    "bi"
+   ],
+   "text": "this Pokémon with many different patterns are found all over the world. These patterns are affected by the climate of their habitat.",
+   "basis": [
+    "Chameleon",
+    "Anolidae"
+   ],
+   "basis_words": [
+    "chameleon",
+    "anolidae",
+    "anole"
+   ],
+   "concepts": [
+    "climate",
+    "chameleon",
+    "pattern",
+    "adapt",
+    "change",
+    "camouflage",
+    "signal",
+    "niche",
+    "morph"
+   ],
+   "genus_options": [
+    "Chameleon",
+    "Camouflage",
+    "Anole"
+   ],
+   "true_genus": "Scale Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Skiddo",
+   "canon": [
+    "skid",
+    "kiddo",
+    "kid"
+   ],
+   "text": "If it has sunshine and water, it doesn't need to eat, because it can generate energy from the leaves on its back.",
+   "basis": [],
+   "basis_words": [],
+   "concepts": [],
+   "genus_options": [],
+   "true_genus": "Mount Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Gogoat",
+   "canon": [
+    "go",
+    "goat"
+   ],
+   "text": "It can tell how its Trainer is feeling by subtle shifts in the grip on its horns. This empathic sense lets them run as if one being.",
+   "basis": [
+    "Yak",
+    "Bactrian camel"
+   ],
+   "basis_words": [
+    "camel",
+    "bactrian"
+   ],
+   "concepts": [
+    "empath",
+    "camulus",
+    "wallow",
+    "pack",
+    "borealis",
+    "camma",
+    "horna",
+    "velox"
+   ],
+   "genus_options": [
+    "Empathic",
+    "Pack",
+    "Wailer"
+   ],
+   "true_genus": "Mount Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Inkay",
+   "canon": [
+    "ink",
+    "inky",
+    "inkfish"
+   ],
+   "text": "It flashes the light-emitting spots on its body, which drains its opponent's will to fight. It takes the opportunity to scuttle away and hide.",
+   "basis": [],
+   "basis_words": [],
+   "concepts": [],
+   "genus_options": [],
+   "true_genus": "Revolving Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Malamar",
+   "canon": [
+    "mal",
+    "calamari"
+   ],
+   "text": "It lures its prey close with hypnotic motions, then wraps its tentacles around it before finishing it off with digestive fluids.",
+   "basis": [
+    "Squid",
+    "Odontodactylus scyllarus"
+   ],
+   "basis_words": [
+    "squid",
+    "shrimp",
+    "peacock",
+    "scyllarus",
+    "odontodactylus",
+    "mantis"
+   ],
+   "concepts": [
+    "hypno",
+    "squid",
+    "glide",
+    "deck",
+    "punch",
+    "exos",
+    "dense",
+    "lure"
+   ],
+   "genus_options": [
+    "Squid",
+    "Monster",
+    "Stalker"
+   ],
+   "true_genus": "Overturning Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Skrelp",
+   "canon": [
+    "scrawny",
+    "kelp",
+    "scrap"
+   ],
+   "text": "It drifts in the ocean, blending in with floating seaweed. When other Pokémon come to feast on the seaweed, this Pokémon feasts on them instead.",
+   "basis": [
+    "Seaweed",
+    "Anglerfish"
+   ],
+   "basis_words": [
+    "seaweed",
+    "anglerfish"
+   ],
+   "concepts": [
+    "drifter",
+    "seaweed",
+    "angler",
+    "biolum",
+    "feeder",
+    "predator",
+    "gill",
+    "glimmer"
+   ],
+   "genus_options": [
+    "Seaweed",
+    "Angler",
+    "Ghost"
+   ],
+   "true_genus": "Mock Kelp Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Dragalge",
+   "canon": [
+    "dragon",
+    "algae"
+   ],
+   "text": "This vicious Pokémon sprays a poisonous liquid on opponents that come near. For whatever reason, it gets along really well with ghost/grass sea creeper pokémon.",
+   "basis": [
+    "Skunk",
+    "Poison dart frog"
+   ],
+   "basis_words": [
+    "frog",
+    "poison",
+    "dart",
+    "skunk"
+   ],
+   "concepts": [
+    "skunk",
+    "tox",
+    "spray",
+    "blind",
+    "irritate",
+    "poison",
+    "dart",
+    "resist"
+   ],
+   "genus_options": [
+    "Skunk",
+    "Poison Dart",
+    "Stink"
+   ],
+   "true_genus": "Mock Kelp Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Clauncher",
+   "canon": [
+    "claw",
+    "launcher"
+   ],
+   "text": "By detonating gas that accumulates in its right claw, this Pokémon launches water like a bullet. This is how this Pokémon defeats its enemies.",
+   "basis": [
+    "Cuttlefish"
+   ],
+   "basis_words": [
+    "cuttlefish"
+   ],
+   "concepts": [
+    "venom",
+    "bullet",
+    "water",
+    "gas",
+    "claw",
+    "launch",
+    "camouflage",
+    "cephalopod"
+   ],
+   "genus_options": [
+    "Bullet",
+    "Cuttlefish",
+    "Squid"
+   ],
+   "true_genus": "Water Gun Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": true,
+   "hit_inspired_facts": true,
+   "hit_all": true
+  },
+  {
+   "name": "Clawitzer",
+   "canon": [
+    "claw",
+    "howitzer"
+   ],
+   "text": "It compresses the water it has sucked up and then projects it with enough power to punch a hole right through a thick sheet of iron.",
+   "basis": [],
+   "basis_words": [],
+   "concepts": [],
+   "genus_options": [],
+   "true_genus": "Howitzer Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Tyrunt",
+   "canon": [
+    "tyrannosaurus",
+    "tyrant",
+    "runt"
+   ],
+   "text": "This is an ancient Pokémon, revived in modern times. It has a violent disposition, and it'll tear apart anything it gets between its hefty jaws.",
+   "basis": [
+    "Tyrannosaurus",
+    "Spinosaurus"
+   ],
+   "basis_words": [
+    "tyrannosaurus",
+    "spinosaurus"
+   ],
+   "concepts": [
+    "tyrant",
+    "spine",
+    "jaw",
+    "carnivore",
+    "rex",
+    "massive",
+    "fierce",
+    "savage"
+   ],
+   "genus_options": [
+    "Tyrant",
+    "Beast",
+    "Fanged"
+   ],
+   "true_genus": "Royal Heir Pokémon",
+   "hit_offline": false,
+   "hit_basis": true,
+   "hit_inspired": true,
+   "hit_inspired_facts": true,
+   "hit_all": true
+  },
+  {
+   "name": "Tyrantrum",
+   "canon": [
+    "tyrannosaurus",
+    "tyrant",
+    "tantrum"
+   ],
+   "text": "Thanks to its gargantuan jaws, which could shred thick metal plates as if they were paper, it was invincible in the ancient world it once inhabited.",
+   "basis": [
+    "Mosasaur",
+    "Liopleurodon"
+   ],
+   "basis_words": [
+    "mosasaur",
+    "liopleurodon"
+   ],
+   "concepts": [
+    "gigant",
+    "mos",
+    "plios",
+    "carn",
+    "kpg",
+    "extinct",
+    "domin",
+    "jaws",
+    "fossil"
+   ],
+   "genus_options": [
+    "Titan",
+    "Monster",
+    "Behemoth"
+   ],
+   "true_genus": "Despot Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Carbink",
+   "canon": [
+    "carbuncle",
+    "carbon",
+    "carat"
+   ],
+   "text": "It's said that somewhere in the world, there's a mineral vein housing a large pack of slumbering this Pokémon. It's also said that this pack has a queen.",
+   "basis": [
+    "Cave",
+    "Hibernation"
+   ],
+   "basis_words": [
+    "cave",
+    "hibernation"
+   ],
+   "concepts": [
+    "cavern",
+    "somnus",
+    "geos",
+    "hiberna",
+    "lithos",
+    "hypoxia",
+    "torpor",
+    "caverna"
+   ],
+   "genus_options": [
+    "Cavern",
+    "Hibernator",
+    "Queen"
+   ],
+   "true_genus": "Jewel Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Rowlet",
+   "canon": [
+    "root",
+    "round",
+    "arrow"
+   ],
+   "text": "At a distance, it launches its sharp feathers while flying about. If the enemy gets too close, this Pokémon switches tactics and delivers vicious kicks.",
+   "basis": [
+    "Ostrich",
+    "Cassowary"
+   ],
+   "basis_words": [
+    "ostrich",
+    "cassowary"
+   ],
+   "concepts": [
+    "aerius",
+    "strigiform",
+    "velox",
+    "gigas",
+    "falcis",
+    "caudatus",
+    "impulsus",
+    "crurum"
+   ],
+   "genus_options": [
+    "Falcon",
+    "Bird",
+    "Runner"
+   ],
+   "true_genus": "Grass Quill Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Dartrix",
+   "canon": [
+    "dart",
+    "strix",
+    "tricks"
+   ],
+   "text": "Regularly basks in sunlight to gather power—presumably due to the frigid climate. Nonetheless, the edges of the blade quills set into its wings are keen as ever.",
+   "basis": [
+    "Flying squirrel",
+    "Pterosaur"
+   ],
+   "basis_words": [
+    "squirrel",
+    "flying",
+    "pterosaur"
+   ],
+   "concepts": [
+    "solar",
+    "glider",
+    "patagium",
+    "wing",
+    "arc",
+    "flex",
+    "claw",
+    "scale"
+   ],
+   "genus_options": [
+    "Glider",
+    "Winged",
+    "Sunbather"
+   ],
+   "true_genus": "Blade Quill Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Decidueye",
+   "canon": [
+    "deciduous",
+    "duel",
+    "deadeye"
+   ],
+   "text": "It nocks its arrow quills and shoots them at opponents. When it simply can't afford to miss, it tugs the vine on its head to improve its focus.",
+   "basis": [
+    "Porcupine",
+    "Atta cephalotes"
+   ],
+   "basis_words": [
+    "porcupine",
+    "cephalotes",
+    "atta"
+   ],
+   "concepts": [
+    "quill",
+    "focus",
+    "longevity",
+    "advert",
+    "colony",
+    "queen",
+    "vine",
+    "advertize"
+   ],
+   "genus_options": [
+    "Quill",
+    "Porcupine",
+    "Archer"
+   ],
+   "true_genus": "Arrow Quill Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": true
+  },
+  {
+   "name": "Cutiefly",
+   "canon": [
+    "cutie",
+    "fly"
+   ],
+   "text": "Nectar and pollen are its favorite fare. You can find this Pokémon hovering around grass flowering pokémon, trying to get some of grass flowering pokémon's pollen.",
+   "basis": [
+    "Honey bee",
+    "Bumblebee"
+   ],
+   "basis_words": [
+    "honey",
+    "honeybee",
+    "bumblebee"
+   ],
+   "concepts": [
+    "apis",
+    "mellifera",
+    "nectaria",
+    "floraria",
+    "apiaria",
+    "bumblea",
+    "florivora",
+    "melissa"
+   ],
+   "genus_options": [
+    "Bee",
+    "Honey Bee",
+    "Pollen Gatherer"
+   ],
+   "true_genus": "Bee Fly Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Ribombee",
+   "canon": [
+    "ribbon",
+    "bombyliidae",
+    "bee"
+   ],
+   "text": "It can predict the weather from moisture levels and wind direction. this Pokémon only reveals itself when there are a few clear days in a row.",
+   "basis": [
+    "Weather forecasting",
+    "Sky"
+   ],
+   "basis_words": [
+    "weather",
+    "skies",
+    "forecasting"
+   ],
+   "concepts": [
+    "caelum",
+    "meteoron",
+    "skaios",
+    "aerius",
+    "clario",
+    "radiant",
+    "celestia",
+    "horizonia"
+   ],
+   "genus_options": [
+    "Weather",
+    "Sky",
+    "Forecast"
+   ],
+   "true_genus": "Bee Fly Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Rockruff",
+   "canon": [
+    "rock",
+    "ruff",
+    "ruffle"
+   ],
+   "text": "This Pokémon has lived with people since times long ago. It can sense when its Trainer is in the dumps and will stick close by its Trainer's side.",
+   "basis": [
+    "Friendship",
+    "Dog"
+   ],
+   "basis_words": [
+    "friendship",
+    "friend"
+   ],
+   "concepts": [
+    "loyal",
+    "companions",
+    "alliance",
+    "amicitia",
+    "canis",
+    "fidelis",
+    "socio",
+    "visio"
+   ],
+   "genus_options": [
+    "Companion",
+    "Loyal",
+    "Village Dog"
+   ],
+   "true_genus": "Puppy Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Lycanroc",
+   "canon": [
+    "lycanthrope",
+    "rock"
+   ],
+   "text": "With swift movements, this Pokémon gradually backs its prey into a corner. this Pokémon's fangs are always aimed toward opponents' weak spots.",
+   "basis": [
+    "Cobra",
+    "Rattlesnake"
+   ],
+   "basis_words": [
+    "cobra",
+    "rattlesnake"
+   ],
+   "concepts": [
+    "venom",
+    "cobra",
+    "hood",
+    "fang",
+    "duct",
+    "gland",
+    "rear",
+    "strike"
+   ],
+   "genus_options": [
+    "Snake",
+    "Cobra",
+    "Fang"
+   ],
+   "true_genus": "Wolf Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Sandygast",
+   "canon": [
+    "sandy",
+    "ghast"
+   ],
+   "text": "this Pokémon mainly inhabits beaches. It takes control of anyone who puts their hand into its mouth, forcing them to make its body bigger.",
+   "basis": [
+    "Octopus",
+    "Squid"
+   ],
+   "basis_words": [
+    "octopus",
+    "squid"
+   ],
+   "concepts": [
+    "lumin",
+    "sucker",
+    "photus",
+    "hadal",
+    "crawler",
+    "camou",
+    "biolum",
+    "colossus"
+   ],
+   "genus_options": [
+    "Beach",
+    "Squid",
+    "Puppet"
+   ],
+   "true_genus": "Sand Heap Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Palossand",
+   "canon": [
+    "palace",
+    "loss",
+    "sand"
+   ],
+   "text": "this Pokémon is known as the Beach Nightmare. It pulls its prey down into the sand by controlling the sand itself, and then it sucks out their souls.",
+   "basis": [
+    "Erycinae",
+    "Worm"
+   ],
+   "basis_words": [
+    "sand",
+    "worm",
+    "erycinae"
+   ],
+   "concepts": [
+    "sand",
+    "abyss",
+    "soul",
+    "devour",
+    "burrow",
+    "worm",
+    "abyssal",
+    "suck"
+   ],
+   "genus_options": [
+    "Sand",
+    "Burrower",
+    "Worm"
+   ],
+   "true_genus": "Sand Castle Pokémon",
+   "hit_offline": true,
+   "hit_basis": true,
+   "hit_inspired": true,
+   "hit_inspired_facts": true,
+   "hit_all": true
+  },
+  {
+   "name": "Jangmo-o",
+   "canon": [
+    "jangling"
+   ],
+   "text": "It smacks the scales on its head against rocks or against the ground to frighten its opponents. It can also contact its friends with these noises.",
+   "basis": [
+    "Bullfrog"
+   ],
+   "basis_words": [
+    "bullfrog"
+   ],
+   "concepts": [
+    "amphib",
+    "croak",
+    "rib",
+    "slap",
+    "crash",
+    "boom",
+    "thump",
+    "pound"
+   ],
+   "genus_options": [],
+   "true_genus": "Scaly Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Hakamo-o",
+   "canon": [
+    "haka",
+    "polynesian"
+   ],
+   "text": "The scales it sheds can be molded and processed to make pots and pans. They conduct heat well, so they're a popular item.",
+   "basis": [],
+   "basis_words": [],
+   "concepts": [],
+   "genus_options": [],
+   "true_genus": "Scaly Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Kommo-o",
+   "canon": [
+    "commotion",
+    "combat"
+   ],
+   "text": "Its rigid scales function as offense and defense. In the past, its scales were processed and used to make weapons and other commodities.",
+   "basis": [],
+   "basis_words": [],
+   "concepts": [],
+   "genus_options": [],
+   "true_genus": "Scaly Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": true
+  },
+  {
+   "name": "Kartana",
+   "canon": [
+    "katana",
+    "card",
+    "art"
+   ],
+   "text": "This Ultra Beast came from the Ultra Wormhole. It seems not to attack enemies on its own, but its sharp body is a dangerous weapon in itself.",
+   "basis": [
+    "Hagfish",
+    "Leech"
+   ],
+   "basis_words": [
+    "hagfish",
+    "leech"
+   ],
+   "concepts": [
+    "hag",
+    "leech",
+    "sharp",
+    "worm",
+    "beast",
+    "ancient",
+    "fossil",
+    "ring"
+   ],
+   "genus_options": [
+    "Slippery",
+    "Hagfish",
+    "Leech"
+   ],
+   "true_genus": "Drawn Sword Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Necrozma",
+   "canon": [
+    "kuro"
+   ],
+   "text": "It survives by absorbing light. After a long time spent slumbering underground, impurities accumulated within it, causing its body to darken.",
+   "basis": [
+    "Venus flytrap",
+    "Monotropa uniflora"
+   ],
+   "basis_words": [
+    "venus",
+    "pipe",
+    "indian",
+    "flytrap",
+    "uniflora",
+    "monotropa"
+   ],
+   "concepts": [
+    "lux",
+    "chloro",
+    "umbra",
+    "terra",
+    "ignis",
+    "petal",
+    "stamen",
+    "lumina"
+   ],
+   "genus_options": [
+    "Sun",
+    "Light Eater",
+    "Shadow Plant"
+   ],
+   "true_genus": "Prism Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Meltan",
+   "canon": [
+    "melt",
+    "metal",
+    "tan"
+   ],
+   "text": "It melts particles of iron and other metals found in the subsoil, so it can absorb them into its body of molten steel.",
+   "basis": [
+    "Magnetotactic bacteria"
+   ],
+   "basis_words": [
+    "bacteria",
+    "magnetotactic"
+   ],
+   "concepts": [
+    "ferro",
+    "magnet",
+    "ignis",
+    "flux",
+    "ferrox",
+    "metallum",
+    "pyro",
+    "geo"
+   ],
+   "genus_options": [
+    "Melter",
+    "Magnet",
+    "Iron Eater"
+   ],
+   "true_genus": "Hex Nut Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": true,
+   "hit_inspired_facts": true,
+   "hit_all": true
+  },
+  {
+   "name": "Melmetal",
+   "canon": [
+    "melt",
+    "metal"
+   ],
+   "text": "At the end of its life-span, this Pokémon will rust and fall apart. The small shards left behind will eventually be reborn as its pre-evolution.",
+   "basis": [
+    "Rust",
+    "Iron"
+   ],
+   "basis_words": [
+    "rust",
+    "iron"
+   ],
+   "concepts": [
+    "ferrum",
+    "rusticus",
+    "corrode",
+    "ironia",
+    "ferrite",
+    "perovskite",
+    "manganite",
+    "erode"
+   ],
+   "genus_options": [
+    "Rust",
+    "Iron",
+    "Corrode"
+   ],
+   "true_genus": "Hex Nut Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": true,
+   "hit_all": true
+  },
+  {
+   "name": "Gossifleur",
+   "canon": [
+    "gossypium",
+    "fleur",
+    "gossamer"
+   ],
+   "text": "It anchors itself in the ground with its single leg, then basks in the sun. After absorbing enough sunlight, its petals spread as it blooms brilliantly.",
+   "basis": [
+    "Cactus",
+    "Pear"
+   ],
+   "basis_words": [
+    "cactus",
+    "pear"
+   ],
+   "concepts": [
+    "sol",
+    "rad",
+    "petal",
+    "bloom",
+    "cam",
+    "succ",
+    "stem",
+    "pome"
+   ],
+   "genus_options": [
+    "Cactus",
+    "Sunbloom",
+    "Desert Rose"
+   ],
+   "true_genus": "Flowering Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Eldegoss",
+   "canon": [
+    "elder",
+    "gossypium",
+    "gossamer"
+   ],
+   "text": "The seeds attached to its cotton fluff are full of nutrients. It spreads them on the wind so that plants and other Pokémon can benefit from them.",
+   "basis": [
+    "Seed",
+    "Taraxacum"
+   ],
+   "basis_words": [
+    "seed",
+    "seeds",
+    "taraxacum",
+    "dandelion"
+   ],
+   "concepts": [
+    "thermodorm",
+    "pappus",
+    "cupule",
+    "aerius",
+    "dispersus",
+    "ferrox",
+    "vortex"
+   ],
+   "genus_options": [
+    "Seed",
+    "Dandelion",
+    "Drifter"
+   ],
+   "true_genus": "Cotton Bloom Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Cramorant",
+   "canon": [
+    "cram",
+    "cormorant"
+   ],
+   "text": "This hungry Pokémon swallows water rush pokémon whole. Occasionally, it makes a mistake and tries to swallow a Pokémon other than its preferred prey.",
+   "basis": [
+    "Eel",
+    "Anglerfish"
+   ],
+   "basis_words": [
+    "anglerfish"
+   ],
+   "concepts": [
+    "eel",
+    "swallow",
+    "water",
+    "rush",
+    "angler",
+    "fish",
+    "distend",
+    "flex"
+   ],
+   "genus_options": [
+    "Swallower",
+    "Eel",
+    "Vacuum"
+   ],
+   "true_genus": "Gulp Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Clobbopus",
+   "canon": [
+    "clobber",
+    "octopus"
+   ],
+   "text": "It's very curious, but its means of investigating things is to try to punch them with its tentacles. The search for food is what brings it onto land.",
+   "basis": [
+    "Octopus",
+    "Squid"
+   ],
+   "basis_words": [
+    "octopus",
+    "squid"
+   ],
+   "concepts": [
+    "photophor",
+    "hadal",
+    "puncher",
+    "sucker",
+    "biolum",
+    "camouflage",
+    "squid",
+    "cephal"
+   ],
+   "genus_options": [
+    "Tentacled",
+    "Deep Digger",
+    "Sea Puncher"
+   ],
+   "true_genus": "Tantrum Pokémon",
+   "hit_offline": true,
+   "hit_basis": true,
+   "hit_inspired": true,
+   "hit_inspired_facts": true,
+   "hit_all": true
+  },
+  {
+   "name": "Grapploct",
+   "canon": [
+    "grapple",
+    "octopus",
+    "locked"
+   ],
+   "text": "A body made up of nothing but muscle makes the grappling moves this Pokémon performs with its tentacles tremendously powerful.",
+   "basis": [
+    "Squid",
+    "Mantis shrimp"
+   ],
+   "basis_words": [
+    "squid",
+    "shrimp",
+    "mantis"
+   ],
+   "concepts": [
+    "muscula",
+    "cephalo",
+    "rapidus",
+    "squamata",
+    "mantis",
+    "flexus",
+    "velocitas",
+    "ocularis"
+   ],
+   "genus_options": [
+    "Tentacle",
+    "Squid",
+    "Smash"
+   ],
+   "true_genus": "Jujitsu Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": true
+  },
+  {
+   "name": "Sinistea",
+   "canon": [
+    "sinister",
+    "tea"
+   ],
+   "text": "The teacup in which this Pokémon makes its home is a famous piece of antique tableware. Many forgeries are in circulation.",
+   "basis": [
+    "Wedgwood",
+    "Jasperware"
+   ],
+   "basis_words": [
+    "wedgwood",
+    "jasperware"
+   ],
+   "concepts": [
+    "forgery",
+    "jasper",
+    "wedgwood",
+    "creamware",
+    "biscuit",
+    "matte",
+    "dipped",
+    "blue"
+   ],
+   "genus_options": [
+    "Teacup",
+    "Jasper",
+    "Vase"
+   ],
+   "true_genus": "Black Tea Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": true
+  },
+  {
+   "name": "Polteageist",
+   "canon": [
+    "poltergeist",
+    "tea"
+   ],
+   "text": "Leaving leftover black tea unattended is asking for this Pokémon to come along and pour itself into it, turning the tea into a new this Pokémon.",
+   "basis": [
+    "Tea",
+    "Brewing"
+   ],
+   "basis_words": [
+    "brewing"
+   ],
+   "concepts": [
+    "infusia",
+    "fermenta",
+    "thea",
+    "brewia",
+    "cultivus",
+    "fermentum",
+    "porcella",
+    "fermentalis"
+   ],
+   "genus_options": [
+    "Tea",
+    "Steep",
+    "Ferment"
+   ],
+   "true_genus": "Black Tea Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": true
+  },
+  {
+   "name": "Pincurchin",
+   "canon": [
+    "pincushion",
+    "sea urchin"
+   ],
+   "text": "It stores electricity in each spine. Even if one gets broken off, it still continues to emit electricity for at least three hours.",
+   "basis": [
+    "Electric ray",
+    "Electric eel"
+   ],
+   "basis_words": [
+    "electric"
+   ],
+   "concepts": [
+    "volt",
+    "ray",
+    "spine",
+    "shock",
+    "discharge",
+    "electricus",
+    "torpedo",
+    "pack"
+   ],
+   "genus_options": [
+    "Electric",
+    "Torpedo",
+    "Shock"
+   ],
+   "true_genus": "Sea Urchin Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Eiscue",
+   "canon": [
+    "eis",
+    "ice cube"
+   ],
+   "text": "This Pokémon keeps its heat-sensitive head cool with ice. It fishes for its food, dangling its single hair into the sea to lure in prey.",
+   "basis": [
+    "Walleye",
+    "Anglerfish"
+   ],
+   "basis_words": [
+    "walleye",
+    "anglerfish"
+   ],
+   "concepts": [
+    "lumin",
+    "glint",
+    "lure",
+    "glow",
+    "bait",
+    "flicker",
+    "gill",
+    "dive"
+   ],
+   "genus_options": [
+    "Angler",
+    "Walleye",
+    "Icehead"
+   ],
+   "true_genus": "Penguin Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": true
+  },
+  {
+   "name": "Spectrier",
+   "canon": [
+    "spectre",
+    "destrier"
+   ],
+   "text": "It probes its surroundings with all its senses save one—it doesn't use its sense of sight. this Pokémon's kicks are said to separate soul from body.",
+   "basis": [
+    "Spalax"
+   ],
+   "basis_words": [
+    "mole",
+    "blind",
+    "spalax"
+   ],
+   "concepts": [
+    "blind",
+    "mole",
+    "senseless",
+    "kick",
+    "soul",
+    "separate",
+    "burrow",
+    "subterranean"
+   ],
+   "genus_options": [
+    "Blind",
+    "Mole",
+    "Sentinel"
+   ],
+   "true_genus": "Swift Horse Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Fuecoco",
+   "canon": [
+    "fuego",
+    "cocodrilo",
+    "fuocoso"
+   ],
+   "text": "Its flame sac is small, so energy is always leaking out. This energy is released from the dent atop this Pokémon's head and flickers to and fro.",
+   "basis": [
+    "Bombardier beetle",
+    "Glowworm"
+   ],
+   "basis_words": [
+    "beetle",
+    "bombardier",
+    "glowworm"
+   ],
+   "concepts": [
+    "flicker",
+    "ember",
+    "glare",
+    "lumin",
+    "oxide",
+    "perox",
+    "hydro",
+    "flicks"
+   ],
+   "genus_options": [
+    "Glowing",
+    "Beetle",
+    "Spark"
+   ],
+   "true_genus": "Fire Croc Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Crocalor",
+   "canon": [
+    "crocodile",
+    "calor",
+    "vocal"
+   ],
+   "text": "The valve in this Pokémon's flame sac is closely connected to its vocal cords. This Pokémon utters a guttural cry as it spews flames every which way.",
+   "basis": [
+    "Bird"
+   ],
+   "basis_words": [
+    "bird"
+   ],
+   "concepts": [
+    "flam",
+    "cry",
+    "gutt",
+    "sac",
+    "cor",
+    "vul",
+    "igne"
+   ],
+   "genus_options": [
+    "Bird",
+    "Roarer",
+    "Fowl"
+   ],
+   "true_genus": "Fire Croc Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": true
+  },
+  {
+   "name": "Skeledirge",
+   "canon": [
+    "skeleton",
+    "dirge"
+   ],
+   "text": "this Pokémon's gentle singing soothes the souls of all that hear it. It burns its enemies to a crisp with flames of over 5,400 degrees Fahrenheit.",
+   "basis": [
+    "Common nightingale",
+    "Dragon"
+   ],
+   "basis_words": [
+    "nightingale",
+    "dragon"
+   ],
+   "concepts": [
+    "auror",
+    "pyropex",
+    "melodia",
+    "ignis",
+    "siren",
+    "valtor",
+    "pyrope",
+    "aetherion"
+   ],
+   "genus_options": [
+    "Nightingale",
+    "Dragon",
+    "Flame"
+   ],
+   "true_genus": "Singer Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Lechonk",
+   "canon": [
+    "chonk"
+   ],
+   "text": "It searches for food all day. It possesses a keen sense of smell but doesn't use it for anything other than foraging.",
+   "basis": [
+    "Bloodhound",
+    "Red fox"
+   ],
+   "basis_words": [
+    "bloodhound"
+   ],
+   "concepts": [
+    "olfact",
+    "canis",
+    "fox",
+    "leaper",
+    "sailer",
+    "tailor",
+    "tracker",
+    "scentor"
+   ],
+   "genus_options": [
+    "Hound",
+    "Fox",
+    "Tracker"
+   ],
+   "true_genus": "Hog Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Oinkologne",
+   "canon": [
+    "oink",
+    "cologne",
+    "bologna"
+   ],
+   "text": "this Pokémon is proud of its fine, glossy skin. It emits a concentrated scent from the tip of its tail.",
+   "basis": [
+    "Skunk",
+    "Stink bug"
+   ],
+   "basis_words": [
+    "stink",
+    "skunk"
+   ],
+   "concepts": [
+    "odor",
+    "stink",
+    "skunk",
+    "bug",
+    "scent",
+    "spray",
+    "blind",
+    "sting"
+   ],
+   "genus_options": [
+    "Stinker",
+    "Skunk",
+    "Perfume"
+   ],
+   "true_genus": "Hog Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": true
+  },
+  {
+   "name": "Squawkabilly",
+   "canon": [
+    "squawk",
+    "bill",
+    "rockabilly"
+   ],
+   "text": "Green-feathered flocks hold the most sway. When they're out searching for food in the mornings and evenings, it gets very noisy.",
+   "basis": [
+    "House sparrow",
+    "Common grackle"
+   ],
+   "basis_words": [
+    "sparrow",
+    "house",
+    "grackle"
+   ],
+   "concepts": [
+    "chatter",
+    "flock",
+    "green",
+    "sparrow",
+    "grackle",
+    "mimic",
+    "crack",
+    "keel"
+   ],
+   "genus_options": [
+    "Flock",
+    "Bird",
+    "Chatter"
+   ],
+   "true_genus": "Parrot Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": true,
+   "hit_all": true
+  },
+  {
+   "name": "Flittle",
+   "canon": [
+    "flitter",
+    "little"
+   ],
+   "text": "this Pokémon's toes levitate about half an inch above the ground because of the psychic power emitted from the frills on the Pokémon's belly.",
+   "basis": [
+    "Frilled lizard"
+   ],
+   "basis_words": [
+    "lizard",
+    "frilled",
+    "frill",
+    "necked"
+   ],
+   "concepts": [
+    "levitate",
+    "psychic",
+    "frill",
+    "disc",
+    "biped",
+    "split",
+    "fringed",
+    "aura"
+   ],
+   "genus_options": [
+    "Frill",
+    "Lizard",
+    "Levitate"
+   ],
+   "true_genus": "Frill Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Espathra",
+   "canon": [
+    "esp",
+    "telepath",
+    "cleopatra"
+   ],
+   "text": "It immobilizes opponents by bathing them in psychic power from its large eyes. Despite its appearance, it has a vicious temperament.",
+   "basis": [
+    "Octopus",
+    "Lionfish"
+   ],
+   "basis_words": [
+    "octopus",
+    "lionfish"
+   ],
+   "concepts": [
+    "lumin",
+    "stau",
+    "psyche",
+    "cacoph",
+    "venom",
+    "camou",
+    "luminari",
+    "toxik"
+   ],
+   "genus_options": [
+    "Mind",
+    "Lionfish",
+    "Venomous"
+   ],
+   "true_genus": "Ostrich Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Tinkatink",
+   "canon": [
+    "tinker",
+    "pink",
+    "tink"
+   ],
+   "text": "This Pokémon pounds iron scraps together to make a hammer. It will remake the hammer again and again until it's satisfied with the result.",
+   "basis": [
+    "Hammer",
+    "Blacksmith"
+   ],
+   "basis_words": [
+    "hammer",
+    "hammering",
+    "blacksmith"
+   ],
+   "concepts": [
+    "ferrum",
+    "malleus",
+    "chrysos",
+    "karat",
+    "malleabilis",
+    "fulmen",
+    "celtus",
+    "percussio"
+   ],
+   "genus_options": [
+    "Hammer",
+    "Blacksmith",
+    "Forger"
+   ],
+   "true_genus": "Metalsmith Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Tinkatuff",
+   "canon": [
+    "tinker",
+    "tough"
+   ],
+   "text": "This Pokémon will attack groups of dark/steel sharp blade pokémon and dark/steel sword blade pokémon, gathering metal from them in order to create a large and sturdy hammer.",
+   "basis": [
+    "Wolverine",
+    "Badger"
+   ],
+   "basis_words": [
+    "wolverine",
+    "badger"
+   ],
+   "concepts": [
+    "metal",
+    "terrestrial",
+    "mustelid",
+    "hammer",
+    "wolverine",
+    "badger",
+    "mass",
+    "strong",
+    "basal",
+    "predator",
+    "enclosure",
+    "metallic",
+    "terracotta",
+    "claw",
+    "hide",
+    "steel"
+   ],
+   "genus_options": [
+    "Hammer",
+    "Metal Eater",
+    "Iron Claw"
+   ],
+   "true_genus": "Hammer Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Tinkaton",
+   "canon": [
+    "tinker",
+    "ton",
+    "gigaton"
+   ],
+   "text": "This intelligent Pokémon has a very daring disposition. It knocks rocks into the sky with its hammer, aiming for flying flying/steel raven pokémon.",
+   "basis": [
+    "Raven",
+    "Rock wren"
+   ],
+   "basis_words": [
+    "raven",
+    "wren",
+    "rock"
+   ],
+   "concepts": [
+    "aerius",
+    "crepus",
+    "lithos",
+    "mimus",
+    "aeropex",
+    "caelum",
+    "fulmen",
+    "velox"
+   ],
+   "genus_options": [
+    "Raven",
+    "Hammer",
+    "Rock Wren"
+   ],
+   "true_genus": "Hammer Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Orthworm",
+   "canon": [
+    "ore",
+    "ortho",
+    "orthoclase"
+   ],
+   "text": "When attacked, this Pokémon will wield the tendrils on its body like fists and pelt the opponent with a storm of punches.",
+   "basis": [
+    "Brittle star"
+   ],
+   "basis_words": [
+    "star",
+    "brittle"
+   ],
+   "concepts": [
+    "pugil",
+    "fist",
+    "whip",
+    "star",
+    "lash",
+    "punch",
+    "brittle",
+    "fistful"
+   ],
+   "genus_options": [
+    "Star",
+    "Brittle",
+    "Fist"
+   ],
+   "true_genus": "Earthworm Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Cetoddle",
+   "canon": [
+    "cetacean",
+    "cetus",
+    "toddle"
+   ],
+   "text": "This species left the ocean and began living on land a very long time ago. It seems to be closely related to water ball whale pokémon.",
+   "basis": [
+    "That"
+   ],
+   "basis_words": [
+    "word",
+    "used",
+    "english",
+    "language"
+   ],
+   "concepts": [
+    "whale",
+    "land",
+    "old",
+    "that",
+    "while",
+    "only",
+    "rare"
+   ],
+   "genus_options": [
+    "Ancient",
+    "Whale",
+    "Tides"
+   ],
+   "true_genus": "Terra Whale Pokémon",
+   "hit_offline": true,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": true
+  },
+  {
+   "name": "Cetitan",
+   "canon": [
+    "cetacean",
+    "cetus",
+    "titan"
+   ],
+   "text": "This Pokémon wanders around snowy, icy areas. It protects its body with powerful muscles and a thick layer of fat under its skin.",
+   "basis": [
+    "Polar bear",
+    "Arctic ground squirrel"
+   ],
+   "basis_words": [
+    "bear",
+    "polar",
+    "squirrel",
+    "arctic",
+    "ground"
+   ],
+   "concepts": [
+    "glaci",
+    "ursus",
+    "cryo",
+    "adipo",
+    "hibern",
+    "svalbi",
+    "camou",
+    "torpe"
+   ],
+   "genus_options": [
+    "Polar",
+    "Hibernator",
+    "Blubber"
+   ],
+   "true_genus": "Terra Whale Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Farigiraf",
+   "canon": [
+    "girafarig"
+   ],
+   "text": "Now that the brain waves from the head and tail are synced up, the psychic power of this Pokémon is 10 times stronger than its pre-evolution's.",
+   "basis": [
+    "Electric eel",
+    "Electric ray"
+   ],
+   "basis_words": [
+    "electric"
+   ],
+   "concepts": [
+    "volt",
+    "electric",
+    "ray",
+    "discharge",
+    "shock",
+    "stun",
+    "bio",
+    "power"
+   ],
+   "genus_options": [
+    "Electric",
+    "Ray",
+    "Torpedo"
+   ],
+   "true_genus": "Long Neck Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Dudunsparce",
+   "canon": [
+    "redundant",
+    "double",
+    "dud"
+   ],
+   "text": "This Pokémon uses its hard tail to make its nest by boring holes into bedrock deep underground. The nest can reach lengths of over six miles.",
+   "basis": [
+    "Groundhog",
+    "Prairie dog"
+   ],
+   "basis_words": [
+    "prairie",
+    "groundhog"
+   ],
+   "concepts": [
+    "tunnel",
+    "burrow",
+    "prairie",
+    "rodent",
+    "digger",
+    "subterranean",
+    "longevus",
+    "vocal"
+   ],
+   "genus_options": [
+    "Burrower",
+    "Groundhog",
+    "Tunnel"
+   ],
+   "true_genus": "Land Snake Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Koraidon",
+   "canon": [
+    "korai",
+    "kodai",
+    "raido"
+   ],
+   "text": "This Pokémon resembles dragon/normal mount pokémon, but it is far burlier and more ferocious. Nothing is known about its ecology or other features.",
+   "basis": [
+    "Dragon",
+    "Rhinoceros"
+   ],
+   "basis_words": [
+    "dragon",
+    "rhinoceros"
+   ],
+   "concepts": [
+    "bulwark",
+    "dinosaur",
+    "ferrox",
+    "rhinoceros",
+    "carnifex",
+    "extinct",
+    "pliocene",
+    "fossil"
+   ],
+   "genus_options": [
+    "Dragon",
+    "Beast",
+    "Rhinoceros"
+   ],
+   "true_genus": "Paradox Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Miraidon",
+   "canon": [
+    "mirai",
+    "raido",
+    "dragon"
+   ],
+   "text": "This seems to be the Iron Serpent mentioned in an old book. The Iron Serpent is said to have turned the land to ash with its lightning.",
+   "basis": [
+    "Dragon",
+    "Basilisk"
+   ],
+   "basis_words": [
+    "dragon",
+    "basilisk"
+   ],
+   "concepts": [
+    "electrum",
+    "serpent",
+    "pyropex",
+    "vritra",
+    "drakon",
+    "aerius",
+    "venator",
+    "ignis"
+   ],
+   "genus_options": [
+    "Storm",
+    "Serpent",
+    "Dragon"
+   ],
+   "true_genus": "Paradox Pokémon",
+   "hit_offline": true,
+   "hit_basis": true,
+   "hit_inspired": true,
+   "hit_inspired_facts": true,
+   "hit_all": true
+  },
+  {
+   "name": "Poltchageist",
+   "canon": [
+    "poltergeist",
+    "matcha"
+   ],
+   "text": "this Pokémon looks like a regional form of ghost black tea pokémon, but it was recently discovered that the two Pokémon are entirely unrelated.",
+   "basis": [],
+   "basis_words": [],
+   "concepts": [],
+   "genus_options": [],
+   "true_genus": "Matcha Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Sinistcha",
+   "canon": [
+    "sinister",
+    "matcha"
+   ],
+   "text": "It prefers cool, dark places, such as the back of a shelf or the space beneath a home's floorboards. It wanders in search of prey after sunset.",
+   "basis": [
+    "Silverfish",
+    "Centipede"
+   ],
+   "basis_words": [
+    "silverfish",
+    "centipede"
+   ],
+   "concepts": [
+    "tenebrous",
+    "noctivagant",
+    "moltus",
+    "arthropod",
+    "myriapod",
+    "sensory",
+    "humidus",
+    "nocturnus"
+   ],
+   "genus_options": [
+    "Dark",
+    "Moulder",
+    "Centipede"
+   ],
+   "true_genus": "Matcha Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  },
+  {
+   "name": "Munkidori",
+   "canon": [
+    "monkey",
+    "hunky dory"
+   ],
+   "text": "The chain is made from toxins that enhance capabilities. It stimulated this Pokémon's brain and caused the Pokémon's psychic powers to bloom.",
+   "basis": [
+    "Venomous snake",
+    "Poison dart frog"
+   ],
+   "basis_words": [
+    "snake",
+    "snakes",
+    "frog",
+    "poison",
+    "dart",
+    "frogs"
+   ],
+   "concepts": [
+    "toxin",
+    "murine",
+    "epibatidine",
+    "dendro",
+    "neuro",
+    "toxic",
+    "veno"
+   ],
+   "genus_options": [
+    "Venom",
+    "Dart",
+    "Toxin"
+   ],
+   "true_genus": "Retainer Pokémon",
+   "hit_offline": false,
+   "hit_basis": false,
+   "hit_inspired": false,
+   "hit_inspired_facts": false,
+   "hit_all": false
+  }
+ ]
+}

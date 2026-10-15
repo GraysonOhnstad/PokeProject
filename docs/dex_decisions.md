@@ -169,3 +169,6 @@ Signature = held by at most 2 evolution families, counting every form and every 
 
 **D45. Name filter in two tiers.** *kept (your ruling: filtered by default, user may disable)*
 Always on, with no setting: slurs, hate terms, sexual violence. On by default, user can turn off (`--unfiltered-names`; an app toggle later): sexual and profane words. Both match anywhere inside a name, so hidden words (pen + island) are caught. Name ideas always use both tiers, so turning the filter off never steers names toward crude ideas; it only stops rejecting accidental ones. Bug fixed with this: T5's blends had joined the candidate pool without the filter.
+
+**D46. 30% of name idea pairs ignore the basis and use the offline pools.** *kept*
+Held-out evaluation (`reports/dex_inspire_eval.md`, 172 real Pokédex texts): a canon source word of the real name was among the offline ideas 25% of the time, among the inspired ideas 18%, and among both together 32%. A verified basis was found for 92% of texts. Real Pokédex texts often describe something other than the design's basis (Metapod's text reads as a tortoise or armadillo), so this measures coherence with canon only roughly; there was no sign of the model recognizing real Pokémon. Made-up descriptions written to evoke a creature are the case inspiration is built for.
