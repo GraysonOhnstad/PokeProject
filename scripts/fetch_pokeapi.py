@@ -46,6 +46,11 @@ CSV_TABLES = [
     # later project: Pokedex-entry generation
     "pokemon_species_flavor_text", "pokemon_abilities", "abilities",
     "pokemon_moves", "moves",
+    # Dex generator: per-game pairing, past data, lookups
+    "versions", "pokemon_stats_past", "pokemon_abilities_past",
+    "pokemon_form_flavor_text", "pokemon_move_methods", "move_names",
+    "ability_names", "evolution_triggers", "items", "item_names",
+    "growth_rates", "genders", "type_names", "pokemon_form_names",
 ]
 
 NUMERIC_FILE = re.compile(r"^\d+\.(png|svg|gif|webp)$")
