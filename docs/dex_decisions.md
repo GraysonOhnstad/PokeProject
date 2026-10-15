@@ -130,3 +130,15 @@ Four pools, sampled with these weights: associations of the text's key words (35
 - Only nouns and descriptive adjectives qualify (WordNet's most common sense), which drops "slowly", "newly", "hesitated". A blocklist keeps inappropriate words out of ideas and names.
 - Each candidate tries 3 idea pairs × 8 T5 blends and keeps the name that visibly contains a piece (≥ 3 letters) of both ideas, is a blend rather than two words glued together, and is 6–10 letters.
 Examples (`reports/dex_samples.md`): Ratele (rat + electrical), Dusmanor (dusk + manor), Wanderlamp (wandering + lamps), Fitturnal (warmth + nocturnal). T5-small's blending is now the limit; a larger T5 on the desktop is the next step.
+
+**D36. Names are blended by a rule-based splicer and ranked by a name-likeness scorer; T5's blends join the candidate pool.** *open*
+The splicer joins a prefix of one idea to a suffix of the other (both orders), merging shared letters at the seam (chandelier + lure → Chandelure) and preferring syllable edges, plus Pokémon-style respellings (c → k, ck → k). The scorer is two character 4-gram models, one trained on real Pokémon names and one on English words, plus bonuses for keeping ≥ 3 recognizable letters of each idea, the seam, and 6–10 letters, and a penalty for gluing two whole words. Held-out evaluation (`reports/dex_names.md`, 758 species, the scorer never saw their names): the real name is producible 46% of the time, ranked first 11.5% (Flan-T5 alone: 6.8%) and in the top 5 27%. T5's letter-level similarity is slightly higher (0.71 vs 0.66), and adding its blends to the pool didn't change the exact-match rate. Examples: Arcturnal, Chandelure, Beartic, Sandshrew rebuilt exactly from their source words; generated: Torchaunt, Electrat, Flucturnal, Lamight.
+
+**D37. A learned ranker (logistic regression on the same features) was tried and rejected.** *open*
+Trained to rank real names above other splices, it put the real name first only 7.1% of the time (hand-weighted: 11.5%); it learned to favor short candidates. The code stays in `poketype/dex_names.py` for reference.
+
+**D38. The blocklist matches inside words and accepts over-blocking.** *open*
+"raping" appeared as a splice candidate ("Staraptor ← starling, raptor"). Blocked words of 4+ letters now match anywhere in a candidate, which also rejects harmless names containing them (e.g. anything with "grape" or "scrape"). For a generator whose output is shown to people, losing a few harmless names is the better failure. The same check filters name ideas.
+
+**D39. Generated names must not be in WordNet either; name ideas exclude inflected verbs and pairs that share 5+ letters.** *open*
+The encoder's 30k-word list missed "haunches", "fluffing" and "ration". Ideas like "wandering" and "sinking" made half the names end in "-ing"; "twilight" + "lighting" produced "Lighlight".

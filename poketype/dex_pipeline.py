@@ -22,6 +22,7 @@ import torch.nn.functional as F
 from poketype.dex import DEX, STATS, natural
 from poketype.dex_learnset import MoveSetModel, bias_for, cond_vector, sample_learnsets
 from poketype.dex_models import AbilityModel, Heads
+from poketype.dex_names import NameScorer, blocked, rank
 from poketype.dex_stats import SCALE, StatModel
 from poketype.dex_text import Masker, clean_text, species_token
 from poketype.labels import TYPES
@@ -58,7 +59,9 @@ def nameworthy(word):
     """Names are built from nouns and descriptive adjectives: the word's most common sense must
     be one (WordNet), so adverbs and verbs ("slowly", "hesitated") are left out. Blocked words
     never qualify."""
-    if word in BLOCKED:
+    if blocked(word):
+        return False
+    if word.endswith(("ing", "ed")) and base_form(word) != word:  # "wandering", but not "king", "seed"
         return False
     s = wordnet().synsets(word)
     return bool(s) and s[0].pos() in "nas"
@@ -87,12 +90,6 @@ def shared_piece(name, word):
     return difflib.SequenceMatcher(None, a, b).find_longest_match(0, len(a), 0, len(b)).size
 
 
-# Words that must never become name ideas or appear inside a generated name.
-BLOCKED = set("""sex sexy sexual orgasm porn porno nude naked erotic fetish rape rapist slut whore
-penis vagina anus anal boob boobs nipple dick cock cunt fuck shit bitch bastard nazi hitler
-racist nigger negro faggot retard kill suicide genocide""".split())
-
-
 def base_form(w):
     """Dictionary base form for comparing words ("shot" and "shoots" -> "shoot")."""
     wn = wordnet()
@@ -108,6 +105,7 @@ def same_root(a, b):
     if difflib.SequenceMatcher(None, a, b).ratio() >= 0.8:  # shots / shoots
         return True
     return " " not in a + b and base_form(a) == base_form(b)
+
 
 TYPE_WORDS = set(TYPES) | {"pokémon", "pokemon", "self", "evolution"}
 NAME_OK = re.compile(r"^[A-Z][a-zé'\-]*[a-zé]$")  # one capitalized word, like Farfetch'd or Porygon-Z
@@ -209,6 +207,7 @@ class DexGenerator:
             vecs = self.embed_many(words)
             np.savez(cache, words=np.array(words), vecs=vecs.astype(np.float16))
         self.words, self.word_vecs = words, vecs
+        self.name_scorer = NameScorer(species["name"][allowed], words)
 
     # ---- text -------------------------------------------------------------------------------
     @torch.no_grad()
@@ -431,7 +430,8 @@ class DexGenerator:
             return None
         w = np.array(w) / sum(w)
         a = items[rng.choice(len(items), p=w)]
-        rest = [(i, x) for i, x in enumerate(items) if x[1] != a[1] and not same_root(x[0], a[0])]
+        rest = [(i, x) for i, x in enumerate(items) if x[1] != a[1] and not same_root(x[0], a[0])
+                and shared_piece(x[0], a[0]) < 5]  # twilight + lighting share too much to blend
         if not rest:
             return a[0]
         rw = np.array([w[i] for i, _ in rest])
@@ -454,21 +454,17 @@ class DexGenerator:
             best = None
             for w, ns in zip(pairs[i * PAIRS:(i + 1) * PAIRS], names[i * PAIRS:(i + 1) * PAIRS]):
                 parts = [s.strip().lower() for s in w.split(",")]
-                for x in (x.strip() for x in ns):
-                    if not (NAME_OK.match(x) and 3 <= len(x) <= MAX_NAME and x.lower() not in self.existing
-                            and x.lower() not in parts and x.lower() not in self.real_words and not self.too_close(x)
-                            and x.lower() not in {p.replace(" ", "") for p in parts}
-                            and not any(b in x.lower() for b in BLOCKED if len(b) >= 4)):
-                        continue
-                    pieces = [min(shared_piece(x, p), 5) for p in parts]
-                    low = x.lower()
-                    glued = any(len(p) >= 6 and p.replace(" ", "") in low for p in parts)
-                    score = (min(pieces) >= 3,          # visibly built from both ideas
-                             not glued,                  # a blend, not two words glued together
-                             6 <= len(x) <= 10,
-                             sum(pieces), -abs(len(x) - 8))
-                    if best is None or score > best[0]:
-                        best = (score, x, w)
+                if len(parts) < 2:
+                    continue
+                # splices of the two ideas plus T5's blends, ranked by name-likeness, recognizable
+                # pieces of both ideas, seam and length (poketype/dex_names.py)
+                for x, score in rank(parts[0], parts[1], self.name_scorer, extra=[x.strip() for x in ns]):
+                    if (NAME_OK.match(x) and 3 <= len(x) <= MAX_NAME and x.lower() not in self.existing
+                            and x.lower() not in self.real_words and not wordnet().synsets(x.lower())
+                            and not self.too_close(x)):
+                        if best is None or score > best[0]:
+                            best = (score, x, w)
+                        break
             c["genus"] = g
             c["name"], c["concepts"] = (best[1], best[2]) if best else (None, pairs[i * PAIRS])
 
