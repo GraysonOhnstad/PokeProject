@@ -82,3 +82,37 @@ def same_root(a, b):
     if difflib.SequenceMatcher(None, a, b).ratio() >= 0.8:  # shots / shoots
         return True
     return " " not in a + b and base_form(a) == base_form(b)
+
+
+# Established combining forms for concepts Pokemon names often carry (Electrode, Hydreigon, Pyroar,
+# Cryogonal, Terrakion, Aerodactyl, Lumineon, Noctowl, Toxapex, Ferroseed): a word whose base form or
+# start matches a key also yields its forms, so a blend can pivot on the familiar prefix (electrodent).
+COMBINING = {
+    "electr": ["electro"], "shock": ["electro"], "spark": ["electro"], "thunder": ["electro"], "volt": ["volt"],
+    "water": ["aqua", "hydro"], "aqua": ["aqua"], "hydr": ["hydro"], "sea": ["mari", "thalasso"],
+    "ocean": ["mari"], "fire": ["pyro", "igni"], "flame": ["pyro", "flam"], "pyr": ["pyro"], "burn": ["pyro"],
+    "ice": ["cryo", "glacio"], "cold": ["cryo"], "frost": ["cryo"], "snow": ["nivi"], "freez": ["cryo"],
+    "earth": ["terra", "geo"], "ground": ["terra", "geo"], "soil": ["terra"], "stone": ["litho", "petro"],
+    "rock": ["litho", "petro"], "air": ["aero"], "wind": ["aero", "anemo"], "sky": ["aero", "celest"],
+    "flight": ["aero"], "light": ["lumi", "photo"], "lumin": ["lumi"], "sun": ["helio", "sol"],
+    "star": ["astro", "stell"], "moon": ["luna", "seleno"], "night": ["noct"], "dark": ["noct", "umbra"],
+    "shadow": ["umbra", "skia"], "time": ["chrono"], "poison": ["toxi", "toxo"], "venom": ["toxi"],
+    "toxic": ["toxi"], "mind": ["psycho", "psy"], "psych": ["psycho", "psy"], "dream": ["oneiro"],
+    "iron": ["ferro"], "metal": ["metallo"], "steel": ["ferro"], "life": ["bio"], "plant": ["phyto"],
+    "leaf": ["phyllo", "folio"], "flower": ["antho", "flora"], "tree": ["dendro"], "wood": ["xylo"],
+    "sound": ["sono", "phono"], "music": ["melo"], "dragon": ["draco"], "ghost": ["spectro", "phantasm"],
+    "spirit": ["spectro"], "fairy": ["fae"], "fight": ["pugil"], "punch": ["pugil"], "fast": ["tachy"],
+    "speed": ["tachy"], "giant": ["giga", "mega"], "huge": ["mega", "giga"], "small": ["micro", "mini"],
+    "tiny": ["micro", "mini"], "ancient": ["paleo", "archeo"], "fossil": ["paleo"], "insect": ["entomo"],
+    "bug": ["entomo"], "bird": ["ornitho", "avi"], "fish": ["ichthyo", "pisci"], "snake": ["ophio", "serpen"],
+}
+
+
+def combining_forms(word):
+    """Combining forms for a word: by its base form or its start ("electricity" -> electro)."""
+    w, out = word.lower(), []
+    b = base_form(w)
+    for key, forms in COMBINING.items():
+        if b == key or w.startswith(key):
+            out += [f for f in forms if f != w]
+    return list(dict.fromkeys(out))

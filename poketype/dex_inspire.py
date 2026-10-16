@@ -34,7 +34,7 @@ import unicodedata
 from pathlib import Path
 
 from poketype.dex_wiki import Wiki
-from poketype.dex_words import STOPWORDS, base_form, wordnet
+from poketype.dex_words import STOPWORDS, base_form, combining_forms, wordnet
 
 CACHE = Path(__file__).resolve().parent.parent / "data" / "dex" / "llm_cache"
 FILLER = set("""that this with from into than they their them will have been were what when which species
@@ -193,7 +193,9 @@ class Inspiration:
         forms = self._chat(WORDS_SYSTEM, [], prompt, max_tokens=160, as_json=True)
         for k, h in halves.items():
             more = [w.lower() for w in forms.get(k, []) if isinstance(w, str) and re.fullmatch(r"[A-Za-z]{3,14}", w)]
-            h["words"] = list(dict.fromkeys(h["own"] + more))[:8]
+            words = list(dict.fromkeys(h["own"] + more))[:8]
+            # established combining forms ride along (electricity -> electro), so blends can pivot on them
+            h["words"] = list(dict.fromkeys(words + [f for w in words for f in combining_forms(w)]))[:12]
         short = "\n".join(line for line in prompt.split("\n") if not line.startswith("- "))
         genus = [g.title() for g in self._split(self._chat(GENUS_SYSTEM, GENUS_SHOTS, short, max_tokens=30))
                  if re.fullmatch(r"[A-Za-z]+( [A-Za-z]+)?", g) and not POKEMON_WORDS.search(g)]

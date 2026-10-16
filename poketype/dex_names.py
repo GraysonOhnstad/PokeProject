@@ -89,11 +89,11 @@ def splice(a, b, min_len=4, max_len=12, soft=True):
         cuts, starts = _boundaries(x), _starts(y)
         for i in range(2, len(x) + 1):          # keep x[:i]
             for j in range(0, len(y) - 1):      # keep y[j:]
-                # shared run at the seam: x[:i] ends with what y[j:] begins with
-                k = 0
-                while k < min(i, len(y) - j) - 1 and x[i - k - 1:i] == y[j:j + k + 1]:
-                    k += 1
-                cand = x[:i] + y[j + k:] if k else x[:i] + y[j:]
+                # longest shared run at the seam: x[:i] ends with what y[j:] begins with, kept once
+                # (electR O + R Odent -> electrodent pivots on "ro"); every length is checked, since a
+                # two-letter pivot need not start with a one-letter match
+                k = max((n for n in range(1, min(i, len(y) - j)) if x[i - n:i] == y[j:j + n]), default=0)
+                cand = x[:i] + y[j + k:]
                 if not (min_len <= len(cand) <= max_len) or cand in (x, y):
                     continue
                 kept_x, kept_y = i / len(x), (len(y) - j) / len(y)
@@ -181,11 +181,14 @@ def rank(a, b, scorer, extra=(), top=None, soft=True):
     scored = []
     for c, (overlap, syllable, ka, kb) in cands.items():
         r = [min(recognizable(c, w), 5) for w in words]
+        kept = min(min(recognizable(c, w) / len(w), 1.0) for w in words if w)  # how whole both words stay
+        glued = all(w in c for w in words) and len(c) == sum(map(len, words))  # concatenated, no pivot
         s = (scorer(c)
              + 0.25 * (min(r) >= 3) + 0.05 * sum(r)
-             + 0.15 * min(overlap, 2) + 0.15 * syllable
+             + 0.2 * min(overlap, 3) + 0.15 * syllable      # pivots on shared letters (electro|rodent)
+             + 0.4 * kept * (overlap > 0)                     # ... that keep both words nearly whole
              + 0.2 * (6 <= len(c) <= 10)
-             - 0.3 * any(len(w) >= 6 and w in c for w in words))   # two words glued, not blended
+             - 0.3 * glued)
         scored.append((c.capitalize(), s))
     scored.sort(key=lambda t: -t[1])
     return scored[:top] if top else scored

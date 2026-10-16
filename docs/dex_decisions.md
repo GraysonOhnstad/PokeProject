@@ -197,3 +197,9 @@ Known weakness: the 8B model's pun judgments are lenient (it endorsed Ghoisp ~ "
 
 **D53. Names are generated only for the chosen entry (8 idea pairs, both modes), not for all 8 candidates.** *open*
 Naming became the slowest step; the candidate picker never needed names. Speed on the laptop CPU: ~40–60 s per entry with the model, mostly model calls (cached after the first time); on a gaming GPU this should be a few seconds.
+
+**D54. Pivot portmanteaus: the splicer finds the longest shared seam, and ranking rewards blends that pivot on shared letters and keep both words nearly whole.** *open* (after your Electrodent note)
+Bug fixed: the seam check grew one letter at a time and stopped at the first mismatch, so a two-letter pivot (electR O + R Odent) was never found. The "glued" penalty now applies only to plain concatenation with no shared letters; before, it also hit pivots, which contain both words whole by design. Canon held-out names (`reports/dex_names.md`): real name ranked first 11.5% → 14.5%, top 5 26.8% → 29.3%. Examples: electro + rodent → Electrodent, hydro + otter → Hydrotter.
+
+**D55. Established combining forms join each half's ingredients** (electricity → electro, water → aqua/hydro, fire → pyro, ice → cryo, night → noct, ...; a curated table in `poketype/dex_words.py`). *open*
+So a name can pivot on the familiar prefix rather than a raw cut of the word ("Electrident").
