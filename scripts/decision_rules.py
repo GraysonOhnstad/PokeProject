@@ -14,11 +14,15 @@ the time; this script puts the ensemble under the same rule.
 Added after the one-time test (2026-10-16) to explain the exact-match comparison; it changes no
 model and is reported as a secondary, post-hoc analysis.
 
-    py scripts/decision_rules.py
+    py scripts/decision_rules.py           # compare the rules
+    py scripts/decision_rules.py --apply   # also make the exact-match rule the bundle's default
 
-Writes reports/decision_rules.md and results/decision_rules.json.
+Writes reports/decision_rules.md and results/decision_rules.json. With --apply, runs/r3/final_model.pt
+gets threshold = the exact-match tau (the default display), threshold_f1 = the F1 tau (the app's
+behind-the-scenes view) and decision_rules = both rules' test metrics with 95% bootstrap intervals.
 """
 
+import argparse
 import json
 import sys
 from pathlib import Path
@@ -31,7 +35,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 from calibrate3 import loader  # noqa: E402
-from evaluate3 import test_sets  # noqa: E402
+from evaluate3 import bootstrap, test_sets  # noqa: E402
 from poketype.data import load_manifest, targets  # noqa: E402
 from poketype.folds import load_folds  # noqa: E402
 from poketype.inference import Predictor  # noqa: E402
@@ -94,8 +98,12 @@ def score(y, pred):
 
 
 def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--apply", action="store_true", help="make the exact-match rule the bundle's default")
+    args = ap.parse_args()
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    pred = Predictor(torch.load(RUNS / "final_model.pt", map_location="cpu"), device)
+    bundle = torch.load(RUNS / "final_model.pt", map_location="cpu")
+    pred = Predictor(bundle, device)
     membership = pred.models[0].membership.cpu()
     m = load_manifest()
 
@@ -116,6 +124,13 @@ def main():
     for name in val_rules:
         out["rules"][name] = {"val": score(y_val, val_rules[name]), "test": score(y_test, test_rules[name])}
     out["test_check"] = evaluate(y_test, marg_test, tau_f1)  # must match reports/eval_round3.md
+    summary = {}
+    for rule, tau in (("exact", tau_exact), ("f1", tau_f1)):
+        ev = evaluate(y_test, marg_test, tau)
+        summary[rule] = {"threshold": tau, "exact": ev["exact_match"], "f1": ev["sample_f1"],
+                         "top1": ev["top1_in_types"], "mAP": ev["mAP"], "predicts_dual": ev["dual_predicted"],
+                         "ci": bootstrap(y_test, marg_test, tau)}
+    out["test_summary"] = summary
     (ROOT / "results" / "decision_rules.json").write_text(json.dumps(out, indent=1))
 
     labels = {"f1_threshold": f"2nd type if p ≥ {tau_f1:.2f} (tuned for F1; reported rule)",
@@ -134,8 +149,17 @@ def main():
               "predicting one type 100% of the time; 49% of the test Pokémon have two types.",
               f"Check: the reported rule reproduces the evaluation's test numbers (exact "
               f"{out['test_check']['exact_match']:.3f}, F1 {out['test_check']['sample_f1']:.3f})."]
+    ci = summary["exact"]["ci"]
+    lines += ["", f"Exact-match rule on the test set, 95% bootstrap intervals: exact {summary['exact']['exact']:.1%} "
+              f"[{ci['exact'][0]:.1%}, {ci['exact'][1]:.1%}], F1 {summary['exact']['f1']:.3f} "
+              f"[{ci['f1'][0]:.3f}, {ci['f1'][1]:.3f}]; top type and mAP do not depend on the rule."]
     (ROOT / "reports" / "decision_rules.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print("\n".join(lines))
+    if args.apply:
+        bundle["threshold"], bundle["threshold_f1"] = tau_exact, tau_f1
+        bundle["decision_rules"] = {"default": "exact", **summary}
+        torch.save(bundle, RUNS / "final_model.pt")
+        print(f"final_model.pt: default threshold {tau_exact:.2f} (exact match), behind-the-scenes {tau_f1:.2f} (F1)")
 
 
 if __name__ == "__main__":

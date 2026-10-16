@@ -42,6 +42,10 @@ class Predictor:
             self.models = [model.to(self.device).eval()]
         self.temperature = float(ckpt.get("temperature", 1.0))
         self.threshold = float(ckpt["threshold"])
+        # optional second rule (F1-tuned threshold) and both rules' test metrics, for the app's details view
+        self.threshold_f1 = ckpt.get("threshold_f1")
+        self.decision_rules = ckpt.get("decision_rules")
+        self.has_attention = (ckpt.get("model_cfg") or {}).get("pool") == "attn"
         self.size = int(ckpt.get("size", SIZE))  # preprocessing resolution the model was trained on
         self.input_size = ckpt.get("input_size")
         self.mean, self.std = ckpt["mean"], ckpt["std"]
@@ -97,5 +101,9 @@ class Predictor:
         seconds = time.perf_counter() - start
         types = [TYPES[i] for i in np.argsort(-p) if pred[i]]
         maps = None if attention is None else {t: attention[TYPES.index(t)] for t in types}
-        return {"types": types, "confidences": dict(zip(TYPES, p.tolist())),
+        types_f1 = None
+        if self.threshold_f1 is not None:  # the same probabilities under the F1-tuned rule
+            alt = decode(p[None], float(self.threshold_f1))[0]
+            types_f1 = [TYPES[i] for i in np.argsort(-p) if alt[i]]
+        return {"types": types, "types_f1": types_f1, "confidences": dict(zip(TYPES, p.tolist())),
                 "seconds": seconds, "processed": processed, "attention": maps}

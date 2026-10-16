@@ -42,9 +42,28 @@ def attention_overlay(processed, amap):
     return Image.fromarray((img * (1 - 0.65 * a) + heat * 0.65 * a).astype(np.uint8))
 
 
+def rules_table():
+    """Both decision rules' test-set scores (Gen 5 Black/White sprites), from the model bundle."""
+    rules = predictor.decision_rules
+    if not rules:
+        return ""
+    rows = ["| Rule | Second type if ≥ | Both types right | Per-image F1 | Names two types |", "|---|---:|---:|---:|---:|"]
+    for key, label in (("exact", "Exact match (shown above)"), ("f1", "F1")):
+        r = rules[key]
+        rows.append(f"| {label} | {r['threshold']:.2f} | {r['exact']:.1%} | {r['f1']:.3f} | {r['predicts_dual']:.0%} |")
+    return "\n".join(rows)
+
+
+DETAILS_INTRO = """Both rules use the same calibrated probabilities. The model always names its top type;
+the rule decides when to add the runner-up. The **exact-match rule** (shown above) adds it only when
+it is fairly likely, which gets the most Pokémon completely right. The **F1 rule** adds it at a much
+lower bar, which earns more partial credit per image but gets fewer Pokémon completely right.
+Test-set scores on the Gen 5 Black/White sprites:"""
+
+
 def classify(image, key=""):
     if image is None:
-        return None, "Upload an image or pick one below.", None, None
+        return None, "Upload an image or pick one below.", None, None, ""
     out = predictor.predict(image)
     lines = [f"### Predicted: {type_badges(out['types'])}",
              f"**Inference time:** {out['seconds']:.3f} s (preprocessing + model, CPU)"]
@@ -57,7 +76,12 @@ def classify(image, key=""):
         top = out["types"][0]
         looked = attention_overlay(out["processed"], out["attention"][top])
         lines.append(f"*The orange overlay shows where it found evidence for {top.title()}.*")
-    return out["confidences"], "\n\n".join(lines), out["processed"], looked
+    details = ""
+    if out["types_f1"]:
+        details = f"**Under the F1 rule:** {type_badges(out['types_f1'])}"
+        if ex:
+            details += " — " + ("correct" if set(out["types_f1"]) == set(ex["types"]) else "not quite")
+    return out["confidences"], "\n\n".join(lines), out["processed"], looked, details
 
 
 with gr.Blocks(title="Pokémon Type Classifier") as demo:
@@ -72,8 +96,13 @@ with gr.Blocks(title="Pokémon Type Classifier") as demo:
             confidences = gr.Label(num_top_classes=5, label="Confidence per type")
             with gr.Row():
                 processed = gr.Image(label="What the model sees", interactive=False, height=160)
-                looked = gr.Image(label="Where it looked (top type)", interactive=False, height=160)
-    outputs = [confidences, summary, processed, looked]
+                looked = gr.Image(label="Where it looked (top type)", interactive=False, height=160,
+                                  visible=predictor.has_attention)
+            with gr.Accordion("Behind the scenes: decision rules", open=False,
+                              visible=predictor.threshold_f1 is not None):
+                details = gr.Markdown()
+                gr.Markdown(DETAILS_INTRO + "\n\n" + rules_table())
+    outputs = [confidences, summary, processed, looked, details]
 
     for group, title in [("gen5_sprites", "Gen 5 sprites (never seen in training)"),
                          ("gen5_other_art", "The same new Pokémon in other art styles")]:
@@ -85,7 +114,7 @@ with gr.Blocks(title="Pokémon Type Classifier") as demo:
 
     image.upload(lambda im: (*classify(im), ""), inputs=image, outputs=[*outputs, key], api_name="upload")
     button.click(classify, inputs=[image, key], outputs=outputs, api_name="predict")
-    image.clear(lambda: (None, "", None, None, ""), outputs=[*outputs, key], api_name="clear")
+    image.clear(lambda: (None, "", None, None, "", ""), outputs=[*outputs, key], api_name="clear")
 
 if __name__ == "__main__":
     # --share: Gradio prints a temporary public link (the course deployment: code on GitHub + share link)

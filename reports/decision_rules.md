@@ -11,3 +11,5 @@ Same final ensemble and predictions under four ways of turning probabilities int
 
 For reference, the color histogram under the baselines' protocol: test exact 20.5%, predicting one type 100% of the time; 49% of the test Pokémon have two types.
 Check: the reported rule reproduces the evaluation's test numbers (exact 0.161, F1 0.445).
+
+Exact-match rule on the test set, 95% bootstrap intervals: exact 28.0% [21.1%, 34.8%], F1 0.444 [0.378, 0.513]; top type and mAP do not depend on the rule.

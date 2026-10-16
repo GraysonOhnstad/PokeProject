@@ -16,10 +16,10 @@ Final model: an ensemble of 5 ConvNeXt-Tiny models (ImageNet-pretrained, one per
 |---|---|---|---|
 | mAP | **0.424** (0.395–0.508) | 0.273 | 0.083 |
 | Top predicted type is a true type | **52.2%** (44.7–60.2%) | 36.0% | 11.8% |
-| Per-image F1 | **0.445** (0.391–0.501) | – | – |
-| Both types exactly right | 16.1% (10.6–22.4%) | 20.5% | 5.0% |
+| Both types exactly right | **28.0%** (21.1–34.8%) | 20.5% | 5.0% |
+| Per-image F1 | **0.444** (0.378–0.513) | – | – |
 
-The decision threshold was tuned for per-image F1, so the model names a second type often (69% of predictions vs 49% of real Pokémon); that maximizes F1 but costs exact-match accuracy, where the color histogram, which rarely guesses two types, scores higher.
+The model always names its top type and adds a second when its calibrated probability is at least 0.39, the threshold that maximizes exact match on validation (the same protocol as the baselines). The pre-registered rule was tuned for per-image F1 instead (threshold 0.18): it scores the same F1 (0.445) but names a second type for 69% of sprites, so only 16.1% are exactly right. The app shows the exact-match rule and the F1 rule's answer in a details panel; the comparison is a post-hoc analysis, [reports/decision_rules.md](reports/decision_rules.md).
 
 Other findings: training with Black/White-style sprites of older Pokémon made no significant difference (all paired-bootstrap CIs include 0); the same Gen 5 Pokémon in other art styles score a little lower (F1 0.395); shiny colors (F1 0.311) and grayscale (0.200) hurt most, so color carries much of the signal. Calibration error on the test set: 0.013. Inference: 193 ms per image on CPU for the whole ensemble.
 

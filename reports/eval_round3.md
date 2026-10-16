@@ -2,6 +2,8 @@
 
 Ensemble of the convnext_tiny cross-validation fold models (`runs/r3/convnext_tiny/9faa97827c`): pool `avg`, head `set`, auxiliary heads on. Calibrated on out-of-fold predictions: T = 1.42, second-type threshold 0.18 (tuned for per-image F1).
 
+> **Note added after the test (2026-10-16):** this report is the one-time evaluation as run, with the pre-registered F1 threshold. The deployed model now uses the exact-match threshold (0.39, tuned on validation like the baselines'): exact match 28.0% [21.1%, 34.8%], F1 0.444; top type and mAP are unchanged. See [decision_rules.md](decision_rules.md).
+
 ## Primary test: Gen 5 Black/White sprites
 
 161 images, species never seen in training in any form.
