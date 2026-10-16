@@ -394,7 +394,10 @@ class DexGenerator:
             wb = np.array([1 / (i + 1) ** 2 for i in range(len(basis))])  # the head noun dominates
             a = basis[rng.choice(len(basis), p=wb / wb.sum())]
             items, w = [], []
-            pools = (("concepts", 0.8), ("facts", 0.2)) if ideas["concepts"] else                 (("facts", 0.3), ("assoc", 0.35), ("canon", 0.35))
+            if ideas["concepts"]:
+                pools = (("concepts", 0.8), ("facts", 0.2))
+            else:
+                pools = (("facts", 0.3), ("assoc", 0.35), ("canon", 0.35))
             for pool, weight in pools:
                 ok = [x for x in ideas[pool] if not same_root(x, a) and shared_piece(x, a) < 5]
                 for x in ok:
@@ -455,6 +458,13 @@ class DexGenerator:
         pun = self._pun(pairs, insp, emb, ok)
         c["names"] = {"wordplay": wordplay, "pun": pun}
         chosen = pun if pun and pun["endorsed"] else wordplay or pun
+        if pun and pun["endorsed"] and wordplay and insp and self.inspiration:
+            # an endorsed pun still has to beat the wordplay name head to head, asked in both orders: small
+            # models lean toward one position, so the pun wins only if it is preferred both times
+            w = (wordplay["name"], wordplay["from"])
+            p = (pun["name"], f'{pun["from"]}, sounds like "{pun["sounds_like"]}"')
+            pun_wins = self.inspiration.prefer(insp, w, p) == 1 and self.inspiration.prefer(insp, p, w) == 0
+            chosen = pun if pun_wins else wordplay
         c["name_mode"] = "pun" if chosen is pun and pun else "wordplay"
         c["name"], c["concepts"] = (chosen["name"], chosen["from"]) if chosen else (None, "")
         c["inspiration"] = self._provenance(insp, c["concepts"], emb) if insp and insp["basis"] else None

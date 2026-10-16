@@ -45,7 +45,9 @@ POKEMON_WORDS = re.compile(r"pok[eé]mon|pikachu|list of", re.I)
 HALVES_SYSTEM = (
     "You read the description of a new fictional creature and identify the two ideas its name should combine:\n"
     "\"is\": what the creature IS (a real animal, plant, object, phenomenon or legend);\n"
-    "\"defines\": what DEFINES it (its most striking trait, behavior, ability, element or theme).\n"
+    "\"defines\": what DEFINES it: the central idea the description is about (its most striking trait, "
+    "behavior, ability, element or theme), often an abstract concept (echolocation, immortality, gliding, "
+    "camouflage); never an object that is only mentioned in passing.\n"
     "For each give \"mention\": the exact words of the description that name it (copied verbatim), or \"\" if "
     "the description never names it; and \"guesses\": up to 3 English Wikipedia article titles for it, most "
     "specific and most likely first. Never name a Pokemon or any other fictional character. Answer in JSON.")
@@ -54,6 +56,10 @@ HALVES_SHOTS = [
      json.dumps({"is": {"mention": "", "guesses": ["Cuttlefish", "Octopus", "Squid"]},
                  "defines": {"mention": "changes the color of its skin",
                              "guesses": ["Chromatophore", "Active camouflage", "Camouflage"]}})),
+    ("It gnaws down trees to build walls across rivers, flooding whole valleys into ponds for its family.",
+     json.dumps({"is": {"mention": "", "guesses": ["Beaver", "North American beaver", "Eurasian beaver"]},
+                 "defines": {"mention": "build walls across rivers",
+                             "guesses": ["Beaver dam", "Ecosystem engineer", "Dam"]}})),
     ("This little mantis shrimp boxes anything that comes near its burrow.",
      json.dumps({"is": {"mention": "mantis shrimp", "guesses": ["Mantis shrimp", "Stomatopoda"]},
                  "defines": {"mention": "boxes", "guesses": ["Boxing", "Punch (combat)", "Cavitation"]}})),
@@ -90,6 +96,12 @@ JUDGE_SYSTEM = (
     "'pack rat'). A bad pun sounds like a phrase unrelated to the creature (a dragonfly 'Winkatcher' ~ 'wing "
     "chair'). Be strict: most candidates are bad. Pick up to 3 good ones, best first, or none. Answer in JSON: "
     "{\"best\": [candidate numbers]}.")
+
+
+PREFER_SYSTEM = (
+    "Two candidate names for a new fictional creature are given, with what each is built from. Which one would "
+    "a fan more likely believe is an official Pokemon name for THIS creature: it should fit the description, be "
+    "easy to say, and its wordplay or pun should land. Answer in JSON: {\"better\": \"A\" or \"B\"}.")
 
 
 class Inspiration:
@@ -134,7 +146,7 @@ class Inspiration:
         return [x for x in items if x and len(x) < 60]
 
     # ---- one half ---------------------------------------------------------------------------
-    def articles(self, titles, text_vec, max_articles=2, min_fit=0.05):
+    def articles(self, titles, text_vec, max_articles=2, min_fit=0.15):
         """Verified articles for title guesses: [(page, guess, fit)] best first. The model's own
         order counts for more than the fit, which only removes clearly unrelated articles."""
         pages = []
@@ -192,7 +204,8 @@ class Inspiration:
             + "".join(f"\n- {s}" for s, _ in h["facts"]) for k, h in halves.items())
         forms = self._chat(WORDS_SYSTEM, [], prompt, max_tokens=160, as_json=True)
         for k, h in halves.items():
-            more = [w.lower() for w in forms.get(k, []) if isinstance(w, str) and re.fullmatch(r"[A-Za-z]{3,14}", w)]
+            more = [w.lower() for w in forms.get(k, []) if isinstance(w, str) and re.fullmatch(r"[A-Za-z]{3,14}", w)
+                    and w.lower() not in STOPWORDS and w.lower() not in FUNCTION]
             words = list(dict.fromkeys(h["own"] + more))[:8]
             # established combining forms ride along (electricity -> electro), so blends can pivot on them
             h["words"] = list(dict.fromkeys(words + [f for w in words for f in combining_forms(w)]))[:12]
@@ -212,6 +225,14 @@ class Inspiration:
         out = self._chat(PHRASES_SYSTEM, [], insp["prompt"], max_tokens=120, as_json=True)
         return [p.lower() for p in out.get("phrases", []) if isinstance(p, str) and 3 <= len(p) <= 30]
 
+    def prefer(self, insp, a, b):
+        """Pairwise choice between two names, each (name, what it is built from): 0 for a, 1 for b."""
+        if self.llm is None:
+            return 0
+        prompt = insp["prompt"] + f"\nA: {a[0]} (from {a[1]})\nB: {b[0]} (from {b[1]})"
+        out = self._chat(PREFER_SYSTEM, [], prompt, max_tokens=12, as_json=True)
+        return 1 if str(out.get("better", "A")).strip().upper().startswith("B") else 0
+
     def judge_puns(self, insp, candidates):
         """candidates: [(name, phrase)]; returns the indices the model picks, best first."""
         if self.llm is None or not candidates:
@@ -225,7 +246,8 @@ class Inspiration:
 def words_of(s):
     """Content words of a title or phrase, accents removed (Galapagos)."""
     s = unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode().lower()
-    return [w for w in re.findall(r"[a-z]+", s) if len(w) >= 3 and w not in FILLER]
+    return [w for w in re.findall(r"[a-z]+", s)
+            if len(w) >= 3 and w not in FILLER and w not in STOPWORDS and w not in FUNCTION]
 
 
 NUMBERS = set("one two three four five six seven eight nine ten hundred thousand".split())

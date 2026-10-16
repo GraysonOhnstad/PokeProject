@@ -33,11 +33,17 @@ SOFT_BLOCKED = set("""sex sexy sexual orgasm porn porno nude naked erotic fetish
 anal boob nipple dick cock cunt fuck shit bitch bastard""".split())
 
 
+SOFT_ENDINGS = ("ass", "butt", "poo", "turd")  # crude endings, default tier
+INNOCENT_ENDINGS = ("glass", "grass", "brass", "class", "mass", "pass", "bass", "lass", "sass")
+
+
 def blocked(name, soft=True, min_len=4):
     """True if `name` contains a blocked word (words shorter than min_len must match exactly).
     soft=False checks the always-on tier only."""
     n = re.sub(r"[^a-z]", "", name.lower())
     words = HARD_BLOCKED | SOFT_BLOCKED if soft else HARD_BLOCKED
+    if soft and n.endswith(SOFT_ENDINGS) and not n.endswith(INNOCENT_ENDINGS):
+        return True  # "Batass"
     return any((b in n) if len(b) >= min_len else (b == n) for b in words)
 
 
