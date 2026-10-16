@@ -20,3 +20,6 @@ runs/**/*.safetensors
 
 # Data bundle for moving to the training machine
 /transfer/
+
+# Release assets built for GitHub Releases (scripts/build_space.py output, zipped)
+/release/
