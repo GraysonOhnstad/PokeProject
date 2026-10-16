@@ -8,9 +8,9 @@ Two projects that share data and evaluation but never each other's outputs.
 - Every reported number comes from a model that never trained on what it is scored on.
 
 ## 1. Course deliverable: image → type classifier
-- [ ] Round 3 sweep (desktop, running): feature tap, attention, aux heads, set output, Optuna, seed re-runs.
-- [ ] Calibrate the winner (`calibrate3.py`), score the Gen 5 test once (`evaluate3.py`).
-- [ ] App bundle, GitHub Release with weights, Gradio share link; fill the deck's placeholders.
+- [x] Round 3 sweep: ConvNeXt-Tiny wins (10-model CV mAP 0.326); aux heads kept, set output kept for ConvNeXt, attention and earlier tap rejected (`runs/r3/decisions.md`).
+- [x] Calibrated (T = 1.42, ECE 0.021 → 0.004); one-time Gen 5 test: mAP 0.424, top type 52.2%, F1 0.445 (`reports/eval_round3.md`).
+- [x] App bundle built and tested (`release/pokemon-type-classifier-app.zip`); deck filled in. - [ ] Push and publish the GitHub Release.
 - [ ] Tag the submitted state (`course-final`) so it stays reproducible.
 
 ## 2. Dex text models (laptop, in progress)
