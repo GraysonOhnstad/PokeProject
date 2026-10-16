@@ -1,0 +1,11 @@
+{
+ "fold": 0,
+ "val_mAP": 0.2805449648233836,
+ "best_epoch": 12,
+ "epochs_run": 22,
+ "train_mAP": 0.9167198109610957,
+ "gap": 0.6361748461377121,
+ "params": 11205753,
+ "n_val": 2597,
+ "val_paths_hash": "046846bdcd"
+}
