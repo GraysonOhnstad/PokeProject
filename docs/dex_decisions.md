@@ -172,3 +172,14 @@ Always on, with no setting: slurs, hate terms, sexual violence. On by default, u
 
 **D46. 30% of name idea pairs ignore the basis and use the offline pools.** *kept*
 Held-out evaluation (`reports/dex_inspire_eval.md`, 172 real Pokédex texts): a canon source word of the real name was among the offline ideas 25% of the time, among the inspired ideas 18%, and among both together 32%. A verified basis was found for 92% of texts. Real Pokédex texts often describe something other than the design's basis (Metapod's text reads as a tortoise or armadillo), so this measures coherence with canon only roughly; there was no sign of the model recognizing real Pokémon. Made-up descriptions written to evoke a creature are the case inspiration is built for.
+
+## Naming v3 design (agreed 2026-10-15)
+
+**D47. Two halves, each found the same way.** *kept (your design)*
+Half A = what the Pokémon is (creature, object, legend); half B = what defines it (trait, behavior, element, theme). Each: (1) the words in the text that name it, located by the model and checked to occur in the text; (2) otherwise distilled from the text; (3) Wikipedia article and its most interesting facts; (4) word forms: exact, near meaning (synonyms, related terms, Latin/Greek and other-language words), near spelling. The offline pools are the fallback only.
+
+**D48. No fixed order of the halves.** *kept (your question, checked against canon)*
+Of 313 canon names whose first two source words contain exactly one creature word, the creature comes first in 152 (Pidgeot, Weedle, Zubat) and second in 161 (Bulbasaur, Charizard, Spearow). The splicer tries both orders and the scorer chooses.
+
+**D49. Two naming modes, chosen automatically, with the alternatives viewable.** *kept (your ruling)*
+Wordplay: a blend with recognizable pieces of both halves that is not a real word. Pun: a blend (or phrase) that deliberately sounds like an existing word, phrase or cultural reference fitting the creature (Slaking ≈ slacking, Seaking ≈ seeking, Patrat ≈ pack rat, Wynaut ≈ "why not"; Bulbapedia flags 43 canon names this way). Each entry keeps the best name of each mode; the better-scoring one is shown, and an override shows the others for comparison.
