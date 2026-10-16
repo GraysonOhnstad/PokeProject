@@ -3,7 +3,7 @@
 Made-up flavor texts; Gen-5-held-out bundle; no sprite yet. 8 candidates per text, one picked; seed 0. Regenerate with `py scripts/dex_samples.py`.
 
 ```
-Torchaunt  -  the Light Pokémon
+Ghoisp  -  the Ghostlight Pokémon
 Type: Normal / Ghost
 Height 0.2 m   Weight 2.0 kg   Shape ball   Color brown
 Egg groups: ground, indeterminate   Era: Gen 5   Evolution: stage 1 of 1   (normal)
@@ -35,12 +35,17 @@ Level-up moves:
    55  Power Gem
    57  Dream Eater
 
-(name built from: haunt, torches)
-(name ideas: literal: ghostly, mansions, candles, travelers; assoc: paranormal, haunt, spirits, eerie, shadow, houses, residences, manor, dwellings, house, lamps, lights, lanterns, torches, flame, tourists, journeys, trips, destinations, visitors; context: disappearance, nighttime, darkness, twilight, timeless, disused, graveyard, dusk; canon: haunt, graveyard, dusk, nocturnal, illuminate, shadow)
+Inspired by: Will-o'-the-wisp
+  "In Argentina and Uruguay, the will-o'-the-wisp phenomenon is known as luz mala (evil light) and is one of the most important myths in both countries' folklore." (Wikipedia: Will-o'-the-wisp, CC BY-SA 4.0)
+(wordplay name, alternative: Wistly from wisp, ghostly)
+(pun name, shown: Ghoisp from wisp, ghostly, sounds like "ghost")
+
+(name built from: wisp, ghostly)
+(name ideas: literal: ghostly, mansions, candles, travelers; assoc: paranormal, haunt, spirits, eerie, shadow, houses, residences, manor, dwellings, house, lamps, lights, lanterns, torches, flame, tourists, journeys, trips, destinations, visitors; context: disappearance, nighttime, darkness, twilight, timeless, disused, graveyard, dusk; canon: haunt, graveyard, dusk, nocturnal, illuminate, shadow; basis: wisp; concepts: the, ghostly, blue)
 ```
 
 ```
-Electrat  -  the Tiny Mouse Pokémon
+Electrident  -  the Rodent Pokémon
 Type: Electric
 Height 0.7 m   Weight 26.4 kg   Shape quadruped   Color yellow
 Egg groups: ground, water1   Era: Gen 9   Evolution: stage 1 of 2   (normal)
@@ -55,7 +60,7 @@ This tiny rodent stores static electricity in its fluffy cheeks. When startled, 
   speed             98  ##########
   total            486
 
-Abilities: Strong Jaw   Hidden: Competitive
+Abilities: Unburden   Hidden: Competitive
 
 Level-up moves:
     1  Tackle
@@ -76,12 +81,17 @@ Level-up moves:
    56  Wild Charge
    64  Discharge
 
-(name built from: rat, electrical)
-(name ideas: literal: jolt, mouse, static, cheeks; assoc: shock, shocks, sparks, explosive, tremor, rodents, mammalian, rats, weasel, peripheral, electricity, electrical, idle, motionless, mischief, facial, nose, faces, noses, face; context: cardiac, adrenaline, heartbeat, sympathetic, squirrel, physiological, pets, physiology; canon: rodent, rat, squirrel, shock, electricity, pulse)
+Inspired by: Rodent
+  "Some fossil rodents were very large in comparison to modern species; the largest known rodent was Josephoartigasia monesi, a pacarana that may have reached a length of 3 m (10 ft) and weight of 1,000 kg (2,200 lb)." (Wikipedia: Rodent, CC BY-SA 4.0)
+(wordplay name, alternative: Electiny from tiny, electricity)
+(pun name, shown: Electrident from rodent, electricity, sounds like "electro rodent")
+
+(name built from: rodent, electricity)
+(name ideas: literal: jolt, static, cheeks, fluffy; assoc: shock, shocks, sparks, explosive, tremor, electricity, electrical, idle, motionless, mischief, facial, nose, faces, noses, face, furry, feather, plush, paws, kitty; context: rodents, mammalian, cardiac, adrenaline, mice, heartbeat, sympathetic, squirrel; canon: rodent, rat, squirrel, shock, electricity, pulse; basis: rodent, tiny; concepts: electricity, store, static; facts: josephoartigasia, paleocene, rodentia, miletus)
 ```
 
 ```
-Floting  -  the Sea Star Pokémon
+Weedon  -  the Sea Pokémon
 Type: Water
 Height 3.1 m   Weight 405.7 kg   Shape quadruped   Color blue
 Egg groups: no-eggs   Era: Gen 9   Evolution: stage 1 of 1   (legendary)
@@ -115,12 +125,17 @@ Level-up moves:
    57  Hydro Pump
    57  Haze
 
-(name built from: weeping, flotilla)
-(name ideas: literal: sailors, oceans, star; assoc: seaman, seas, warships, nautical, ships, waters, tides, shores, coastal, aquatic, stellar, celestial, orion, constellation, solar; context: tsunami, flood, floods, estuary, amphibious, fjord, mangrove, flotilla; canon: sea, weeping, sea star, marine, sea lion, sea bass)
+Inspired by: Poseidon
+  "He is a separate deity from the oldest Greek god of the sea Pontus." (Wikipedia: Poseidon, CC BY-SA 4.0)
+(wordplay name, shown: Weedon from poseidon, weep)
+(pun name, alternative: Poseiears from poseidon, years, sounds like "pioneers")
+
+(name built from: poseidon, weep)
+(name ideas: literal: sailors, oceans, thousand; assoc: seaman, seas, warships, nautical, ships, waters, tides, shores, coastal, aquatic, million, billion, billions, millions, centuries; context: tsunami, flood, floods, estuary, amphibious, fjord, mangrove, flotilla; canon: sea, weeping, sea star, marine, sea lion, sea bass; basis: poseidon, doric, greek, chthonic; concepts: year, years, weep, absolute, interval, era, calendar, german; facts: doric, poseidon, pontus, bessel)
 ```
 
 ```
-Flucturnal  -  the Snow Dog Pokémon
+Snowfox  -  the Snow Pokémon
 Type: Normal / Ice
 Height 0.7 m   Weight 30.8 kg   Shape quadruped   Color brown
 Egg groups: ground, humanshape   Era: Gen 4   Evolution: stage 1 of 2   (normal)
@@ -135,7 +150,7 @@ It sleeps curled up in snowdrifts. Its thick fur is covered in icicles that it s
   speed             74  #######
   total            388
 
-Abilities: Pickup, Frisk
+Abilities: Thick Fat, Frisk
 
 Level-up moves:
     1  Tackle
@@ -150,12 +165,17 @@ Level-up moves:
    31  Hail
    56  Blizzard
 
-(name built from: nocturnal, fluffy)
-(name ideas: literal: rest, snow, shoots, sleeps; assoc: exhaustion, meantime, emergency, body, endurance, winter, winters, cold, frost, colder, gunfire, rifle, gunshot, rifles, bullet, wakes, nocturnal, wake, pillow, mattress; context: fluffy, cozy, arctic, warmth, reindeer, moth, furry, feral; canon: fur, fluffy, nocturnal, hatchling, arctic, moth)
+Inspired by: Arctic fox
+  "It is well adapted to living in cold environments, and is known for its thick, warm fur that can be used as camouflage against snow in the winter." (Wikipedia: Arctic fox, CC BY-SA 4.0)
+(wordplay name, alternative: Salick from thick, salivary)
+(pun name, shown: Snowfox from fox, snowdrift, sounds like "snow goose")
+
+(name built from: fox, snowdrift)
+(name ideas: literal: rest, snow, shoots, sleeps; assoc: exhaustion, meantime, emergency, body, endurance, winter, winters, cold, frost, colder, gunfire, rifle, gunshot, rifles, bullet, wakes, nocturnal, wake, pillow, mattress; context: fluffy, cozy, arctic, warmth, reindeer, moth, furry, feral; canon: fur, fluffy, nocturnal, hatchling, arctic, moth; basis: fox, arctic, cold, thick; concepts: gland, glands, salivary, shoot, icicle, rest, curl, snowdrift; facts: rivinus)
 ```
 
 ```
-Leamble  -  the Spiral Pokémon
+Planteria  -  the Seedling Pokémon
 Type: Flying / Grass
 Height 0.4 m   Weight 4.8 kg   Shape humanoid   Color brown
 Egg groups: ground, monster   Era: Gen 7   Evolution: stage 1 of 3   (normal)
@@ -170,7 +190,7 @@ A newly hatched seedling that toddles behind its parent. It shakes the leaf on i
   speed             52  #####
   total            364
 
-Abilities: Leaf Guard, Regenerator   Hidden: Long Reach
+Abilities: Leaf Guard, Justified   Hidden: Healer
 
 Level-up moves:
     1  Tackle
@@ -188,12 +208,17 @@ Level-up moves:
    31  Giga Drain
    49  Rage Powder
 
-(name built from: leaf, tremble)
-(name ideas: literal: parent, shakes, happy, spiral; assoc: offspring, child, maternal, mommy, daughter, powder, tremor, stir, tremble, spoon, cheerful, smiles, mood, pleasant, hugs, swirl, spin, vortex, oval, circular; context: pollen, embryo, nursery, seeds, seed, infant, leaf, nests; canon: hatchling, embryo, seed, infant, tentaculata, leaf)
+Inspired by: Carnivorous plant
+  "Most bromeliads are epiphytes, and most epiphytes grow in partial shade on tree branches." (Wikipedia: Carnivorous plant, CC BY-SA 4.0)
+(wordplay name, alternative: Planteria from plant, bilateria)
+(pun name, shown: Planteria from plant, bilateria, sounds like "planter")
+
+(name built from: plant, bilateria)
+(name ideas: literal: parent, shakes, happy, leaf; assoc: offspring, child, maternal, mommy, daughter, powder, tremor, stir, tremble, spoon, cheerful, smiles, mood, pleasant, hugs, leaves, foliage, plant, tree, plants; context: pollen, embryo, nursery, seeds, seed, infant, nests, flower; canon: hatchling, embryo, seed, infant, tentaculata, flower; basis: plant, carnivorous, seedling, epiphyte; concepts: head, shake, leaf, it, toddle, hatch, pollen; facts: brocchinia, bromeliaceae, bilateria, searle)
 ```
 
 ```
-Decian  -  the Rock Pokémon
+Walkshell  -  the Tortoise Pokémon
 Type: Ground / Rock
 Height 0.7 m   Weight 34.3 kg   Shape quadruped   Color brown
 Egg groups: dragon, mineral   Era: Gen 8   Evolution: stage 1 of 2   (normal)
@@ -208,7 +233,7 @@ Its shell is as hard as granite. It walks so slowly that moss and small trees gr
   speed             45  ####
   total            426
 
-Abilities: Light Metal, Sturdy   Hidden: Sand Force
+Abilities: Rock Head, Sturdy   Hidden: Sand Force
 
 Level-up moves:
     1  Rock Throw
@@ -231,6 +256,11 @@ Level-up moves:
    43  Double-Edge
    52  Stone Edge
 
-(name built from: decades, cambrian)
-(name ideas: literal: granite, centuries, moss, walks; assoc: limestone, sandstone, obsidian, geological, marble, decades, years, longevity, ages, lifetime, fern, ferns, fossil, pine, peat, footprints, stroll, footsteps, hike, sidewalks; context: shells, cambrian, shell, basalt, cretaceous, gastropod, vegetation, brittle; canon: shell, gastropod, volcanic, magma, deciduous, cinder)
+Inspired by: Tortoise
+  "Tortoises can vary in size with some species, such as the Galápagos giant tortoise, growing to more than 1.2 metres (3.9 ft) in length, whereas others like the speckled Cape tortoise have shells that measure only 6.8 centimetres (2.7 in) long." (Wikipedia: Tortoise, CC BY-SA 4.0)
+(wordplay name, shown: Walkshell from shell, walk)
+(pun name, alternative: Walkshell from shell, walk, sounds like "walkable")
+
+(name built from: shell, walk)
+(name ideas: literal: granite, centuries, moss, walks; assoc: limestone, sandstone, obsidian, geological, marble, decades, years, longevity, ages, lifetime, fern, ferns, fossil, pine, peat, footprints, stroll, footsteps, hike, sidewalks; context: shells, cambrian, shell, basalt, cretaceous, gastropod, vegetation, brittle; canon: shell, gastropod, volcanic, magma, deciduous, cinder; basis: tortoise, it, shell, granite; concepts: epiphyte, epiphytes, walk, slowly; facts: galapagos, aldabra, gnetales)
 ```

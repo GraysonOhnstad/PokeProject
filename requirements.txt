@@ -24,3 +24,5 @@ optuna
 transformers
 nltk
 llama-cpp-python
+jellyfish
+wordfreq

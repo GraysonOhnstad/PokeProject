@@ -183,3 +183,17 @@ Of 313 canon names whose first two source words contain exactly one creature wor
 
 **D49. Two naming modes, chosen automatically, with the alternatives viewable.** *kept (your ruling)*
 Wordplay: a blend with recognizable pieces of both halves that is not a real word. Pun: a blend (or phrase) that deliberately sounds like an existing word, phrase or cultural reference fitting the creature (Slaking ≈ slacking, Seaking ≈ seeking, Patrat ≈ pack rat, Wynaut ≈ "why not"; Bulbapedia flags 43 canon names this way). Each entry keeps the best name of each mode; the better-scoring one is shown, and an override shows the others for comparison.
+
+## Naming v3 build (2026-10-15)
+
+**D50. Both halves come from one model call that quotes the text where it can.** *open*
+JSON answer: for "is" and "defines", the words of the description that name it (kept only if they really occur in the text) and up to 3 Wikipedia title guesses. A mention is looked up first; long descriptive mentions are reduced to content words in base form ("punches prey with club-like arms" → punch, prey, club, arm). Each half keeps a second article only if it fits nearly as well as the first. With both halves found, a name pair is strictly "is" × "defines" (plus proper names from the facts); the offline pools are used only without inspiration (replaces D46's 30% mix).
+
+**D51. Pun mode: sound-alike search over common English words and phrases, plus the model's own pun targets, judged by the model.** *open*
+Targets: the 60,000 most common English words (wordfreq) and WordNet phrases made only of common words, minus Pokémon names; per entry, the model adds 10 fitting words or idioms. A candidate is a pun when its Metaphone key is ≤ 1 edit from the phrase's, its spelling similarity (Jaro-Winkler) is ≥ 0.85 (canon puns score ≥ 0.88), it keeps ≥ 3 letters of both halves, it isn't itself a word, and the phrase isn't one of its own ingredients (a different word from the same root, like "slacking" from "slack", is allowed). On 40 canon puns with two English source words, without the model (`reports/dex_puns_eval.md`): the real name is the top pun 17.5% of the time and in the top 5 35% (Slaking ~ slacking, Patrat ~ pack rat, Seaking, Snover ~ snow covered).
+
+**D52. Automatic mode choice: the pun is shown only when the model endorses it and its phrase fits the description (cosine ≥ 0.25); otherwise the wordplay name. Both are kept and shown as alternatives.** *open*
+Known weakness: the 8B model's pun judgments are lenient (it endorsed Ghoisp ~ "ghost", Snowfox ~ "snow goose" while the wordplay alternatives Wistly and Electiny read better). Your blind ratings on the test descriptions are the planned way to tune this.
+
+**D53. Names are generated only for the chosen entry (8 idea pairs, both modes), not for all 8 candidates.** *open*
+Naming became the slowest step; the candidate picker never needed names. Speed on the laptop CPU: ~40–60 s per entry with the model, mostly model calls (cached after the first time); on a gaming GPU this should be a few seconds.

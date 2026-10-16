@@ -24,93 +24,16 @@ from poketype.dex_learnset import MoveSetModel, bias_for, cond_vector, sample_le
 from poketype.dex_models import AbilityModel, Heads
 from poketype.dex_inspire import Inspiration
 from poketype.dex_names import NameScorer, blocked, rank
+from poketype.dex_puns import PunIndex, common_phrases, letters, puns, sound_key
 from poketype.dex_wiki import fact_terms
+from poketype.dex_words import STOPWORDS, nameworthy, related_nouns, same_root, shared_piece, wordnet
 from poketype.dex_stats import SCALE, StatModel
 from poketype.dex_text import Masker, clean_text, species_token
 from poketype.labels import TYPES
 
 MAX_NAME = 12
 DEFAULT_LLM = DEX.parent / "models" / "Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf"  # name inspiration
-PAIRS = 3  # idea pairs tried per candidate
-BASIS_SHARE = 0.7  # share of idea pairs that start from the inspired basis (reports/dex_inspire_eval.md)
-STOPWORDS = set("""about above after again against also among around because been before being below
-between both could does doing done down during each either even ever every from further have having here
-into itself just like many more most much must neither only onto other over same should some such than
-that their them then there these they this those through under until very were what when where which
-while whom whose will with within without would your""".split())
-
-
-_WORDNET = None
-
-
-def wordnet():
-    """NLTK WordNet, from data/nltk_data (downloaded once)."""
-    global _WORDNET
-    if _WORDNET is None:
-        import nltk
-        nltk.data.path.insert(0, str(DEX.parent / "nltk_data"))
-        try:
-            from nltk.corpus import wordnet as wn
-            wn.synsets("test")
-        except LookupError:
-            nltk.download("wordnet", download_dir=str(DEX.parent / "nltk_data"), quiet=True)
-            from nltk.corpus import wordnet as wn
-        _WORDNET = wn
-    return _WORDNET
-
-
-def nameworthy(word):
-    """Names are built from nouns and descriptive adjectives: the word's most common sense must
-    be one (WordNet), so adverbs and verbs ("slowly", "hesitated") are left out. Blocked words
-    never qualify."""
-    if blocked(word):
-        return False
-    if word.endswith(("ing", "ed")) and base_form(word) != word:  # "wandering", but not "king", "seed"
-        return False
-    s = wordnet().synsets(word)
-    return bool(s) and s[0].pos() in "nas"
-
-
-def related_nouns(word, limit=8):
-    """WordNet neighbors of a word's first noun sense: parts and substances (candle -> wick),
-    broader kinds and narrower kinds (rodent -> chinchilla, lemming). Single words only."""
-    s = wordnet().synsets(word, "n")
-    if not s:
-        return []
-    x = s[0]
-    out = []
-    for r in (x.part_meronyms() + x.substance_meronyms() + x.member_holonyms() + x.hypernyms()
-              + x.hyponyms() + x.part_holonyms()):
-        for lemma in r.lemma_names()[:2]:
-            w = lemma.lower()
-            if w.isalpha() and w not in out:
-                out.append(w)
-    return out[:limit]
-
-
-def shared_piece(name, word):
-    """Length of the longest stretch of letters `name` shares with `word`."""
-    a, b = name.lower(), word.lower().replace(" ", "")
-    return difflib.SequenceMatcher(None, a, b).find_longest_match(0, len(a), 0, len(b)).size
-
-
-def base_form(w):
-    """Dictionary base form for comparing words ("shot" and "shoots" -> "shoot")."""
-    wn = wordnet()
-    return wn.morphy(w, "v") or wn.morphy(w, "n") or w
-
-
-def same_root(a, b):
-    """Same-word test: shared first four letters, one starting the other, near-identical spelling,
-    or the same base form."""
-    a, b = a.lower(), b.lower()
-    if a[:4] == b[:4] or a.startswith(b) or b.startswith(a):
-        return True
-    if difflib.SequenceMatcher(None, a, b).ratio() >= 0.8:  # shots / shoots
-        return True
-    return " " not in a + b and base_form(a) == base_form(b)
-
-
+NAME_PAIRS = 8  # idea pairs tried for the chosen entry's name
 TYPE_WORDS = set(TYPES) | {"pokémon", "pokemon", "self", "evolution"}
 NAME_OK = re.compile(r"^[A-Z][a-zé'\-]*[a-zé]$")  # one capitalized word, like Farfetch'd or Porygon-Z
 
@@ -224,6 +147,11 @@ class DexGenerator:
             np.savez(cache, words=np.array(words), vecs=vecs.astype(np.float16))
         self.words, self.word_vecs = words, vecs
         self.name_scorer = NameScorer(species["name"][allowed], words)
+        # pun targets: common English words and phrases, never a Pokemon's name
+        from wordfreq import top_n_list
+        self.existing_flat = {letters(n) for n in species["name"]}
+        self.pun_index = PunIndex(p for p in common_phrases(wordnet().all_lemma_names(), top_n_list("en", 60000))
+                                  if letters(p) not in self.existing_flat)
 
     # ---- text -------------------------------------------------------------------------------
     @torch.no_grad()
@@ -306,8 +234,12 @@ class DexGenerator:
         self._abilities(cands, x, era, rng)
         self._learnsets(cands, emb, era, rng)
         insp = self.inspiration(natural(masked)) if self.inspiration else None
-        self._genus_and_name(cands, masked, emb, rng, seed, insp)
-        best = max(cands, key=lambda c: c["score"] + (0 if c["name"] else -5))
+        best = max(cands, key=lambda c: c["score"])
+        self._genus_and_name(best, masked, emb, rng, seed, insp)
+        for c in cands:
+            c.setdefault("name", None)
+            c.setdefault("genus", best["genus"])
+            c.setdefault("concepts", "")
         return self._present(best, text, era), [self._present(c, text, era) for c in cands]
 
     def _upstream(self, c):
@@ -455,14 +387,15 @@ class DexGenerator:
         """Two ideas from different pools, never sharing a root; literal words are rare picks.
         With a basis, the first idea is a basis word (earlier ones likelier) and the second mostly
         an inspired concept: the creature plus something striking about it."""
-        # with a basis, most pairs start from it; 30% still come from the offline pools, since on held-out
-        # Pokedex texts the two sources together found canon name words more often than either alone
-        if ideas.get("basis") and rng.random() < BASIS_SHARE:
+        # with both halves found, a pair is strictly "is" x "defines" (plus proper names from the facts);
+        # the offline pools only stand in when inspiration is unavailable
+        if ideas.get("basis"):
             basis = ideas["basis"]
             wb = np.array([1 / (i + 1) ** 2 for i in range(len(basis))])  # the head noun dominates
             a = basis[rng.choice(len(basis), p=wb / wb.sum())]
             items, w = [], []
-            for pool, weight in (("concepts", 0.55), ("facts", 0.15), ("assoc", 0.15), ("canon", 0.15)):
+            pools = (("concepts", 0.8), ("facts", 0.2)) if ideas["concepts"] else                 (("facts", 0.3), ("assoc", 0.35), ("canon", 0.35))
+            for pool, weight in pools:
                 ok = [x for x in ideas[pool] if not same_root(x, a) and shared_piece(x, a) < 5]
                 for x in ok:
                     items.append(x)
@@ -487,41 +420,69 @@ class DexGenerator:
         b = rest[rng.choice(len(rest), p=rw / rw.sum())][1]
         return f"{a[0]}, {b[0]}"
 
-    def _genus_and_name(self, cands, masked, emb, rng, seed, insp=None):
-        """Genus from T5. Name: two ideas from `name_ideas` (mostly associated words, not the
-        text's own), blended by T5, then filtered (one capitalized word, 3-12 characters, not a
-        real Pokemon or close to one, not an English word)."""
+    def _genus_and_name(self, c, masked, emb, rng, seed, insp=None, n_pairs=NAME_PAIRS):
+        """Category and name for the chosen candidate `c`, in both modes (poketype/dex_names.py,
+        poketype/dex_puns.py):
+          wordplay  splices of idea pairs (plus T5 blends) that aren't real words, best by the
+                    name scorer
+          pun       splices (plus the model's own pun spellings) that sound like a common word or
+                    phrase fitting the Pokemon; the model judges which puns are good
+        The pun is shown when the model endorses it (without a model: an exact sound match with a
+        strongly fitting phrase); otherwise the wordplay name. Both are kept as alternatives."""
         txt = bracketed(masked)
-        src = [f"genus | types: {'/'.join(c['types'])} | text: {txt}" for c in cands]
-        genus = [" ".join(dict.fromkeys(g[0].strip().split())) for g in self.t5(src, seed=seed)]
+        g = " ".join(dict.fromkeys(self.t5([f"genus | types: {'/'.join(c['types'])} | text: {txt}"],
+                                           seed=seed)[0][0].strip().split()))
         if insp and insp.get("genus"):  # the inspired category, first option likeliest; T5's is the fallback
-            options = insp["genus"]
-            p = np.array([1 / (i + 1) for i in range(len(options))])
-            genus = [options[rng.choice(len(options), p=p / p.sum())] for _ in cands]
-        pairs = []  # PAIRS idea pairs per candidate, 8 names each
-        for c, g in zip(cands, genus):
-            c["name_ideas"] = ideas = self.name_ideas(masked + " " + g, emb, insp)
-            pairs += [self._pick_pair(ideas, rng) or g.lower() for _ in range(PAIRS)]
-        names = self.t5([f"name | {w}" for w in pairs], n=8, max_new=12, seed=seed + 2)
-        for i, (c, g) in enumerate(zip(cands, genus)):
-            best = None
-            for w, ns in zip(pairs[i * PAIRS:(i + 1) * PAIRS], names[i * PAIRS:(i + 1) * PAIRS]):
-                parts = [s.strip().lower() for s in w.split(",")]
-                if len(parts) < 2:
-                    continue
-                # splices of the two ideas plus T5's blends, ranked by name-likeness, recognizable
-                # pieces of both ideas, seam and length (poketype/dex_names.py)
-                for x, score in rank(parts[0], parts[1], self.name_scorer, extra=[x.strip() for x in ns],
-                                     soft=self.filter_names):
-                    if (NAME_OK.match(x) and 3 <= len(x) <= MAX_NAME and x.lower() not in self.existing
-                            and x.lower() not in self.real_words and not wordnet().synsets(x.lower())
-                            and not self.too_close(x)):
-                        if best is None or score > best[0]:
-                            best = (score, x, w)
-                        break
-            c["genus"] = g
-            c["name"], c["concepts"] = (best[1], best[2]) if best else (None, pairs[i * PAIRS])
-            c["inspiration"] = self._provenance(insp, c["concepts"], emb) if insp and insp["basis"] else None
+            p = np.array([1 / (i + 1) for i in range(len(insp["genus"]))])
+            g = insp["genus"][rng.choice(len(p), p=p / p.sum())]
+        c["genus"] = g
+        c["name_ideas"] = ideas = self.name_ideas(masked + " " + g, emb, insp)
+        pairs = list(dict.fromkeys(self._pick_pair(ideas, rng) or g.lower() for _ in range(n_pairs)))
+        pairs = [tuple(x.strip().lower() for x in w.split(",")) for w in pairs if "," in w]
+        t5 = self.t5([f"name | {a}, {b}" for a, b in pairs], n=8, max_new=12, seed=seed + 2) if pairs else []
+
+        def ok(x):
+            return (NAME_OK.match(x) and 3 <= len(x) <= MAX_NAME and x.lower() not in self.existing
+                    and x.lower() not in self.real_words and not wordnet().synsets(x.lower())
+                    and not self.too_close(x))
+        wordplay = None
+        for (a, b), ns in zip(pairs, t5):
+            for x, score in rank(a, b, self.name_scorer, extra=[n.strip() for n in ns], soft=self.filter_names):
+                if ok(x):
+                    if wordplay is None or score > wordplay["score"]:
+                        wordplay = {"name": x, "score": score, "from": f"{a}, {b}"}
+                    break
+        pun = self._pun(pairs, insp, emb, ok)
+        c["names"] = {"wordplay": wordplay, "pun": pun}
+        chosen = pun if pun and pun["endorsed"] else wordplay or pun
+        c["name_mode"] = "pun" if chosen is pun and pun else "wordplay"
+        c["name"], c["concepts"] = (chosen["name"], chosen["from"]) if chosen else (None, "")
+        c["inspiration"] = self._provenance(insp, c["concepts"], emb) if insp and insp["basis"] else None
+
+    def _pun(self, pairs, insp, emb, ok, n_judge=10):
+        """Best pun for these idea pairs, or None. With a model: its own pun targets join the phrase
+        list, and it picks the good puns among the top candidates."""
+        extra_index = PunIndex([])
+        if insp and self.inspiration:
+            for ph in self.inspiration.pun_phrases(insp):
+                if letters(ph) not in self.existing_flat:
+                    extra_index.add(ph)
+        fit = lambda phrases: self.embed_many(list(phrases)) @ emb  # noqa: E731
+        found = puns(pairs, self.name_scorer, [self.pun_index, extra_index], fit, soft=self.filter_names,
+                     min_fit=0.15)
+        found = [f for f in found if ok(f[0])][:n_judge]
+        if not found:
+            return None
+        if insp and self.inspiration:
+            picks = self.inspiration.judge_puns(insp, [(n, ph) for n, _, ph, _ in found])
+            k, endorsed = (picks[0], True) if picks else (0, False)
+            endorsed = endorsed and float(fit([found[k][2]])[0]) >= 0.25  # and the phrase must fit the text
+        else:  # no model: only an exact sound match with a strongly fitting phrase counts as endorsed
+            k = 0
+            n, _, ph, _ = found[0]
+            endorsed = sound_key(n) == sound_key(ph) and float(fit([ph])[0]) >= 0.4
+        n, s, ph, src = found[k]
+        return {"name": n, "score": float(s), "sounds_like": ph, "from": src, "endorsed": endorsed}
 
     def _provenance(self, insp, pair, text_vec):
         """What the name draws on: the basis articles and the fact closest in meaning to the
@@ -549,6 +510,6 @@ class DexGenerator:
             "evolution": {"stage": c["stage"], "line_length": c["line_length"]},
             "rarity": ["normal", "legendary", "mythical"][c["rarity"]],
             "era": era, "flavor_text": text, "name_concepts": c["concepts"], "name_ideas": c.get("name_ideas"),
-            "inspiration": c.get("inspiration"),
+            "inspiration": c.get("inspiration"), "name_mode": c.get("name_mode"), "names": c.get("names"),
             "score": round(c["score"], 3),
         }

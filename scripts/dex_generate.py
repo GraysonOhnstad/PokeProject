@@ -39,6 +39,12 @@ def show(e):
         lines += ["", f"Inspired by: {', '.join(insp['based_on'])}"]
         if insp["fact"]:
             lines.append(f'  "{insp["fact"]}" (Wikipedia: {insp["fact_source"]}, CC BY-SA 4.0)')
+    names = e.get("names") or {}
+    for mode, n in names.items():
+        if n:
+            tag = "shown" if mode == e.get("name_mode") else "alternative"
+            extra = f', sounds like "{n["sounds_like"]}"' if mode == "pun" else ""
+            lines.append(f"({mode} name, {tag}: {n['name']} from {n['from'] or '-'}{extra})")
     lines += ["", f"(name built from: {e['name_concepts']})"]
     if e.get("name_ideas"):
         lines.append("(name ideas: " + "; ".join(f"{k}: {', '.join(v)}" for k, v in e["name_ideas"].items() if v) + ")")
