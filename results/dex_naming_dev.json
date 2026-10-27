@@ -1,0 +1,952 @@
+[
+ {
+  "id": "d01",
+  "style": "implicit animal",
+  "text": "It hides in burrows on the reef and punches prey so fast that the water around its fists boils. Its eyes see colors no other creature can.",
+  "intended_is": [
+   "mantis shrimp",
+   "stomatopod"
+  ],
+  "intended_defines": [
+   "punch",
+   "boxing",
+   "cavitation"
+  ],
+  "found_is": [
+   "Mantis shrimp"
+  ],
+  "found_defines": [],
+  "words_is": [
+   "shrimp",
+   "mantis",
+   "it",
+   "fist",
+   "burrow",
+   "reef",
+   "punch",
+   "boil",
+   "pugil"
+  ],
+  "words_defines": [
+   "punch",
+   "prey",
+   "fast",
+   "water",
+   "speed",
+   "velocity",
+   "force",
+   "impact",
+   "pugil",
+   "tachy",
+   "aqua",
+   "hydro"
+  ],
+  "hit_is": true,
+  "hit_defines": true,
+  "genus": "Blister Pokémon",
+  "shown": "Shrimpunch",
+  "mode": "wordplay",
+  "wordplay": "Shrimpunch",
+  "wordplay_from": "shrimp, punch",
+  "pun": "Puntis",
+  "pun_phrase": "punishes",
+  "pun_endorsed": true,
+  "seconds": 56.3
+ },
+ {
+  "id": "d02",
+  "style": "implicit animal",
+  "text": "It darts over ponds on four shimmering wings, snatching gnats from the air. Its ancestors were said to be as large as hawks.",
+  "intended_is": [
+   "dragonfly",
+   "odonata"
+  ],
+  "intended_defines": [
+   "prehistoric",
+   "giant",
+   "meganeura",
+   "hunting"
+  ],
+  "found_is": [
+   "Dragonfly"
+  ],
+  "found_defines": [
+   "Wing"
+  ],
+  "words_is": [
+   "dragonfly",
+   "hawk",
+   "giant",
+   "darner",
+   "fossils",
+   "griffenflies",
+   "meganisoptera",
+   "meganeuropsis",
+   "draco",
+   "giga",
+   "mega",
+   "paleo"
+  ],
+  "words_defines": [
+   "wing",
+   "wings",
+   "shimmer",
+   "speed",
+   "evolved",
+   "glide",
+   "velocity",
+   "aerodynamics",
+   "tachy"
+  ],
+  "hit_is": true,
+  "hit_defines": false,
+  "genus": "Dragonfly Pokémon",
+  "shown": "Shifly",
+  "mode": "pun",
+  "wordplay": "Dragongs",
+  "wordplay_from": "dragonfly, wings",
+  "pun": "Shifly",
+  "pun_phrase": "shoo fly",
+  "pun_endorsed": true,
+  "seconds": 44.3
+ },
+ {
+  "id": "d03",
+  "style": "implicit animal; invites a pun",
+  "text": "It sleeps for days at a time on the same branch. When it finally moves, it is so slow that moss grows on its fur.",
+  "intended_is": [
+   "sloth"
+  ],
+  "intended_defines": [
+   "slow",
+   "lazy",
+   "moss",
+   "sleep"
+  ],
+  "found_is": [
+   "Sloth"
+  ],
+  "found_defines": [
+   "Fur"
+  ],
+  "words_is": [
+   "sloth",
+   "sloths",
+   "alga",
+   "moss",
+   "fur",
+   "branch",
+   "camouflage"
+  ],
+  "words_defines": [
+   "fur",
+   "moss",
+   "grow",
+   "it",
+   "sloth"
+  ],
+  "hit_is": true,
+  "hit_defines": true,
+  "genus": "Furry Pokémon",
+  "shown": "Slogrow",
+  "mode": "pun",
+  "wordplay": "Groth",
+  "wordplay_from": "sloth, grow",
+  "pun": "Slogrow",
+  "pun_phrase": "slow growth",
+  "pun_endorsed": true,
+  "seconds": 44.6
+ },
+ {
+  "id": "d04",
+  "style": "legend",
+  "text": "On foggy nights, it bobs above the marsh like a lost lantern. Those who follow its light wander in circles until dawn.",
+  "intended_is": [
+   "will-o'-the-wisp",
+   "ghost light"
+  ],
+  "intended_defines": [
+   "lantern",
+   "luring",
+   "marsh"
+  ],
+  "found_is": [
+   "Will-o'-the-wisp"
+  ],
+  "found_defines": [
+   "Circle"
+  ],
+  "words_is": [
+   "wisp",
+   "lantern",
+   "fog",
+   "marsh",
+   "circle",
+   "dawn"
+  ],
+  "words_defines": [
+   "circle",
+   "circles",
+   "wander",
+   "lantern",
+   "fog",
+   "marsh",
+   "dawn"
+  ],
+  "hit_is": true,
+  "hit_defines": true,
+  "genus": "Circle Pokémon",
+  "shown": "Lantercle",
+  "mode": "wordplay",
+  "wordplay": "Lantercle",
+  "wordplay_from": "lantern, circle",
+  "pun": "Circlern",
+  "pun_phrase": "circle around",
+  "pun_endorsed": true,
+  "seconds": 34.9
+ },
+ {
+  "id": "d05",
+  "style": "explicit animal",
+  "text": "This pangolin curls into a ball of razor-edged scales. Its scales are so prized that poachers once hunted it to the brink.",
+  "intended_is": [
+   "pangolin"
+  ],
+  "intended_defines": [
+   "scales",
+   "armor",
+   "ball"
+  ],
+  "found_is": [
+   "Pangolin"
+  ],
+  "found_defines": [
+   "Scute"
+  ],
+  "words_is": [
+   "pangolin",
+   "scute"
+  ],
+  "words_defines": [
+   "scute",
+   "scutes",
+   "razor",
+   "edge"
+  ],
+  "hit_is": true,
+  "hit_defines": true,
+  "genus": "Armor Pokémon",
+  "shown": "Scutedge",
+  "mode": "wordplay",
+  "wordplay": "Scutedge",
+  "wordplay_from": "scute, edge",
+  "pun": "Variolin",
+  "pun_phrase": "vermilion",
+  "pun_endorsed": false,
+  "seconds": 16.9
+ },
+ {
+  "id": "d06",
+  "style": "implicit animal",
+  "text": "It stores static electricity in its fluffy cheeks. When startled, it releases a jolt strong enough to stop a heart.",
+  "intended_is": [
+   "rodent",
+   "hamster",
+   "mouse"
+  ],
+  "intended_defines": [
+   "electricity",
+   "static",
+   "shock"
+  ],
+  "found_is": [
+   "Electric catfish"
+  ],
+  "found_defines": [
+   "Electroreception and electrogenesis",
+   "Electricity"
+  ],
+  "words_is": [
+   "catfish",
+   "electric",
+   "sharks",
+   "electro"
+  ],
+  "words_defines": [
+   "electricity",
+   "electrogenesis",
+   "electroreception",
+   "electrolocation",
+   "friction",
+   "magnetism",
+   "pain",
+   "torture",
+   "electro"
+  ],
+  "hit_is": false,
+  "hit_defines": true,
+  "genus": "Electric Pokémon",
+  "shown": "Electriction",
+  "mode": "pun",
+  "wordplay": "Electriction",
+  "wordplay_from": "electric, friction",
+  "pun": "Electriction",
+  "pun_phrase": "electrocution",
+  "pun_endorsed": true,
+  "seconds": 103.1
+ },
+ {
+  "id": "d07",
+  "style": "object",
+  "text": "It was carved from a single block of stone to guard a forgotten temple. It has not blinked in a thousand years.",
+  "intended_is": [
+   "statue",
+   "golem",
+   "guardian lion"
+  ],
+  "intended_defines": [
+   "guard",
+   "stone",
+   "temple"
+  ],
+  "found_is": [
+   "Statue"
+  ],
+  "found_defines": [
+   "Statue"
+  ],
+  "words_is": [
+   "statue",
+   "block",
+   "stone",
+   "guard",
+   "forgotten",
+   "temple",
+   "litho",
+   "petro"
+  ],
+  "words_defines": [
+   "statue",
+   "have",
+   "not",
+   "blink",
+   "block",
+   "stone",
+   "guard",
+   "forgotten",
+   "litho",
+   "petro"
+  ],
+  "hit_is": true,
+  "hit_defines": true,
+  "genus": "Guardian Pokémon",
+  "shown": "Statten",
+  "mode": "pun",
+  "wordplay": "Statten",
+  "wordplay_from": "statue, forgotten",
+  "pun": "Statten",
+  "pun_phrase": "statues",
+  "pun_endorsed": true,
+  "seconds": 40.7
+ },
+ {
+  "id": "d08",
+  "style": "implicit animal",
+  "text": "It inflates its spiky body when threatened. A single prick from one of its spines carries enough toxin to fell a grown man.",
+  "intended_is": [
+   "pufferfish"
+  ],
+  "intended_defines": [
+   "poison",
+   "toxin",
+   "inflate"
+  ],
+  "found_is": [
+   "Porcupinefish"
+  ],
+  "found_defines": [
+   "Cnidocyte"
+  ],
+  "words_is": [
+   "porcupinefish",
+   "porcupine",
+   "fish",
+   "spike",
+   "toxin",
+   "bacteria",
+   "neurotoxin",
+   "ichthyo",
+   "pisci"
+  ],
+  "words_defines": [
+   "cnidocyte",
+   "single",
+   "prick",
+   "it",
+   "nematocyst",
+   "penetrant",
+   "piercing",
+   "stenotele"
+  ],
+  "hit_is": false,
+  "hit_defines": false,
+  "genus": "Cnidocyte Pokémon",
+  "shown": "Porant",
+  "mode": "wordplay",
+  "wordplay": "Porant",
+  "wordplay_from": "porcupinefish, penetrant",
+  "pun": "Piercine",
+  "pun_phrase": "pierced",
+  "pun_endorsed": false,
+  "seconds": 113.7
+ },
+ {
+  "id": "d09",
+  "style": "legend / concept",
+  "text": "Mothers once sang to it so their children would sleep. Now it sings back, and anyone who hears the lullaby does not wake for a week.",
+  "intended_is": [
+   "siren",
+   "lullaby"
+  ],
+  "intended_defines": [
+   "sleep",
+   "song",
+   "lullaby"
+  ],
+  "found_is": [
+   "Nymph"
+  ],
+  "found_defines": [
+   "Singing"
+  ],
+  "words_is": [
+   "nymph",
+   "nereid",
+   "artemis",
+   "artemius",
+   "saint",
+   "goddess"
+  ],
+  "words_defines": [
+   "singing",
+   "sing",
+   "back",
+   "vocal",
+   "unique",
+   "range",
+   "habit",
+   "tessitura"
+  ],
+  "hit_is": false,
+  "hit_defines": false,
+  "genus": "Singer Pokémon",
+  "shown": "Nymphabit",
+  "mode": "wordplay",
+  "wordplay": "Nymphabit",
+  "wordplay_from": "nymph, habit",
+  "pun": "Nyming",
+  "pun_phrase": "numbing",
+  "pun_endorsed": false,
+  "seconds": 105.0
+ },
+ {
+  "id": "d10",
+  "style": "explicit animal",
+  "text": "This anglerfish dangles a glowing lure in the black depths. Prey that swims toward the light is swallowed whole.",
+  "intended_is": [
+   "anglerfish"
+  ],
+  "intended_defines": [
+   "lure",
+   "bioluminescence",
+   "light"
+  ],
+  "found_is": [
+   "Anglerfish"
+  ],
+  "found_defines": [
+   "Bait",
+   "Bioluminescence"
+  ],
+  "words_is": [
+   "anglerfish",
+   "bait"
+  ],
+  "words_defines": [
+   "bait",
+   "bioluminescence",
+   "glow",
+   "lure"
+  ],
+  "hit_is": true,
+  "hit_defines": true,
+  "genus": "Bait Pokémon",
+  "shown": "Anglow",
+  "mode": "pun",
+  "wordplay": "Ceratish",
+  "wordplay_from": "anglerfish, ceratioidei",
+  "pun": "Anglow",
+  "pun_phrase": "angle",
+  "pun_endorsed": true,
+  "seconds": 159.4
+ },
+ {
+  "id": "d11",
+  "style": "implicit animal",
+  "text": "It hangs upside down in caves by day. At dusk, thousands pour out at once, and their shrieks can shatter glass.",
+  "intended_is": [
+   "bat"
+  ],
+  "intended_defines": [
+   "echolocation",
+   "sound",
+   "shriek"
+  ],
+  "found_is": [
+   "Pteropus"
+  ],
+  "found_defines": [
+   "Glass"
+  ],
+  "words_is": [
+   "fox",
+   "flying",
+   "pteropus"
+  ],
+  "words_defines": [
+   "glass",
+   "shriek",
+   "shatter"
+  ],
+  "hit_is": false,
+  "hit_defines": true,
+  "genus": "Shriek Pokémon",
+  "shown": "Glassropus",
+  "mode": "wordplay",
+  "wordplay": "Glassropus",
+  "wordplay_from": "pteropus, glass",
+  "pun": "Glassopus",
+  "pun_phrase": "glasses",
+  "pun_endorsed": false,
+  "seconds": 139.7
+ },
+ {
+  "id": "d12",
+  "style": "object",
+  "text": "A wind-up toy that kept marching after its key was lost. It still ticks softly, counting down to something no one remembers.",
+  "intended_is": [
+   "clockwork",
+   "wind-up toy",
+   "toy soldier"
+  ],
+  "intended_defines": [
+   "clock",
+   "ticking",
+   "time"
+  ],
+  "found_is": [
+   "Wind-up toy"
+  ],
+  "found_defines": [
+   "Countdown"
+  ],
+  "words_is": [
+   "toy",
+   "wind",
+   "clockwork",
+   "mechanism",
+   "automaton",
+   "marionette",
+   "mannequin",
+   "aero",
+   "anemo"
+  ],
+  "words_defines": [
+   "countdown",
+   "count",
+   "elapsed",
+   "mission",
+   "liftoff",
+   "projection",
+   "leader"
+  ],
+  "hit_is": true,
+  "hit_defines": false,
+  "genus": "Clockwork Pokémon",
+  "shown": "Windown",
+  "mode": "wordplay",
+  "wordplay": "Windown",
+  "wordplay_from": "wind, countdown",
+  "pun": "Countdowind",
+  "pun_phrase": "count down to",
+  "pun_endorsed": false,
+  "seconds": 40.7
+ },
+ {
+  "id": "d13",
+  "style": "implicit animal",
+  "text": "It spends its whole life inside a hollow tree, sealing the entrance with mud until only its beak shows. Its mate feeds it through the slit.",
+  "intended_is": [
+   "hornbill"
+  ],
+  "intended_defines": [
+   "nest",
+   "mud",
+   "sealing"
+  ],
+  "found_is": [
+   "Nest"
+  ],
+  "found_defines": [
+   "Bird nest"
+  ],
+  "words_is": [
+   "nest",
+   "tree",
+   "hollow",
+   "seal",
+   "mud",
+   "beak",
+   "dendro",
+   "mari",
+   "thalasso"
+  ],
+  "words_defines": [
+   "nest",
+   "bird",
+   "cavity",
+   "seal",
+   "abandoned",
+   "entrance",
+   "slit",
+   "mate",
+   "ornitho",
+   "avi",
+   "mari",
+   "thalasso"
+  ],
+  "hit_is": false,
+  "hit_defines": true,
+  "genus": "Nest Pokémon",
+  "shown": "Birdeal",
+  "mode": "pun",
+  "wordplay": "Abandonest",
+  "wordplay_from": "nest, abandoned",
+  "pun": "Birdeal",
+  "pun_phrase": "birds",
+  "pun_endorsed": true,
+  "seconds": 104.5
+ },
+ {
+  "id": "d14",
+  "style": "implicit animal + element",
+  "text": "It lives on the hottest volcano slopes and bathes in lava to keep its stony hide from cracking. When it cools, it turns to obsidian.",
+  "intended_is": [
+   "salamander",
+   "lizard"
+  ],
+  "intended_defines": [
+   "lava",
+   "volcano",
+   "obsidian"
+  ],
+  "found_is": [
+   "Lizard"
+  ],
+  "found_defines": [
+   "Lava"
+  ],
+  "words_is": [
+   "lizard",
+   "sauria",
+   "toxicofera",
+   "toxi"
+  ],
+  "words_defines": [
+   "lava",
+   "bathe",
+   "obsidian",
+   "volcano",
+   "stony",
+   "clade",
+   "toxic",
+   "toxi"
+  ],
+  "hit_is": true,
+  "hit_defines": true,
+  "genus": "Obsidian Pokémon",
+  "shown": "Lizardian",
+  "mode": "wordplay",
+  "wordplay": "Lizardian",
+  "wordplay_from": "lizard, obsidian",
+  "pun": "Batheard",
+  "pun_phrase": "bath mat",
+  "pun_endorsed": false,
+  "seconds": 72.5
+ },
+ {
+  "id": "d15",
+  "style": "implicit animal; invites a pun",
+  "text": "It follows the tides across the beach, raising one oversized claw to wave at the sea. Rivals fight by waving harder.",
+  "intended_is": [
+   "fiddler crab",
+   "crab"
+  ],
+  "intended_defines": [
+   "claw",
+   "waving",
+   "fiddle"
+  ],
+  "found_is": [
+   "Fiddler crab"
+  ],
+  "found_defines": [
+   "Courtship display"
+  ],
+  "words_is": [
+   "crab",
+   "fiddler",
+   "tide",
+   "wave",
+   "claw",
+   "rival",
+   "fight",
+   "pugil"
+  ],
+  "words_defines": [
+   "display",
+   "courtship"
+  ],
+  "hit_is": true,
+  "hit_defines": false,
+  "genus": "Crab Pokémon",
+  "shown": "Displer",
+  "mode": "wordplay",
+  "wordplay": "Displer",
+  "wordplay_from": "fiddler, display",
+  "pun": "Craplay",
+  "pun_phrase": "carpal",
+  "pun_endorsed": false,
+  "seconds": 194.7
+ },
+ {
+  "id": "d16",
+  "style": "explicit animal + fact",
+  "text": "This jellyfish never truly dies. When it grows old, it shrinks back into a child and begins its life again.",
+  "intended_is": [
+   "immortal jellyfish",
+   "turritopsis",
+   "jellyfish"
+  ],
+  "intended_defines": [
+   "immortality",
+   "rebirth",
+   "youth"
+  ],
+  "found_is": [
+   "Turritopsis dohrnii",
+   "Jellyfish"
+  ],
+  "found_defines": [
+   "Child"
+  ],
+  "words_is": [
+   "dohrnii",
+   "turritopsis",
+   "jellyfish"
+  ],
+  "words_defines": [
+   "child",
+   "shrink",
+   "back"
+  ],
+  "hit_is": true,
+  "hit_defines": false,
+  "genus": "Eternal Pokémon",
+  "shown": "Turback",
+  "mode": "wordplay",
+  "wordplay": "Turback",
+  "wordplay_from": "turritopsis, back",
+  "pun": "Turback",
+  "pun_phrase": "turn back",
+  "pun_endorsed": false,
+  "seconds": 77.3
+ },
+ {
+  "id": "d17",
+  "style": "implicit animal + concept",
+  "text": "It weaves webs between the stars. Sailors who navigate by the night sky sometimes find their constellations rearranged by morning.",
+  "intended_is": [
+   "spider"
+  ],
+  "intended_defines": [
+   "constellation",
+   "stars",
+   "web"
+  ],
+  "found_is": [],
+  "found_defines": [
+   "Star"
+  ],
+  "words_is": [
+   "star",
+   "weaver",
+   "astral",
+   "spider",
+   "cosmic",
+   "stellar",
+   "astro",
+   "stell"
+  ],
+  "words_defines": [
+   "star",
+   "stars",
+   "weave",
+   "web",
+   "weaver",
+   "astral",
+   "spider",
+   "cosmic",
+   "astro",
+   "stell"
+  ],
+  "hit_is": true,
+  "hit_defines": true,
+  "genus": "Stellar Pokémon",
+  "shown": "Startell",
+  "mode": "pun",
+  "wordplay": "Costar",
+  "wordplay_from": "star, cosmic",
+  "pun": "Startell",
+  "pun_phrase": "star trail",
+  "pun_endorsed": true,
+  "seconds": 52.3
+ },
+ {
+  "id": "d18",
+  "style": "object + legend",
+  "text": "A teapot that brewed tea for a hundred years until a spirit settled in it. It pours scalding tea on anyone who forgets to say thank you.",
+  "intended_is": [
+   "teapot",
+   "tsukumogami"
+  ],
+  "intended_defines": [
+   "tea",
+   "spirit",
+   "manners"
+  ],
+  "found_is": [
+   "Teapot"
+  ],
+  "found_defines": [
+   "You"
+  ],
+  "words_is": [
+   "teapot",
+   "jun",
+   "celadon"
+  ],
+  "words_defines": [
+   "you",
+   "pour",
+   "scald",
+   "tea",
+   "thou",
+   "thee",
+   "yours"
+  ],
+  "hit_is": true,
+  "hit_defines": true,
+  "genus": "Manners Pokémon",
+  "shown": "Teapothou",
+  "mode": "wordplay",
+  "wordplay": "Teapothou",
+  "wordplay_from": "teapot, thou",
+  "pun": "Teapours",
+  "pun_phrase": "tea party",
+  "pun_endorsed": true,
+  "seconds": 242.3
+ },
+ {
+  "id": "d19",
+  "style": "implicit animal; invites a pun",
+  "text": "It digs tunnels under farms and pops up to steal turnips. Farmers say you can hear it giggling underground.",
+  "intended_is": [
+   "mole",
+   "gopher"
+  ],
+  "intended_defines": [
+   "digging",
+   "tunnel",
+   "turnip"
+  ],
+  "found_is": [
+   "European mole"
+  ],
+  "found_defines": [
+   "Laughter"
+  ],
+  "words_is": [
+   "mole",
+   "european"
+  ],
+  "words_defines": [
+   "laughter",
+   "giggle",
+   "underground"
+  ],
+  "hit_is": true,
+  "hit_defines": false,
+  "genus": "Mole Pokémon",
+  "shown": "Molerground",
+  "mode": "wordplay",
+  "wordplay": "Molerground",
+  "wordplay_from": "mole, underground",
+  "pun": "Gigglemole",
+  "pun_phrase": "giggly mole",
+  "pun_endorsed": false,
+  "seconds": 283.1
+ },
+ {
+  "id": "d20",
+  "style": "implicit animal + element",
+  "text": "It glides from tree to tree on a cape of skin, crackling with static. Its fur stands on end before a thunderstorm.",
+  "intended_is": [
+   "flying squirrel",
+   "sugar glider"
+  ],
+  "intended_defines": [
+   "gliding",
+   "static",
+   "thunderstorm"
+  ],
+  "found_is": [
+   "Flying squirrel"
+  ],
+  "found_defines": [
+   "Skin"
+  ],
+  "words_is": [
+   "squirrel",
+   "flying"
+  ],
+  "words_defines": [
+   "skin",
+   "glide",
+   "tree",
+   "cape",
+   "dendro"
+  ],
+  "hit_is": true,
+  "hit_defines": false,
+  "genus": "Squirrel Pokémon",
+  "shown": "Squirrelide",
+  "mode": "pun",
+  "wordplay": "Squirree",
+  "wordplay_from": "squirrel, tree",
+  "pun": "Squirrelide",
+  "pun_phrase": "squirrel away",
+  "pun_endorsed": true,
+  "seconds": 496.1
+ }
+]

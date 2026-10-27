@@ -1,0 +1,14 @@
+{
+ "config": "smoke",
+ "rows": 10458,
+ "heads_best_epoch": {
+  "types": 2,
+  "shape": 2,
+  "color": 1,
+  "egg": 2,
+  "height": 2,
+  "weight": 2,
+  "stats": 2,
+  "abilities": 2
+ }
+}

@@ -1,0 +1,202 @@
+{
+ "d01A": {
+  "name": "Shrimpunch",
+  "mode": "wordplay",
+  "shown": true
+ },
+ "d01B": {
+  "name": "Puntis",
+  "mode": "pun",
+  "shown": false
+ },
+ "d02A": {
+  "name": "Dragongs",
+  "mode": "wordplay",
+  "shown": false
+ },
+ "d02B": {
+  "name": "Shifly",
+  "mode": "pun",
+  "shown": true
+ },
+ "d03A": {
+  "name": "Slogrow",
+  "mode": "pun",
+  "shown": true
+ },
+ "d03B": {
+  "name": "Groth",
+  "mode": "wordplay",
+  "shown": false
+ },
+ "d04A": {
+  "name": "Lantercle",
+  "mode": "wordplay",
+  "shown": true
+ },
+ "d04B": {
+  "name": "Circlern",
+  "mode": "pun",
+  "shown": false
+ },
+ "d05A": {
+  "name": "Scutedge",
+  "mode": "wordplay",
+  "shown": true
+ },
+ "d05B": {
+  "name": "Variolin",
+  "mode": "pun",
+  "shown": false
+ },
+ "d06A": {
+  "name": "Electriction",
+  "mode": "wordplay",
+  "shown": true
+ },
+ "d06B": {
+  "name": "Electriction",
+  "mode": "pun",
+  "shown": true
+ },
+ "d07A": {
+  "name": "Statten",
+  "mode": "wordplay",
+  "shown": true
+ },
+ "d07B": {
+  "name": "Statten",
+  "mode": "pun",
+  "shown": true
+ },
+ "d08A": {
+  "name": "Porant",
+  "mode": "wordplay",
+  "shown": true
+ },
+ "d08B": {
+  "name": "Piercine",
+  "mode": "pun",
+  "shown": false
+ },
+ "d09A": {
+  "name": "Nymphabit",
+  "mode": "wordplay",
+  "shown": true
+ },
+ "d09B": {
+  "name": "Nyming",
+  "mode": "pun",
+  "shown": false
+ },
+ "d10A": {
+  "name": "Anglow",
+  "mode": "pun",
+  "shown": true
+ },
+ "d10B": {
+  "name": "Ceratish",
+  "mode": "wordplay",
+  "shown": false
+ },
+ "d11A": {
+  "name": "Glassopus",
+  "mode": "pun",
+  "shown": false
+ },
+ "d11B": {
+  "name": "Glassropus",
+  "mode": "wordplay",
+  "shown": true
+ },
+ "d12A": {
+  "name": "Windown",
+  "mode": "wordplay",
+  "shown": true
+ },
+ "d12B": {
+  "name": "Countdowind",
+  "mode": "pun",
+  "shown": false
+ },
+ "d13A": {
+  "name": "Birdeal",
+  "mode": "pun",
+  "shown": true
+ },
+ "d13B": {
+  "name": "Abandonest",
+  "mode": "wordplay",
+  "shown": false
+ },
+ "d14A": {
+  "name": "Batheard",
+  "mode": "pun",
+  "shown": false
+ },
+ "d14B": {
+  "name": "Lizardian",
+  "mode": "wordplay",
+  "shown": true
+ },
+ "d15A": {
+  "name": "Displer",
+  "mode": "wordplay",
+  "shown": true
+ },
+ "d15B": {
+  "name": "Craplay",
+  "mode": "pun",
+  "shown": false
+ },
+ "d16A": {
+  "name": "Turback",
+  "mode": "pun",
+  "shown": true
+ },
+ "d16B": {
+  "name": "Turback",
+  "mode": "wordplay",
+  "shown": true
+ },
+ "d17A": {
+  "name": "Costar",
+  "mode": "wordplay",
+  "shown": false
+ },
+ "d17B": {
+  "name": "Startell",
+  "mode": "pun",
+  "shown": true
+ },
+ "d18A": {
+  "name": "Teapours",
+  "mode": "pun",
+  "shown": false
+ },
+ "d18B": {
+  "name": "Teapothou",
+  "mode": "wordplay",
+  "shown": true
+ },
+ "d19A": {
+  "name": "Gigglemole",
+  "mode": "pun",
+  "shown": false
+ },
+ "d19B": {
+  "name": "Molerground",
+  "mode": "wordplay",
+  "shown": true
+ },
+ "d20A": {
+  "name": "Squirree",
+  "mode": "wordplay",
+  "shown": false
+ },
+ "d20B": {
+  "name": "Squirrelide",
+  "mode": "pun",
+  "shown": true
+ }
+}

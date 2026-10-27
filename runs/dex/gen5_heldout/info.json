@@ -1,0 +1,14 @@
+{
+ "config": "gen5_heldout",
+ "rows": 10458,
+ "heads_best_epoch": {
+  "types": 59,
+  "shape": 44,
+  "color": 61,
+  "egg": 52,
+  "height": 31,
+  "weight": 28,
+  "stats": 44,
+  "abilities": 42
+ }
+}
