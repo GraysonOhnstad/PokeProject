@@ -23,19 +23,20 @@ The work is moving from a Windows laptop to this machine (the "nextstep" hub, WS
    python -c "import torch; print(torch.cuda.is_available(), torch.cuda.get_device_name(0))"
    ```
    Hub Python is 3.13; the laptop's was 3.11 (torch 2.14.1 supports both). Never install a Linux NVIDIA driver in WSL: the Windows driver (610.88, CUDA 13.3) is passed through, and the pip wheels carry their own CUDA runtime.
-2. **Move `data/` and the weights in `runs/` from the laptop.** Both are gitignored, so the clone here has neither (`data/` is empty). On the laptop (`C:\Users\Grayson\Desktop\PokeProject`):
+2. ~~Move `data/` and the weights in `runs/` from the laptop.~~ **Done 2026-10-29.** Every gitignored file under `data/` and `runs/` was sent over the tunnel in verified chunks, and all were re-checked on the hub afterwards with 0 mismatches. To re-check: `sha256sum --quiet -c transfer/hub/*.sha256` (prints nothing when all match).
 
-   | What | Size | Needed for |
-   |---|---|---|
-   | `data/processed`, `data/dex`, `data/manifest.csv`, `data/species.csv`, `data/nltk_data` | 1.2 GB | training (sections 3–4) |
-   | `data/raw` | 15.4 GB | `evaluate*.py`, `build_space.py` (source sprites) |
-   | `data/models` (Llama 3.1 8B and Qwen 2.5 7B, Q4_K_M GGUF) | 8.9 GB | naming only (`DEFAULT_LLM`); Qwen may be unused |
-   | weights in `runs/` (`*.pt`, `*.safetensors`, `*.np[yz]`; round 3 is 2.8 GB) | 4.0 GB | round 3 comparison, Dex models |
+   | Batch | Files | Size | What |
+   |---|---|---|---|
+   | train | 170,355 | 1.69 GB | `data/processed`, `data/dex`, `data/nltk_data`, `data/manifest.csv`, `data/species.csv`, `runs/dex*` weights |
+   | weights | 522 | 3.83 GB | classifier weights and prediction dumps in `runs/` (round 3 included) |
+   | raw | 69,765 | 16.50 GB | `data/raw` (source sprites, for `evaluate*.py` and `build_space.py`) |
+   | models | 6 | 9.60 GB | `data/models` (Llama 3.1 8B and Qwen 2.5 7B, Q4_K_M GGUF; naming only, and Qwen may be unused) |
 
-   Plan: stream over the WireGuard tunnel from the laptop (`tar -cf - <paths> | ssh nextstep-hub "tar -xf - -C ~/code/pokeproject"`; the laptop has Windows OpenSSH and tar, no rsync). It needs the laptop's tunnel up and the user's go-ahead. Verify the file counts and sizes on arrival. `transfer/`, `space/` and `release/` don't need to move (`release/` is published as v1.0).
+   `transfer/`, `space/` and `release/` were not moved (`release/` is published as v1.0). The Windows-side clone at `C:\Users\Grayson\Desktop\PokeProject` (old CUDA venv, round zips) is now redundant. Deleting it is the user's call; WSL can't see C: (automount is off on purpose).
 3. **GPU access for Claude Code here.** This session's sandbox blocks the GPU. Until the user allows GPU access for this project in the sandbox settings, or approves running training commands outside the sandbox, training can't be launched from here. Ask; don't work around it.
 4. **Backup decision (the user's call).** The nightly restic backup excludes `pokeproject/{data,transfer,space,release}` but not `runs/`, so checkpoints would be backed up and copied to the laptop every night. Options: exclude the weight patterns above (final weights live on GitHub Releases), or keep them, since a lost sweep is expensive to rerun.
 5. Once 1–3 work, rewrite [docs/desktop_training.md](docs/desktop_training.md), which still describes the old route (Windows desktop, zip bundle over a temporary SMB share).
+6. **Privacy/security audit.** Once the migration is done, the user will audit this project against the hub's house rules. From then on, the house rules apply here like they do in every migrated project.
 
 ### Before every GPU run
 - **Ollama:** run `ollama stop qwen3:32b`. It shares the card and holds about 22 GB of the 24 GB VRAM while loaded (it unloads after 5 idle minutes).
