@@ -7,23 +7,41 @@ Two projects in one repo, sharing data and evaluation:
 
 Read first: [docs/roadmap.md](docs/roadmap.md) (plan and status), [PROJECT_BRIEF.md](PROJECT_BRIEF.md) (classifier design), [docs/dex_decisions.md](docs/dex_decisions.md) (Dex decisions D1–D55 with status), [runs/r3/decisions.md](runs/r3/decisions.md) (round 3 sweep).
 
-## Where things stand (2026-10-27)
+## Where things stand (2026-10-29)
 
-The work is moving from a Windows laptop to this machine (the "nextstep" hub, WSL2 Debian on the desktop with the RTX 4090). Roadmap sections 1–2 are done; **section 3 (shared image/text embedding) is next**, and it can't start until the setup below is finished.
+The project now lives on this machine (the "nextstep" hub, WSL2 Debian on the desktop with the RTX 4090); the laptop session is closed. Roadmap sections 1–2 are done. `data/` and the `runs/` weights are on the hub and hash-verified (item 4). **After the checklist below, the house rules apply to this project and roadmap section 3 (shared image/text embedding) is next.**
 
-### Setup still to do, in order
+### Hub setup: the single checklist, in order
 
-1. **Hub environment.** Not run yet: the user approves installs and enters the sudo password.
-   ```bash
-   sudo apt install tmux build-essential cmake   # tmux: runs survive a dropped SSH; the others build llama-cpp-python
-   cd ~/code/pokeproject
-   python3 -m venv .venv && . .venv/bin/activate
-   pip install torch==2.14.1 torchvision==0.29.1 --index-url https://download.pytorch.org/whl/cu130
-   pip install -r requirements.txt
-   python -c "import torch; print(torch.cuda.is_available(), torch.cuda.get_device_name(0))"
-   ```
-   Hub Python is 3.13; the laptop's was 3.11 (torch 2.14.1 supports both). Never install a Linux NVIDIA driver in WSL: the Windows driver (610.88, CUDA 13.3) is passed through, and the pip wheels carry their own CUDA runtime.
-2. ~~Move `data/` and the weights in `runs/` from the laptop.~~ **Done 2026-10-29.** Every gitignored file under `data/` and `runs/` was sent over the tunnel in verified chunks, and all were re-checked on the hub afterwards with 0 mismatches. To re-check: `sha256sum --quiet -c transfer/hub/*.sha256` (prints nothing when all match).
+Nothing below has been carried out unless it says done. "User" = Grayson; "Claude" = Claude Code on the hub, inside its sandbox unless the item says otherwise.
+
+1. **Environment.**
+   - *Involves:* apt packages, a Python 3.13 venv, the CUDA build of PyTorch, then the rest of `requirements.txt`:
+     ```bash
+     sudo apt install tmux build-essential cmake   # tmux: runs survive a dropped SSH; the others build llama-cpp-python
+     cd ~/code/pokeproject
+     python3 -m venv .venv && . .venv/bin/activate
+     pip install torch==2.14.1 torchvision==0.29.1 --index-url https://download.pytorch.org/whl/cu130
+     pip install -r requirements.txt
+     python -c "import torch; print(torch.cuda.is_available(), torch.cuda.get_device_name(0))"
+     ```
+     `requirements.txt` is unpinned and was last installed on Python 3.11 (laptop); record here any package that fails or resolves oddly on 3.13. `llama-cpp-python` builds from source: record whether it builds. Never install a Linux NVIDIA driver in WSL: the Windows driver (610.88, CUDA 13.3) is passed through, and the pip wheels carry their own CUDA runtime.
+   - *Who:* user runs the `sudo apt` line (sudo password). Claude can create the venv and run the pip installs (network: pypi.org, files.pythonhosted.org, download.pytorch.org), with approval. The final CUDA check has to run outside the sandbox (item 2), so the user runs it.
+   - *Done when:* `torch.cuda.is_available()` is `True` and the device name is the RTX 4090, run outside the sandbox; install notes (3.13 issues, llama-cpp-python build result) recorded here.
+2. **GPU access for Claude Code.** The sandbox blocks the GPU. Ask; don't work around it.
+   - *Options:*
+     - **(a) Allow the GPU in this project's sandbox settings.** Exposes the WSL GPU interface (`/dev/dxg` and the driver libraries in `/usr/lib/wsl/lib`) to sandboxed commands; filesystem and network limits stay as they are. Not yet confirmed that the sandbox settings support a device passthrough: check the Claude Code docs before deciding.
+     - **(b) Approve training commands to run outside the sandbox.** Each approved command runs with the user's full permissions: everything the user can read (including `~/.ssh`, `~/private`) and unrestricted network. Approval is per command, so a long sweep is one approval, but its Python code then runs unconfined.
+     - **(c) The user launches GPU jobs in tmux; Claude writes the commands and reads the logs in `runs/`.** Exposes nothing new; costs the user a step per run.
+   - *Recommendation:* (a) if the settings support it, since it adds only the GPU; otherwise (c). (b) is the widest exposure for the least benefit.
+   - *Who:* user decides and changes the settings; Claude can check the docs for (a).
+   - *Done when:* the chosen route is recorded here and the item 1 CUDA check passes through it.
+3. **Backup choice for `runs/` (user's call; decide before tonight's backup runs).** The nightly restic job excludes `pokeproject/{data,transfer,space,release}` but not `runs/`, which now holds 4.26 GB of weights (528 files: `*.pt`, `*.safetensors`, `*.np[yz]`), so they'd be backed up and copied to the laptop every night.
+   - *Options:* exclude `runs/**/*.pt`, `*.safetensors`, `*.np[yz]` (final classifier weights are on GitHub Release v1.0); or keep backing them up (a lost round-3 sweep is ~1.5 days of 4090 time to rerun).
+   - *Who:* user decides; the restic config lives in the nextstep project.
+   - *Done when:* the choice is recorded here and, if excluding, the backup config is changed.
+4. ~~**Data check.**~~ **Done 2026-10-29.** Every gitignored file under `data/` and `runs/` was sent over the tunnel in verified chunks; the hub session then re-ran the full check independently: 240,648 files, 0 mismatches. The five Dex files from the first, interrupted transfer (`runs/dex/gen5_heldout/{dex.pt,concepts.npz,words.npz}`, `runs/dex/smoke/{dex.pt,concepts.npz}`) aren't in any manifest; they pass a zip integrity check but weren't hash-compared with the laptop.
+   - *Re-check:* `sha256sum --quiet -c transfer/hub/*.sha256` (prints nothing when every file matches; ~2 minutes). It reads every byte under `data/`, so running it is the user's call under the house rules.
 
    | Batch | Files | Size | What |
    |---|---|---|---|
@@ -32,17 +50,34 @@ The work is moving from a Windows laptop to this machine (the "nextstep" hub, WS
    | raw | 69,765 | 16.50 GB | `data/raw` (source sprites, for `evaluate*.py` and `build_space.py`) |
    | models | 6 | 9.60 GB | `data/models` (Llama 3.1 8B and Qwen 2.5 7B, Q4_K_M GGUF; naming only, and Qwen may be unused) |
 
-   `transfer/`, `space/` and `release/` were not moved (`release/` is published as v1.0). The Windows-side clone at `C:\Users\Grayson\Desktop\PokeProject` (old CUDA venv, round zips) is now redundant. Deleting it is the user's call; WSL can't see C: (automount is off on purpose).
-3. **GPU access for Claude Code here.** This session's sandbox blocks the GPU. Until the user allows GPU access for this project in the sandbox settings, or approves running training commands outside the sandbox, training can't be launched from here. Ask; don't work around it.
-4. **Backup decision (the user's call).** The nightly restic backup excludes `pokeproject/{data,transfer,space,release}` but not `runs/`, so checkpoints would be backed up and copied to the laptop every night. Options: exclude the weight patterns above (final weights live on GitHub Releases), or keep them, since a lost sweep is expensive to rerun.
-5. Once 1–3 work, rewrite [docs/desktop_training.md](docs/desktop_training.md), which still describes the old route (Windows desktop, zip bundle over a temporary SMB share).
-6. **Privacy/security audit.** Once the migration is done, the user will audit this project against the hub's house rules. From then on, the house rules apply here like they do in every migrated project.
+   `transfer/`, `space/` and `release/` were not moved (`release/` is published as v1.0).
+5. **GPU smoke test** (after 1 and 2).
+   - *Involves:* inside tmux, `ollama stop qwen3:32b`, then the round-1 smoke run from [docs/desktop_training.md](docs/desktop_training.md) section 5, adapted for Linux:
+     ```bash
+     python scripts/train.py --arch small_cnn --name smoke --limit 512 --epochs 2 --warmup 1
+     rm -r runs/smoke
+     ```
+     Only `runs/smoke`: `runs/dex/smoke` is a different (Dex) run and stays.
+   - *Who:* Claude or the user, depending on item 2.
+   - *Done when:* the first line says `on cuda`, two epoch lines print, `runs/smoke` is written, and `runs/smoke` is then deleted.
+6. **Rewrite [docs/desktop_training.md](docs/desktop_training.md) for the hub.**
+   - *Involves:* SSH plus tmux, the Linux venv from item 1, the pre-run checklist (Ollama, gaming, 15 GiB RAM, ~71 GB real disk headroom on C:); drop the Windows desktop, zip bundle and SMB route.
+   - *Who:* Claude drafts; the user approves.
+   - *Done when:* every command in it has run as written on the hub (at least the smoke test).
+7. **Old Windows-side clone** at `C:\Users\Grayson\Desktop\PokeProject` (old CUDA venv, round zips): now redundant.
+   - *Involves:* deleting it, which is the user's call. WSL can't see C: (automount is off on purpose), so its size has to be measured on Windows, e.g. in PowerShell: `(Get-ChildItem C:\Users\Grayson\Desktop\PokeProject -Recurse -File -Force | Measure-Object Length -Sum).Sum / 1GB`.
+   - *Who:* user.
+   - *Done when:* deleted or kept on purpose, with the size it freed (or would free) recorded here.
+8. **Privacy/security audit** against the house rules, once 1–7 are done.
+   - *Involves:* what leaves the machine (Wikipedia lookups in naming, Hugging Face and PyTorch downloads, the Gradio `--share` link, GitHub pushes); what is committed (weights and data stay out of git); the claude.ai artifact links in this file; whether `data/raw` and `data/models` need any handling.
+   - *Who:* user leads; Claude can prepare the inventory.
+   - *Done when:* the user signs off. From then on the house rules apply here like in every migrated project, and roadmap section 3 is next.
 
 ### Before every GPU run
 - **Ollama:** run `ollama stop qwen3:32b`. It shares the card and holds about 22 GB of the 24 GB VRAM while loaded (it unloads after 5 idle minutes).
 - **Gaming:** the desktop is also used for games, so a game during a run competes for the GPU.
 - **RAM:** WSL sees 15 GiB, so keep DataLoader workers modest (raising `memory=` in Windows `.wslconfig` is the user's option).
-- **Disk:** the real headroom is ~102 GB on Windows C:, not the 932 GB `df` shows. The virtual disk grows and doesn't shrink on its own.
+- **Disk:** the real headroom is ~71 GB on Windows C: (after the transfer; figure from the laptop session, 2026-10-29), not what `df` shows. The virtual disk grows and doesn't shrink on its own.
 - **tmux:** start long runs inside it.
 
 ## Ground rules (agreed with the user)
